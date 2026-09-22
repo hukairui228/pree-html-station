@@ -1,0 +1,8 @@
+# build artifacts
+HTML 编辑器.app/
+*.zip
+tools/AppIcon.iconset/
+tools/icon_raw.png
+
+# macOS noise
+.DS_Store
