@@ -299,15 +299,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private func showWelcome() {
         let html = """
         <!DOCTYPE html><html><head><meta charset="utf-8"><style>
-        body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d1117;color:#e6edf3;font-family:-apple-system,"PingFang SC",sans-serif}
-        .box{text-align:center;max-width:600px;line-height:2.1}
-        h1{font-size:26px;margin-bottom:12px}
-        p{color:#8b949e;font-size:15px;margin:6px 0}
-        kbd{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-family:Menlo,monospace;font-size:13px;color:#79c0ff}
-        </style></head><body><div class="box">
+        body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d1117;color:#e6edf3;font-family:-apple-system,"Helvetica Neue",sans-serif;overflow:hidden}
+        .hero{text-align:center;max-width:560px;padding:0 24px}
+        .hero>*{animation:rise .7s cubic-bezier(.22,1,.36,1) both}
+        .hero>*:nth-child(2){animation-delay:.08s}
+        .hero>*:nth-child(3){animation-delay:.16s}
+        .hero>*:nth-child(4){animation-delay:.24s}
+        .hero>*:nth-child(5){animation-delay:.32s}
+        @keyframes rise{from{transform:translateY(16px)}to{transform:translateY(0)}}
+        .glyph{font-family:Menlo,monospace;font-weight:700;font-size:54px;letter-spacing:-2px}
+        .glyph .b{color:#38BDF8}
+        .bar{width:64px;height:6px;border-radius:3px;background:linear-gradient(90deg,#38BDF8,#818CF8);margin:20px auto 26px}
+        h1{font-size:26px;margin:0 0 8px;font-weight:700;letter-spacing:-.3px}
+        .tag{color:#8b949e;font-size:15px;margin:0 0 34px}
+        .drop{border:1.5px dashed #30363d;border-radius:14px;padding:30px 46px;cursor:pointer;transition:border-color .18s ease,background .18s ease,transform .18s ease}
+        .drop:hover{border-color:#38BDF8;background:rgba(56,189,248,.05);transform:translateY(-1px)}
+        .drop b{font-size:16px}
+        .drop p{color:#8b949e;font-size:13.5px;margin:6px 0 0}
+        kbd{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-family:Menlo,monospace;font-size:12.5px;color:#79c0ff}
+        .hints{color:#8b949e;font-size:13px;margin-top:26px}
+        .hints span{margin:0 7px}
+        </style></head><body><div class="hero">
+        <div class="glyph"><span class="b">&lt;</span>/<span class="b">&gt;</span></div>
+        <div class="bar"></div>
         <h1>Pree HTML Station</h1>
-        <p>Drag a <b>.html</b> file into this window, or press <kbd>⌘O</kbd> to open one</p>
-        <p>Opens in <b>Read mode</b> — clicks never edit · Press <kbd>⌘E</kbd> to edit like a Word doc · <kbd>⌘S</kbd> saves back to the original file</p>
+        <p class="tag">An HTML editor for macOS.</p>
+        <div class="drop" onclick="window.webkit.messageHandlers.host.postMessage('open')">
+          <b>Drop a .html file here</b>
+          <p>or click to browse — ⌘O works too</p>
+        </div>
+        <p class="hints"><span><kbd>⌘E</kbd> Edit like a doc</span><span><kbd>⌘S</kbd> Save to original</span><span><kbd>⌃⌘B</kbd> Preview</span></p>
         </div></body></html>
         """
         webView.loadHTMLString(html, baseURL: nil)
@@ -389,7 +410,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     // ---------- JS messages ----------
     func userContentController(_ ucc: WKUserContentController, didReceive message: WKScriptMessage) {
-        if (message.body as? String) == "dirty" { isDirty = true }
+        switch message.body as? String {
+        case "dirty": isDirty = true
+        case "open": openPanel(nil)          // welcome page drop-card click
+        default: break
+        }
     }
 
     // ---------- Navigation interception ----------
