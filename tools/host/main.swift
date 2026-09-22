@@ -68,7 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
         window.appearance = NSAppearance(named: .darkAqua)
-        window.title = "HTML 编辑器"
+        window.title = "Pree HTML Station"
         window.minSize = NSSize(width: 720, height: 500)
         window.backgroundColor = NSColor(red: 0.05, green: 0.07, blue: 0.09, alpha: 1)
         window.delegate = self
@@ -243,7 +243,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         p{color:#8b949e;font-size:15px;margin:6px 0}
         kbd{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-family:Menlo,monospace;font-size:13px;color:#79c0ff}
         </style></head><body><div class="box">
-        <h1>HTML 编辑器</h1>
+        <h1>Pree HTML Station</h1>
         <p>把 <b>.html</b> 文件拖进这个窗口，或按 <kbd>⌘O</kbd> 打开文件</p>
         <p>打开后默认<b>阅读模式</b>，点击不会误改文字 · 按 <kbd>⌘E</kbd> 进入编辑，像改 Word 一样 · <kbd>⌘S</kbd> 保存回原文件</p>
         </div></body></html>
@@ -312,7 +312,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         if let url = currentURL {
             window.title = url.lastPathComponent + (isDirty ? " •" : "") + (editMode ? "（编辑）" : "")
         } else {
-            window.title = "HTML 编辑器"
+            window.title = "Pree HTML Station"
         }
         modeSeg?.selectedSegment = editMode ? 1 : 0
         modeMenuItem?.state = editMode ? .on : .off
@@ -408,7 +408,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
         let appItem = NSMenuItem(); main.addItem(appItem)
         let appMenu = NSMenu(); appItem.submenu = appMenu
-        appMenu.addItem(withTitle: "关于 HTML 编辑器",
+        appMenu.addItem(withTitle: "关于 Pree HTML Station",
                         action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
