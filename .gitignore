@@ -1,5 +1,5 @@
 # build artifacts
-HTML 编辑器.app/
+*.app/
 *.zip
 tools/AppIcon.iconset/
 tools/icon_raw.png

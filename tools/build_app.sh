@@ -1,14 +1,14 @@
 #!/bin/zsh
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-APP="$ROOT/HTML 编辑器.app"
+APP="$ROOT/Pree HTML Station.app"
 RES="$APP/Contents/Resources"
 MAC="$APP/Contents/MacOS"
 
 rm -rf "$APP"; mkdir -p "$MAC" "$RES"
 
 echo "→ swiftc 编译宿主"
-xcrun swiftc -O -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/HTMLEditor"
+xcrun swiftc -O -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/PreeHTMLStation"
 
 echo "→ 写 Info.plist"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
@@ -16,10 +16,10 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleExecutable</key><string>HTMLEditor</string>
-    <key>CFBundleIdentifier</key><string>local.ray.html-editor</string>
-    <key>CFBundleName</key><string>HTML 编辑器</string>
-    <key>CFBundleDisplayName</key><string>HTML 编辑器</string>
+    <key>CFBundleExecutable</key><string>PreeHTMLStation</string>
+    <key>CFBundleIdentifier</key><string>local.pree.htmlstation</string>
+    <key>CFBundleName</key><string>Pree HTML Station</string>
+    <key>CFBundleDisplayName</key><string>Pree HTML Station</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>1.1</string>
     <key>CFBundleVersion</key><string>2</string>

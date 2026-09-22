@@ -1,4 +1,4 @@
-# PagePen
+# Pree HTML Station
 
 **A tiny native macOS WYSIWYG editor for AI-agent-generated HTML.**
 
@@ -14,7 +14,7 @@ AI agents (Claude, ChatGPT, WorkBuddy, …) now generate a huge amount of standa
 - The classic visual HTML editors (BlueGriffon, KompoZer, Amaya…) are dead or unmaintained
 - Web-builder frameworks (GrapesJS etc.) rebuild the DOM and mangle your styles
 
-PagePen fills exactly this gap: **open → click → fix → save, nothing else.**
+Pree HTML Station fills exactly this gap: **open → click → fix → save, nothing else.**
 
 ## Features
 
@@ -30,22 +30,22 @@ PagePen fills exactly this gap: **open → click → fix → save, nothing else.
 Requires macOS 13+ and Xcode Command Line Tools (`xcode-select --install`).
 
 ```bash
-git clone https://github.com/<you>/pagepen.git
-cd pagepen
+git clone https://github.com/hukairui228/pree-html-station.git
+cd pree-html-station
 ./tools/build_app.sh
 ```
 
-Produces a self-signed `HTML 编辑器.app` (rename freely). One-liner, no script:
+Produces a self-signed `Pree HTML Station.app` (rename freely). One-liner, no script:
 
 ```bash
-swiftc -O -framework Cocoa -framework WebKit tools/host/main.swift -o PagePen
+swiftc -O -framework Cocoa -framework WebKit tools/host/main.swift -o PreeHTMLStation
 ```
 
 > The build is not notarized. On first launch: right-click → Open (or System Settings → Privacy & Security → Open Anyway).
 
 ## Usage tips
 
-- Set PagePen as the default editor for `.html` files: Finder → right-click a file → Get Info → Open with → Change All…
+- Set Pree HTML Station as the default editor for `.html` files: Finder → right-click a file → Get Info → Open with → Change All…
 - Or drag any `.html` onto the window / Dock icon
 
 ## Limitations
