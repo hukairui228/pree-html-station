@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head>
+<html lang="en"><head>
 <meta charset="utf-8">
-<title>测试文档 · HTML 编辑器</title>
+<title>Test document · Pree HTML Station</title>
 <style>
   :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--tx:#e6edf3;--dim:#8b949e;--acc:#58a6ff}
   *{box-sizing:border-box}
-  body{margin:0;padding:48px 10vw;background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC",sans-serif;line-height:1.8}
+  body{margin:0;padding:48px 10vw;background:var(--bg);color:var(--tx);font-family:-apple-system,"Helvetica Neue",sans-serif;line-height:1.8}
   h1{font-size:30px;border-bottom:1px solid var(--line);padding-bottom:14px}
   h2{color:var(--acc);margin-top:36px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin:18px 0}
@@ -18,21 +17,22 @@
 </style>
 </head>
 <body>
-<h1>测试文档：随便改</h1>
-<p class="dim">这是用来测试「HTML 编辑器」的样例文件。直接点任意文字修改，Cmd+S 保存回这个文件。</p>
-<h2>要点</h2>
+<h1>Test document: edit me freely</h1>
+<p class="dim">A sample file for trying out Pree HTML Station. Click any text to edit (in Edit mode), then Cmd+S to save back to this file.</p>
+<h2>The gist</h2>
 <div class="card">
-  <p>点击这一行文字，光标会出现在点击位置 —— 然后直接打字，就像改 Word 一样。</p>
-  <p>选中文字后用工具栏的 <b>加粗</b>、<i>斜体</i>、下划线或颜色按钮改格式。</p>
+  <p>Click on this line — the caret lands where you clicked. Then just type, like editing a Word document.</p>
+  <p>Select text and use the toolbar: <b>bold</b>, <i>italic</i>, underline, strikethrough, or font colors.</p>
 </div>
-<h2>表格也能改</h2>
+<h2>Tables work too</h2>
 <table>
-  <tr><th>操作</th><th>方式</th></tr>
-  <tr><td>阅读模式</td><td>默认。点击不会改文字，链接可以直接点</td></tr>
-  <tr><td>进入编辑</td><td>⌘E，或点工具栏「阅读 / 编辑」开关</td></tr>
-  <tr><td>保存</td><td>⌘S，存回原文件</td></tr>
-  <tr><td>预览</td><td>工具栏最右按钮：先自动保存，再用浏览器打开</td></tr>
-</table>
-<p>段内样式：<code>行内代码</code>、<span style="color:#FFD166">带颜色文字</span>、<u>下划线</u>。</p>
-</body>
-</html>
+  <tbody><tr><th>Action</th><th>How</th></tr>
+  <tr><td>Read mode</td><td>Default. Clicks never edit; links are clickable</td></tr>
+  <tr><td>Enter editing</td><td>⌘E, or the Read | Edit toggle in the toolbar</td></tr>
+  <tr><td>Save</td><td>⌘S — writes back to the original file</td></tr>
+  <tr><td>Preview</td><td>Rightmost toolbar button: auto-save, then open in your browser</td></tr>
+</tbody></table>
+<p>Inline styles: <code>inline code</code>, <span style="color:#FFD166">colored text</span>, <u>underline</u>.</p>
+
+
+</body></html>

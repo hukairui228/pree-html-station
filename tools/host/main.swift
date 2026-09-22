@@ -2,7 +2,7 @@ import Cocoa
 import WebKit
 import UniformTypeIdentifiers
 
-// MARK: - 支持拖放的容器视图
+// MARK: - Drop-target container view
 final class DropView: NSView {
     var onFileURL: ((URL) -> Void)?
     override init(frame: NSRect) { super.init(frame: frame); registerForDraggedTypes([.fileURL]) }
@@ -18,7 +18,7 @@ final class DropView: NSView {
     }
 }
 
-// MARK: - 主控制器
+// MARK: - Main controller
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                          WKScriptMessageHandler, NSWindowDelegate, NSToolbarDelegate {
     var window: NSWindow!
@@ -33,11 +33,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     var isDirty = false { didSet { refreshChrome() } }
 
     let palette: [(String, String)] = [
-        ("白", "#FFFFFF"), ("黄", "#FFD166"), ("橙", "#FF9F43"), ("红", "#FF6B6B"),
-        ("绿", "#51CF66"), ("蓝", "#4DABF7"), ("紫", "#B197FC"), ("灰", "#ADB5BD"), ("黑", "#343A40")
+        ("White", "#FFFFFF"), ("Yellow", "#FFD166"), ("Orange", "#FF9F43"), ("Red", "#FF6B6B"),
+        ("Green", "#51CF66"), ("Blue", "#4DABF7"), ("Purple", "#B197FC"), ("Gray", "#ADB5BD"), ("Black", "#343A40")
     ]
 
-    // ---------- 注入页面的编辑脚本 ----------
+    // ---------- Editor script injected into pages ----------
     static let editorJS = """
     (function(){
       try { document.execCommand('styleWithCSS', false, true); } catch(e) {}
@@ -60,7 +60,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     })();
     """
 
-    // ---------- 启动 ----------
+    // ---------- Launch ----------
     func applicationDidFinishLaunching(_ note: Notification) {
         buildMenu()
 
@@ -73,7 +73,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         window.backgroundColor = NSColor(red: 0.05, green: 0.07, blue: 0.09, alpha: 1)
         window.delegate = self
 
-        // 窗口定位：鼠标所在屏居中（多显示器可靠）
+        // Center the window on the screen under the mouse (multi-display safe)
         let mouse = NSEvent.mouseLocation
         let screen = NSScreen.screens.first(where: { NSMouseInRect(mouse, $0.frame, false) }) ?? NSScreen.screens.first
         if let v = screen?.visibleFrame {
@@ -134,15 +134,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         return nil
     }
 
-    // ---------- 打开 / 保存 ----------
+    // ---------- Open / Save ----------
     func loadFile(_ url: URL) {
         let fm = FileManager.default
-        guard fm.fileExists(atPath: url.path) else { warn("找不到文件：\(url.path)"); return }
+        guard fm.fileExists(atPath: url.path) else { warn("File not found: \(url.path)"); return }
         currentURL = url
         isDirty = false
         editMode = false
         closeAfterSave = false
-        // 允许读取用户主目录下的相对资源（图片/CSS）；主目录外则退回文件所在目录
+        // Allow reading relative assets (images/CSS) under the home directory;
+        // fall back to the file's own folder otherwise
         let home = URL(fileURLWithPath: NSHomeDirectory())
         let access = url.standardizedFileURL.path.hasPrefix(home.path) ? home : url.deletingLastPathComponent()
         webView.loadFileURL(url, allowingReadAccessTo: access)
@@ -155,7 +156,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
         panel.allowedContentTypes = [UTType.html]
-        panel.message = "选择要编辑的 HTML 文件"
+        panel.message = "Choose an HTML file to edit"
         panel.directoryURL = currentURL?.deletingLastPathComponent()
             ?? URL(fileURLWithPath: NSHomeDirectory() + "/Desktop")
         panel.beginSheetModal(for: window) { [weak self] resp in
@@ -180,9 +181,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                         self.window.performClose(nil)
                     }
                     completion?()
-                } catch { self.warn("保存失败：\(error.localizedDescription)") }
+                } catch { self.warn("Save failed: \(error.localizedDescription)") }
             } else {
-                self.warn("保存失败：无法读取编辑内容 \(err?.localizedDescription ?? "")")
+                self.warn("Save failed: could not read edited content \(err?.localizedDescription ?? "")")
             }
         }
     }
@@ -190,7 +191,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     @objc func saveAsDoc() {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [UTType.html]
-        panel.nameFieldStringValue = currentURL?.lastPathComponent ?? "未命名.html"
+        panel.nameFieldStringValue = currentURL?.lastPathComponent ?? "Untitled.html"
         panel.directoryURL = currentURL?.deletingLastPathComponent()
         panel.beginSheetModal(for: window) { [weak self] resp in
             guard let self, resp == .OK, let url = panel.url else { return }
@@ -200,12 +201,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     @objc func previewInBrowser() {
-        guard let u = currentURL else { warn("先打开一个文件"); return }
+        guard let u = currentURL else { warn("Open a file first"); return }
         if isDirty { performSave { NSWorkspace.shared.open(u) } }
         else { NSWorkspace.shared.open(u) }
     }
 
-    // ---------- 阅读模式 / 编辑模式 ----------
+    // ---------- Read / Edit mode ----------
     @objc func toggleMode() { setEditMode(!editMode) }
 
     @objc func modeChanged(_ sender: NSSegmentedControl) {
@@ -225,9 +226,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         guard currentURL != nil else { return }
         if isDirty {
             let a = NSAlert()
-            a.messageText = "有未保存的修改，重新加载会丢弃这些修改？"
-            a.addButton(withTitle: "重新加载")
-            a.addButton(withTitle: "取消")
+            a.messageText = "Unsaved changes will be discarded. Reload anyway?"
+            a.addButton(withTitle: "Reload")
+            a.addButton(withTitle: "Cancel")
             a.beginSheetModal(for: window) { [weak self] r in
                 if r == .alertFirstButtonReturn { self?.editMode = false; self?.webView.reload() }
             }
@@ -244,14 +245,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         kbd{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-family:Menlo,monospace;font-size:13px;color:#79c0ff}
         </style></head><body><div class="box">
         <h1>Pree HTML Station</h1>
-        <p>把 <b>.html</b> 文件拖进这个窗口，或按 <kbd>⌘O</kbd> 打开文件</p>
-        <p>打开后默认<b>阅读模式</b>，点击不会误改文字 · 按 <kbd>⌘E</kbd> 进入编辑，像改 Word 一样 · <kbd>⌘S</kbd> 保存回原文件</p>
+        <p>Drag a <b>.html</b> file into this window, or press <kbd>⌘O</kbd> to open one</p>
+        <p>Opens in <b>Read mode</b> — clicks never edit · Press <kbd>⌘E</kbd> to edit like a Word doc · <kbd>⌘S</kbd> saves back to the original file</p>
         </div></body></html>
         """
         webView.loadHTMLString(html, baseURL: nil)
     }
 
-    // ---------- 编辑命令 ----------
+    // ---------- Editing commands ----------
     @objc func execBold()        { exec("bold");        isDirty = true }
     @objc func execItalic()      { exec("italic");      isDirty = true }
     @objc func execUnderline()   { exec("underline");   isDirty = true }
@@ -288,14 +289,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     @objc func showHelp() {
         let a = NSAlert()
-        a.messageText = "使用说明"
+        a.messageText = "How to use"
         a.informativeText = """
-        1. ⌘O 打开任意 .html 文件（或把文件拖进窗口）
-        2. 默认阅读模式：点击不会改到文字，链接可以直接点
-        3. 按 ⌘E 或点工具栏「编辑」进入编辑模式，
-           点选文字直接修改，像改 Word 文档一样
-        4. ⌘S 保存回原文件 · ⇧⌘S 另存为
-        5. 工具栏最右侧按钮：自动保存后在浏览器中预览
+        1. ⌘O to open any .html file (or drag it into the window)
+        2. Read mode by default: clicks never edit, links are clickable
+        3. Press ⌘E or use the Read | Edit toggle,
+           then click any text and type, like a Word doc
+        4. ⌘S saves back to the original file · ⇧⌘S Save As
+        5. Rightmost toolbar button: auto-save, then preview in your browser
         """
         a.runModal()
     }
@@ -306,11 +307,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         a.runModal()
     }
 
-    // ---------- 状态显示 ----------
+    // ---------- Status display ----------
     private func refreshChrome() {
         guard window != nil else { return }
         if let url = currentURL {
-            window.title = url.lastPathComponent + (isDirty ? " •" : "") + (editMode ? "（编辑）" : "")
+            window.title = url.lastPathComponent + (isDirty ? " •" : "") + (editMode ? " — Edited" : "")
         } else {
             window.title = "Pree HTML Station"
         }
@@ -318,41 +319,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         modeMenuItem?.state = editMode ? .on : .off
         if let label = statusLabel {
             if currentURL == nil {
-                label.stringValue = "未打开文件"
+                label.stringValue = "No file open"
                 label.textColor = .secondaryLabelColor
             } else if isDirty {
-                label.stringValue = "● 未保存"
+                label.stringValue = "● Unsaved"
                 label.textColor = .systemOrange
             } else {
-                label.stringValue = "✓ 已保存"
+                label.stringValue = "✓ Saved"
                 label.textColor = .systemGreen
             }
         }
     }
 
-    // ---------- JS 消息 ----------
+    // ---------- JS messages ----------
     func userContentController(_ ucc: WKUserContentController, didReceive message: WKScriptMessage) {
         if (message.body as? String) == "dirty" { isDirty = true }
     }
 
-    // ---------- 导航拦截 ----------
+    // ---------- Navigation interception ----------
     func webView(_ w: WKWebView, decidePolicyFor action: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard action.navigationType == .linkActivated, let url = action.request.url else {
             decisionHandler(.allow); return
         }
-        // 同文件锚点（目录跳转）：原生平滑滚动
+        // Same-file anchor (TOC jump): let WebKit scroll natively
         if url.isFileURL, url.standardizedFileURL == currentURL?.standardizedFileURL {
             decisionHandler(.allow); return
         }
-        // 站内 .html 互链：直接在本窗口打开（阅读模式下的文档浏览）
+        // Local .html link: open in this window (doc browsing in read mode)
         if url.isFileURL, ["html", "htm"].contains(url.pathExtension.lowercased()) {
             if isDirty {
                 let a = NSAlert()
-                a.messageText = "有未保存的修改，打开新文件前先保存？"
-                a.addButton(withTitle: "保存并打开")
-                a.addButton(withTitle: "不保存")
-                a.addButton(withTitle: "取消")
+                a.messageText = "Save unsaved changes before opening the new file?"
+                a.addButton(withTitle: "Save & Open")
+                a.addButton(withTitle: "Don't Save")
+                a.addButton(withTitle: "Cancel")
                 a.beginSheetModal(for: window) { [weak self] resp in
                     guard let self else { decisionHandler(.cancel); return }
                     switch resp {
@@ -373,20 +374,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             }
             return
         }
-        // 其他链接（http/图片/PDF 等）：交给系统默认应用
+        // Everything else (http/images/PDF...): hand to the system default app
         NSWorkspace.shared.open(url)
         decisionHandler(.cancel)
     }
 
-    // ---------- 关闭保护 ----------
+    // ---------- Close protection ----------
     func windowShouldClose(_ s: NSWindow) -> Bool {
         guard isDirty else { return true }
         let a = NSAlert()
-        a.messageText = "有未保存的修改"
+        a.messageText = "Unsaved changes"
         a.informativeText = currentURL?.lastPathComponent ?? ""
-        a.addButton(withTitle: "保存")
-        a.addButton(withTitle: "不保存")
-        a.addButton(withTitle: "取消")
+        a.addButton(withTitle: "Save")
+        a.addButton(withTitle: "Don't Save")
+        a.addButton(withTitle: "Cancel")
         a.beginSheetModal(for: window) { [weak self] resp in
             guard let self else { return }
             switch resp {
@@ -402,77 +403,77 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         return false
     }
 
-    // ---------- 菜单 ----------
+    // ---------- Menu ----------
     private func buildMenu() {
         let main = NSMenu()
 
         let appItem = NSMenuItem(); main.addItem(appItem)
         let appMenu = NSMenu(); appItem.submenu = appMenu
-        appMenu.addItem(withTitle: "关于 Pree HTML Station",
+        appMenu.addItem(withTitle: "About Pree HTML Station",
                         action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 
         let fileItem = NSMenuItem(); main.addItem(fileItem)
-        let file = NSMenu(title: "文件"); fileItem.submenu = file
-        file.addItem(withTitle: "打开…", action: #selector(openPanel(_:)), keyEquivalent: "o")
+        let file = NSMenu(title: "File"); fileItem.submenu = file
+        file.addItem(withTitle: "Open…", action: #selector(openPanel(_:)), keyEquivalent: "o")
         file.addItem(.separator())
-        file.addItem(withTitle: "保存", action: #selector(saveDoc), keyEquivalent: "s")
-        let saveAsMi = file.addItem(withTitle: "另存为…", action: #selector(saveAsDoc), keyEquivalent: "s")
+        file.addItem(withTitle: "Save", action: #selector(saveDoc), keyEquivalent: "s")
+        let saveAsMi = file.addItem(withTitle: "Save As…", action: #selector(saveAsDoc), keyEquivalent: "s")
         saveAsMi.keyEquivalentModifierMask = [.command, .shift]
         file.addItem(.separator())
-        file.addItem(withTitle: "关闭窗口", action: #selector(NSWindow.performClose(_:)), keyEquivalent: "w")
+        file.addItem(withTitle: "Close Window", action: #selector(NSWindow.performClose(_:)), keyEquivalent: "w")
 
         let editItem = NSMenuItem(); main.addItem(editItem)
-        let edit = NSMenu(title: "编辑"); editItem.submenu = edit
-        edit.addItem(withTitle: "撤销", action: Selector(("undo:")), keyEquivalent: "z")
-        let redoMi = edit.addItem(withTitle: "重做", action: Selector(("redo:")), keyEquivalent: "z")
+        let edit = NSMenu(title: "Edit"); editItem.submenu = edit
+        edit.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
+        let redoMi = edit.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "z")
         redoMi.keyEquivalentModifierMask = [.command, .shift]
         edit.addItem(.separator())
-        edit.addItem(withTitle: "剪切", action: Selector(("cut:")), keyEquivalent: "x")
-        edit.addItem(withTitle: "拷贝", action: Selector(("copy:")), keyEquivalent: "c")
-        edit.addItem(withTitle: "粘贴", action: Selector(("paste:")), keyEquivalent: "v")
+        edit.addItem(withTitle: "Cut", action: Selector(("cut:")), keyEquivalent: "x")
+        edit.addItem(withTitle: "Copy", action: Selector(("copy:")), keyEquivalent: "c")
+        edit.addItem(withTitle: "Paste", action: Selector(("paste:")), keyEquivalent: "v")
         edit.addItem(.separator())
-        edit.addItem(withTitle: "全选", action: Selector(("selectAll:")), keyEquivalent: "a")
+        edit.addItem(withTitle: "Select All", action: Selector(("selectAll:")), keyEquivalent: "a")
 
         let fmtItem = NSMenuItem(); main.addItem(fmtItem)
-        let fmt = NSMenu(title: "格式"); fmtItem.submenu = fmt
-        fmt.addItem(withTitle: "加粗", action: #selector(execBold), keyEquivalent: "b")
-        fmt.addItem(withTitle: "斜体", action: #selector(execItalic), keyEquivalent: "i")
-        fmt.addItem(withTitle: "下划线", action: #selector(execUnderline), keyEquivalent: "u")
-        fmt.addItem(withTitle: "删除线", action: #selector(execStrike), keyEquivalent: "")
+        let fmt = NSMenu(title: "Format"); fmtItem.submenu = fmt
+        fmt.addItem(withTitle: "Bold", action: #selector(execBold), keyEquivalent: "b")
+        fmt.addItem(withTitle: "Italic", action: #selector(execItalic), keyEquivalent: "i")
+        fmt.addItem(withTitle: "Underline", action: #selector(execUnderline), keyEquivalent: "u")
+        fmt.addItem(withTitle: "Strikethrough", action: #selector(execStrike), keyEquivalent: "")
         fmt.addItem(.separator())
-        for (t, blk) in [("标题 1", "<h1>"), ("标题 2", "<h2>"), ("标题 3", "<h3>"), ("正文", "<p>")] {
+        for (t, blk) in [("Heading 1", "<h1>"), ("Heading 2", "<h2>"), ("Heading 3", "<h3>"), ("Body Text", "<p>")] {
             let m = fmt.addItem(withTitle: t, action: #selector(applyBlock(_:)), keyEquivalent: "")
             m.representedObject = blk
         }
         fmt.addItem(.separator())
         for (name, hex) in palette {
-            let m = fmt.addItem(withTitle: "颜色：\(name)", action: #selector(colorSelected(_:)), keyEquivalent: "")
+            let m = fmt.addItem(withTitle: "Color: \(name)", action: #selector(colorSelected(_:)), keyEquivalent: "")
             m.representedObject = hex
         }
 
         let viewItem = NSMenuItem(); main.addItem(viewItem)
-        let view = NSMenu(title: "视图"); viewItem.submenu = view
-        view.addItem(withTitle: "重新加载", action: #selector(reloadDoc), keyEquivalent: "r")
-        let modeMi = view.addItem(withTitle: "阅读 / 编辑模式", action: #selector(toggleMode), keyEquivalent: "e")
+        let view = NSMenu(title: "View"); viewItem.submenu = view
+        view.addItem(withTitle: "Reload", action: #selector(reloadDoc), keyEquivalent: "r")
+        let modeMi = view.addItem(withTitle: "Toggle Read / Edit Mode", action: #selector(toggleMode), keyEquivalent: "e")
         modeMenuItem = modeMi
-        let previewMi = view.addItem(withTitle: "在浏览器中预览", action: #selector(previewInBrowser), keyEquivalent: "b")
+        let previewMi = view.addItem(withTitle: "Preview in Browser", action: #selector(previewInBrowser), keyEquivalent: "b")
         previewMi.keyEquivalentModifierMask = [.command, .control]
 
         let winItem = NSMenuItem(); main.addItem(winItem)
-        let win = NSMenu(title: "窗口"); winItem.submenu = win
-        win.addItem(withTitle: "最小化", action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m")
-        win.addItem(withTitle: "缩放", action: #selector(NSWindow.performZoom(_:)), keyEquivalent: "")
+        let win = NSMenu(title: "Window"); winItem.submenu = win
+        win.addItem(withTitle: "Minimize", action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m")
+        win.addItem(withTitle: "Zoom", action: #selector(NSWindow.performZoom(_:)), keyEquivalent: "")
 
         let helpItem = NSMenuItem(); main.addItem(helpItem)
-        let help = NSMenu(title: "帮助"); helpItem.submenu = help
-        help.addItem(withTitle: "使用说明", action: #selector(showHelp), keyEquivalent: "")
+        let help = NSMenu(title: "Help"); helpItem.submenu = help
+        help.addItem(withTitle: "How to use", action: #selector(showHelp), keyEquivalent: "")
 
         NSApp.mainMenu = main
     }
 
-    // ---------- 工具栏 ----------
+    // ---------- Toolbar ----------
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [.open, .save, .saveAs, .flexibleSpace,
          .mode, .flexibleSpace,
@@ -488,38 +489,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         switch id {
         case .open:
-            return tb(id, symbol: "folder", tip: "打开（⌘O）", action: #selector(openPanel(_:)))
+            return tb(id, symbol: "folder", tip: "Open (⌘O)", action: #selector(openPanel(_:)))
         case .save:
-            return tb(id, symbol: "square.and.arrow.down", tip: "保存到原文件（⌘S）", action: #selector(saveDoc))
+            return tb(id, symbol: "square.and.arrow.down", tip: "Save to original file (⌘S)", action: #selector(saveDoc))
         case .saveAs:
-            return tb(id, symbol: "square.and.arrow.down.on.square", tip: "另存为（⇧⌘S）", action: #selector(saveAsDoc))
+            return tb(id, symbol: "square.and.arrow.down.on.square", tip: "Save As (⇧⌘S)", action: #selector(saveAsDoc))
         case .mode:
             let it = NSToolbarItem(itemIdentifier: id)
-            let seg = NSSegmentedControl(labels: ["阅读", "编辑"], trackingMode: .selectOne,
+            let seg = NSSegmentedControl(labels: ["Read", "Edit"], trackingMode: .selectOne,
                                          target: self, action: #selector(modeChanged(_:)))
             seg.segmentStyle = .texturedRounded
             seg.selectedSegment = 0
-            seg.toolTip = "阅读模式：点击不进入编辑（⌘E 切换）"
+            seg.toolTip = "Read mode: clicks don't edit (⌘E to switch)"
             modeSeg = seg
             it.view = seg
-            it.label = "模式"; it.paletteLabel = "阅读 / 编辑模式"
+            it.label = "Mode"; it.paletteLabel = "Toggle Read / Edit Mode"
             return it
         case .bold:
-            return tb(id, symbol: "bold", tip: "加粗（⌘B）", action: #selector(execBold))
+            return tb(id, symbol: "bold", tip: "Bold (⌘B)", action: #selector(execBold))
         case .italic:
-            return tb(id, symbol: "italic", tip: "斜体（⌘I）", action: #selector(execItalic))
+            return tb(id, symbol: "italic", tip: "Italic (⌘I)", action: #selector(execItalic))
         case .underline:
-            return tb(id, symbol: "underline", tip: "下划线（⌘U）", action: #selector(execUnderline))
+            return tb(id, symbol: "underline", tip: "Underline (⌘U)", action: #selector(execUnderline))
         case .strike:
-            return tb(id, symbol: "strikethrough", tip: "删除线", action: #selector(execStrike))
+            return tb(id, symbol: "strikethrough", tip: "Strikethrough", action: #selector(execStrike))
         case .h1:
-            return tb(id, label: "H1", tip: "标题 1", action: #selector(blockH1))
+            return tb(id, label: "H1", tip: "Heading 1", action: #selector(blockH1))
         case .h2:
-            return tb(id, label: "H2", tip: "标题 2", action: #selector(blockH2))
+            return tb(id, label: "H2", tip: "Heading 2", action: #selector(blockH2))
         case .h3:
-            return tb(id, label: "H3", tip: "标题 3", action: #selector(blockH3))
+            return tb(id, label: "H3", tip: "Heading 3", action: #selector(blockH3))
         case .para:
-            return tb(id, label: "正文", tip: "正文段落", action: #selector(blockPara))
+            return tb(id, label: "Body Text", tip: "Body paragraph", action: #selector(blockPara))
         case .color:
             let it = NSToolbarItem(itemIdentifier: id)
             let pop = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 96, height: 26))
@@ -529,22 +530,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             }
             pop.target = self
             pop.action = #selector(colorSelected(_:))
-            pop.toolTip = "字体颜色"
+            pop.toolTip = "Font Color"
             pop.selectItem(at: -1)
             it.view = pop
-            it.label = "颜色"; it.paletteLabel = "字体颜色"
+            it.label = "Color"; it.paletteLabel = "Font Color"
             return it
         case .status:
             let it = NSToolbarItem(itemIdentifier: id)
-            let label = NSTextField(labelWithString: "未打开文件")
+            let label = NSTextField(labelWithString: "No file open")
             label.font = NSFont.systemFont(ofSize: 11, weight: .medium)
             label.textColor = .secondaryLabelColor
             statusLabel = label
             it.view = label
-            it.label = "保存状态"; it.paletteLabel = "保存状态"
+            it.label = "Save Status"; it.paletteLabel = "Save Status"
             return it
         case .browser:
-            return tb(id, symbol: "safari", tip: "保存并在浏览器中预览（⌃⌘B）", action: #selector(previewInBrowser))
+            return tb(id, symbol: "safari", tip: "Save & preview in browser (⌃⌘B)", action: #selector(previewInBrowser))
         default:
             return nil
         }
@@ -570,7 +571,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         return it
     }
 
-    // ---------- 小工具 ----------
+    // ---------- Helpers ----------
     private func colorFromHex(_ hex: String) -> NSColor {
         var v: UInt64 = 0
         Scanner(string: String(hex.dropFirst())).scanHexInt64(&v)
@@ -589,7 +590,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 }
 
-// MARK: - 工具栏标识符
+// MARK: - Toolbar identifiers
 extension NSToolbarItem.Identifier {
     static let open = NSToolbarItem.Identifier("open")
     static let save = NSToolbarItem.Identifier("save")
@@ -608,7 +609,7 @@ extension NSToolbarItem.Identifier {
     static let browser = NSToolbarItem.Identifier("browser")
 }
 
-// MARK: - 入口
+// MARK: - Entry point
 let app = NSApplication.shared
 app.setActivationPolicy(.regular)
 let delegate = AppDelegate()
