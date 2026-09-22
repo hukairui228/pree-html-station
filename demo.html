@@ -1,38 +1,51 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8">
-<title>Test document · Pree HTML Station</title>
+<title>AI Infrastructure Briefing · Week 37</title>
 <style>
-  :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--tx:#e6edf3;--dim:#8b949e;--acc:#58a6ff}
+  :root{--bg:#0d1117;--card:#161b22;--line:#30363d;--tx:#e6edf3;--dim:#8b949e;--acc:#58a6ff;--up:#3fb950;--warn:#d29922;--bad:#f85149}
   *{box-sizing:border-box}
-  body{margin:0;padding:48px 10vw;background:var(--bg);color:var(--tx);font-family:-apple-system,"Helvetica Neue",sans-serif;line-height:1.8}
-  h1{font-size:30px;border-bottom:1px solid var(--line);padding-bottom:14px}
-  h2{color:var(--acc);margin-top:36px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin:18px 0}
-  table{width:100%;border-collapse:collapse;margin:14px 0}
-  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}
-  th{background:#1c2128}
-  .dim{color:var(--dim);font-size:13px}
-  code{background:#1c2128;padding:2px 7px;border-radius:5px;color:#79c0ff;font-family:Menlo,monospace;font-size:13px}
+  body{margin:0;padding:52px 11vw;background:var(--bg);color:var(--tx);font-family:-apple-system,"Helvetica Neue",sans-serif;line-height:1.75}
+  h1{font-size:30px;margin:0 0 6px}
+  .meta{color:var(--dim);font-size:13px;margin-bottom:8px}
+  h1,h2{border-bottom:1px solid var(--line);padding-bottom:10px}
+  h2{color:var(--acc);font-size:19px;margin-top:38px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:20px 0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:9px 14px;text-align:left}
+  th{background:#1c2128;color:var(--dim);font-weight:600}
+  .up{color:var(--up);font-weight:600}.warn{color:var(--warn);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  code{background:#1c2128;padding:2px 8px;border-radius:6px;color:#79c0ff;font-family:Menlo,monospace;font-size:13px}
+  .foot{color:var(--dim);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+  kbd{background:#161b22;border:1px solid #30363d;border-radius:5px;padding:1px 7px;font-family:Menlo,monospace;font-size:12px;color:#79c0ff}
 </style>
 </head>
 <body>
-<h1>Test document: edit me freely</h1>
-<p class="dim">A sample file for trying out Pree HTML Station. Click any text to edit (in Edit mode), then Cmd+S to save back to this file.</p>
-<h2>The gist</h2>
+<h1>AI Infrastructure Briefing — Week 37</h1>
+<p class="meta">Compiled by WorkBuddy agent · Sep 12, 2026 · Sources: 14 filings, 6 earnings calls, 3 supply-chain checks</p>
+
+<h2>The one-liner</h2>
 <div class="card">
-  <p>Click on this line — the caret lands where you clicked. Then just type, like editing a Word document.</p>
-  <p>Select text and use the toolbar: <b>bold</b>, <i>italic</i>, underline, strikethrough, or font colors.</p>
+  <p>Hyperscaler capex guidance moved up again, and <span id="shot-select">inference demand is compounding faster than training ever did</span> — the bottleneck is shifting from GPUs to power, land, and memory.</p>
 </div>
-<h2>Tables work too</h2>
+
+<h2>What changed this week</h2>
+<p>Two of the four large clouds raised forward capacity plans; the other two signaled follow-through in <code>2H26</code>. Memory pricing turned firm for the first time in three quarters, and lead times on rack-level power gear stretched another <span style="color:#FFD166">4–6 weeks</span>.</p>
+<p>Private AI clouds keep taking share at the margin — neocloud backlog now covers roughly <span class="up">2.1×</span> 2026 revenue consensus for the top three players.</p>
+
+<h2>Positioning scoreboard</h2>
 <table>
-  <tbody><tr><th>Action</th><th>How</th></tr>
-  <tr><td>Read mode</td><td>Default. Clicks never edit; links are clickable</td></tr>
-  <tr><td>Enter editing</td><td>⌘E, or the Read | Edit toggle in the toolbar</td></tr>
-  <tr><td>Save</td><td>⌘S — writes back to the original file</td></tr>
-  <tr><td>Preview</td><td>Rightmost toolbar button: auto-save, then open in your browser</td></tr>
-</tbody></table>
-<p>Inline styles: <code>inline code</code>, <span style="color:#FFD166">colored text</span>, <u>underline</u>.</p>
+  <tr><th>Name</th><th>Exposure</th><th>View</th><th>Conviction</th></tr>
+  <tr><td>Accelerators</td><td>Direct</td><td class="up">Overweight</td><td>High — backlog visibility into 2027</td></tr>
+  <tr><td>Memory (HBM)</td><td>Direct</td><td class="up">Overweight</td><td>Rising — first firm pricing in 3 quarters</td></tr>
+  <tr><td>Power &amp; cooling</td><td>Indirect</td><td class="warn">Hold</td><td>Capacity is the story, execution is the risk</td></tr>
+  <tr><td>Networking</td><td>Direct</td><td class="bad">Trim</td><td>Optics digestion phase into year-end</td></tr>
+</table>
 
+<h2>Watch list</h2>
+<p><b>1.</b> Cloud earnings — capex guide revisions, not the quarter itself. <b>2.</b> HBM contract pricing for 2027. <b>3.</b> Neocloud credit terms; watch for aggressive lease structures.</p>
 
-</body></html>
+<p class="foot">Tweak anything: <kbd>⌘E</kbd> to edit like a doc · <kbd>⌘S</kbd> saves back to this file · rightmost toolbar button previews in your browser.</p>
+</body>
+</html>

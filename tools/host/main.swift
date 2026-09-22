@@ -28,6 +28,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     var modeMenuItem: NSMenuItem?
     var currentURL: URL?
     var pendingURL: URL?
+    var pendingShot = false
+    private let shotMode = ProcessInfo.processInfo.environment["PREE_SHOT"] == "1"
     var closeAfterSave = false
     var editMode = false
     var isDirty = false { didSet { refreshChrome() } }
@@ -142,6 +144,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         isDirty = false
         editMode = false
         closeAfterSave = false
+        pendingShot = shotMode
         // Allow reading relative assets (images/CSS) under the home directory;
         // fall back to the file's own folder otherwise
         let home = URL(fileURLWithPath: NSHomeDirectory())
@@ -377,6 +380,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         // Everything else (http/images/PDF...): hand to the system default app
         NSWorkspace.shared.open(url)
         decisionHandler(.cancel)
+    }
+
+    // Screenshot staging hook (README hero): PREE_SHOT=1 + a #shot-select span in the page
+    func webView(_ w: WKWebView, didFinish navigation: WKNavigation!) {
+        guard pendingShot, currentURL != nil else { return }
+        pendingShot = false
+        setEditMode(true)
+        webView.evaluateJavaScript("""
+            (function(){
+              var el = document.getElementById('shot-select');
+              if (!el) { return 'no-span'; }
+              el.style.background = 'rgba(9,105,218,0.5)';
+              el.style.borderRadius = '3px';
+              el.style.color = '#ffffff';
+              return 'ok';
+            })();
+        """, completionHandler: nil)
+        isDirty = true
     }
 
     // ---------- Close protection ----------
