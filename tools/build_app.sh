@@ -7,10 +7,10 @@ MAC="$APP/Contents/MacOS"
 
 rm -rf "$APP"; mkdir -p "$MAC" "$RES"
 
-echo "→ swiftc 编译宿主"
+echo "→ Compiling host with swiftc"
 xcrun swiftc -O -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/PreeHTMLStation"
 
-echo "→ 写 Info.plist"
+echo "→ Writing Info.plist"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -21,8 +21,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
     <key>CFBundleName</key><string>Pree HTML Station</string>
     <key>CFBundleDisplayName</key><string>Pree HTML Station</string>
     <key>CFBundlePackageType</key><string>APPL</string>
-    <key>CFBundleShortVersionString</key><string>1.1</string>
-    <key>CFBundleVersion</key><string>2</string>
+    <key>CFBundleShortVersionString</key><string>1.2</string>
+    <key>CFBundleVersion</key><string>3</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>NSHighResolutionCapable</key><true/>
     <key>NSRequiresAquaSystemAppearance</key><false/>
@@ -31,7 +31,7 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
     <key>CFBundleDocumentTypes</key>
     <array>
         <dict>
-            <key>CFBundleTypeName</key><string>HTML 文档</string>
+            <key>CFBundleTypeName</key><string>HTML document</string>
             <key>CFBundleTypeRole</key><string>Editor</string>
             <key>LSHandlerRank</key><string>Default</string>
             <key>LSItemContentTypes</key>
@@ -46,12 +46,12 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 PLIST
 plutil -lint "$APP/Contents/Info.plist"
 
-echo "→ 图标"
+echo "→ Icon"
 if [ -f "$ROOT/tools/AppIcon.icns" ]; then
   cp "$ROOT/tools/AppIcon.icns" "$RES/AppIcon.icns"
 else
-  echo "  (无 icns，跳过，使用默认图标)"
+  echo "  (no icns found, using default icon)"
 fi
 
-codesign --force --deep --sign - "$APP" 2>/dev/null || echo "  (ad-hoc 签名跳过)"
-echo "✓ 构建完成: $APP"
+codesign --force --deep --sign - "$APP" 2>/dev/null || echo "  (skipping ad-hoc codesign)"
+echo "✓ Build complete: $APP"
