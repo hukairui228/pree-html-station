@@ -26,6 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     var statusLabel: NSTextField?
     var modeSeg: NSSegmentedControl?
     var modeMenuItem: NSMenuItem?
+    var formatPopover: NSPopover?
     var currentURL: URL?
     var pendingURL: URL?
     var pendingShot = false
@@ -126,6 +127,30 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         return true
     }
 
+    // Quit protection: prompt when there are unsaved changes
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard isDirty, window != nil else { return .terminateNow }
+        let a = NSAlert()
+        a.messageText = "Unsaved changes"
+        a.informativeText = currentURL?.lastPathComponent ?? ""
+        a.addButton(withTitle: "Save")
+        a.addButton(withTitle: "Don't Save")
+        a.addButton(withTitle: "Cancel")
+        a.beginSheetModal(for: window) { [weak self] resp in
+            guard let self else { return NSApp.reply(toApplicationShouldTerminate: false) }
+            switch resp {
+            case .alertFirstButtonReturn:
+                self.performSave { NSApp.reply(toApplicationShouldTerminate: true) }
+            case .alertSecondButtonReturn:
+                self.isDirty = false
+                NSApp.reply(toApplicationShouldTerminate: true)
+            default:
+                NSApp.reply(toApplicationShouldTerminate: false)
+            }
+        }
+        return .terminateLater
+    }
+
     private func argURL() -> URL? {
         let fm = FileManager.default
         for a in ProcessInfo.processInfo.arguments.dropFirst() {
@@ -223,6 +248,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                     : "document.designMode='off'; try{window.getSelection().removeAllRanges();}catch(e){}"
         webView.evaluateJavaScript(js, completionHandler: nil)
         refreshChrome()
+    }
+
+    // Drawer: B / I / U / S tucked behind a single toolbar button
+    @objc func toggleFormat(_ sender: NSButton) {
+        if let p = formatPopover, p.isShown { p.performClose(sender); return }
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 4 * 40 + 3 * 8 + 24, height: 56))
+        var x: CGFloat = 12
+        let items: [(String, Selector, String)] = [
+            ("bold", #selector(execBold), "Bold (⌘B)"),
+            ("italic", #selector(execItalic), "Italic (⌘I)"),
+            ("underline", #selector(execUnderline), "Underline (⌘U)"),
+            ("strikethrough", #selector(execStrike), "Strikethrough"),
+        ]
+        for (sym, action, tip) in items {
+            let b = NSButton(frame: NSRect(x: x, y: 12, width: 40, height: 32))
+            b.bezelStyle = .texturedRounded
+            if let img = NSImage(systemSymbolName: sym, accessibilityDescription: tip) {
+                b.image = img
+                b.imageScaling = .scaleProportionallyDown
+            }
+            b.target = self
+            b.action = action
+            b.toolTip = tip
+            container.addSubview(b)
+            x += 48
+        }
+        let vc = NSViewController()
+        vc.view = container
+        let p = NSPopover()
+        p.contentViewController = vc
+        p.behavior = .transient
+        p.show(relativeTo: sender.bounds, of: sender, preferredEdge: .minY)
+        formatPopover = p
     }
 
     @objc func reloadDoc() {
@@ -496,10 +554,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     // ---------- Toolbar ----------
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        [.open, .save, .saveAs, .flexibleSpace,
-         .mode, .flexibleSpace,
-         .bold, .italic, .underline, .strike, .flexibleSpace,
-         .h1, .h2, .h3, .para, .color, .flexibleSpace,
+        [.mode, .flexibleSpace,
+         .format, .h1, .h2, .h3, .para, .color, .flexibleSpace,
          .status, .flexibleSpace, .browser]
     }
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
@@ -509,12 +565,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier id: NSToolbarItem.Identifier,
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         switch id {
-        case .open:
-            return tb(id, symbol: "folder", tip: "Open (⌘O)", action: #selector(openPanel(_:)))
-        case .save:
-            return tb(id, symbol: "square.and.arrow.down", tip: "Save to original file (⌘S)", action: #selector(saveDoc))
-        case .saveAs:
-            return tb(id, symbol: "square.and.arrow.down.on.square", tip: "Save As (⇧⌘S)", action: #selector(saveAsDoc))
         case .mode:
             let it = NSToolbarItem(itemIdentifier: id)
             let seg = NSSegmentedControl(labels: ["Read", "Edit"], trackingMode: .selectOne,
@@ -526,14 +576,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             it.view = seg
             it.label = "Mode"; it.paletteLabel = "Toggle Read / Edit Mode"
             return it
-        case .bold:
-            return tb(id, symbol: "bold", tip: "Bold (⌘B)", action: #selector(execBold))
-        case .italic:
-            return tb(id, symbol: "italic", tip: "Italic (⌘I)", action: #selector(execItalic))
-        case .underline:
-            return tb(id, symbol: "underline", tip: "Underline (⌘U)", action: #selector(execUnderline))
-        case .strike:
-            return tb(id, symbol: "strikethrough", tip: "Strikethrough", action: #selector(execStrike))
+        case .format:
+            let it = NSToolbarItem(itemIdentifier: id)
+            let b = NSButton(frame: NSRect(x: 0, y: 0, width: 34, height: 28))
+            b.bezelStyle = .texturedRounded
+            if let img = NSImage(systemSymbolName: "textformat", accessibilityDescription: "Text formatting") {
+                b.image = img
+                b.imageScaling = .scaleProportionallyDown
+            }
+            b.target = self
+            b.action = #selector(toggleFormat(_:))
+            b.toolTip = "Text formatting — B / I / U / S"
+            it.view = b
+            it.label = "Format"; it.paletteLabel = "Text Formatting"
+            return it
         case .h1:
             return tb(id, label: "H1", tip: "Heading 1", action: #selector(blockH1))
         case .h2:
@@ -613,14 +669,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
 // MARK: - Toolbar identifiers
 extension NSToolbarItem.Identifier {
-    static let open = NSToolbarItem.Identifier("open")
-    static let save = NSToolbarItem.Identifier("save")
-    static let saveAs = NSToolbarItem.Identifier("saveAs")
     static let mode = NSToolbarItem.Identifier("mode")
-    static let bold = NSToolbarItem.Identifier("bold")
-    static let italic = NSToolbarItem.Identifier("italic")
-    static let underline = NSToolbarItem.Identifier("underline")
-    static let strike = NSToolbarItem.Identifier("strike")
+    static let format = NSToolbarItem.Identifier("format")
     static let h1 = NSToolbarItem.Identifier("h1")
     static let h2 = NSToolbarItem.Identifier("h2")
     static let h3 = NSToolbarItem.Identifier("h3")
