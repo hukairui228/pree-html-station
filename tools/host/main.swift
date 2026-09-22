@@ -318,10 +318,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     @objc func execItalic()      { exec("italic");      isDirty = true }
     @objc func execUnderline()   { exec("underline");   isDirty = true }
     @objc func execStrike()      { exec("strikeThrough"); isDirty = true }
-    @objc func blockH1()         { exec("formatBlock", "<h1>"); isDirty = true }
-    @objc func blockH2()         { exec("formatBlock", "<h2>"); isDirty = true }
-    @objc func blockH3()         { exec("formatBlock", "<h3>"); isDirty = true }
-    @objc func blockPara()       { exec("formatBlock", "<p>");  isDirty = true }
 
     @objc func applyBlock(_ sender: NSMenuItem) {
         if let blk = sender.representedObject as? String { exec("formatBlock", blk); isDirty = true }
@@ -329,11 +325,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     @objc func colorSelected(_ sender: Any?) {
         var hex: String?
-        if let mi = sender as? NSMenuItem { hex = mi.representedObject as? String }
-        else if let pop = sender as? NSPopUpButton, pop.indexOfSelectedItem >= 0,
-                pop.indexOfSelectedItem < palette.count {
-            hex = palette[pop.indexOfSelectedItem].1
-            pop.selectItem(at: -1)
+        if let mi = sender as? NSMenuItem {
+            hex = mi.representedObject as? String
+        } else if let pop = sender as? NSPopUpButton, let mi = pop.selectedItem {
+            hex = mi.representedObject as? String
         }
         if let hex { exec("foreColor", hex); isDirty = true }
     }
@@ -554,8 +549,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     // ---------- Toolbar ----------
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        [.mode, .flexibleSpace,
-         .format, .h1, .h2, .h3, .para, .color, .flexibleSpace,
+        [.save, .saveAs, .flexibleSpace,
+         .mode, .flexibleSpace,
+         .format, .style, .color, .flexibleSpace,
          .status, .flexibleSpace, .browser]
     }
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
@@ -565,6 +561,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier id: NSToolbarItem.Identifier,
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         switch id {
+        case .save:
+            return tb(id, symbol: "square.and.arrow.down", tip: "Save to original file (⌘S)", action: #selector(saveDoc))
+        case .saveAs:
+            return tb(id, symbol: "square.and.arrow.up", tip: "Save As (⇧⌘S)", action: #selector(saveAsDoc))
         case .mode:
             let it = NSToolbarItem(itemIdentifier: id)
             let seg = NSSegmentedControl(labels: ["Read", "Edit"], trackingMode: .selectOne,
@@ -590,25 +590,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             it.view = b
             it.label = "Format"; it.paletteLabel = "Text Formatting"
             return it
-        case .h1:
-            return tb(id, label: "H1", tip: "Heading 1", action: #selector(blockH1))
-        case .h2:
-            return tb(id, label: "H2", tip: "Heading 2", action: #selector(blockH2))
-        case .h3:
-            return tb(id, label: "H3", tip: "Heading 3", action: #selector(blockH3))
-        case .para:
-            return tb(id, label: "Body Text", tip: "Body paragraph", action: #selector(blockPara))
+        case .style:
+            let it = NSToolbarItem(itemIdentifier: id)
+            let pop = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 86, height: 26))
+            pop.pullsDown = true
+            let titleItem = NSMenuItem(title: "Style", action: nil, keyEquivalent: "")
+            titleItem.isEnabled = false
+            pop.menu?.addItem(titleItem)
+            for (t, blk) in [("Heading 1", "<h1>"), ("Heading 2", "<h2>"), ("Heading 3", "<h3>"), ("Body Text", "<p>")] {
+                let m = NSMenuItem(title: t, action: #selector(applyBlock(_:)), keyEquivalent: "")
+                m.representedObject = blk
+                m.target = self
+                pop.menu?.addItem(m)
+            }
+            pop.toolTip = "Paragraph style"
+            it.view = pop
+            it.label = "Style"; it.paletteLabel = "Paragraph Style"
+            return it
         case .color:
             let it = NSToolbarItem(itemIdentifier: id)
-            let pop = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 96, height: 26))
-            pop.addItems(withTitles: palette.map(\.0))
-            for (i, (_, hex)) in palette.enumerated() {
-                pop.item(at: i)?.image = swatchImage(hex)
+            let pop = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 48, height: 26))
+            pop.pullsDown = true
+            let titleItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+            titleItem.image = NSImage(systemSymbolName: "paintpalette", accessibilityDescription: "Font color")
+            titleItem.isEnabled = false
+            pop.menu?.addItem(titleItem)
+            for (name, hex) in palette {
+                let m = NSMenuItem(title: name, action: #selector(colorSelected(_:)), keyEquivalent: "")
+                m.image = swatchImage(hex)
+                m.representedObject = hex
+                m.target = self
+                pop.menu?.addItem(m)
             }
-            pop.target = self
-            pop.action = #selector(colorSelected(_:))
-            pop.toolTip = "Font Color"
-            pop.selectItem(at: -1)
+            pop.toolTip = "Font color"
             it.view = pop
             it.label = "Color"; it.paletteLabel = "Font Color"
             return it
@@ -669,12 +683,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
 // MARK: - Toolbar identifiers
 extension NSToolbarItem.Identifier {
+    static let save = NSToolbarItem.Identifier("save")
+    static let saveAs = NSToolbarItem.Identifier("saveAs")
     static let mode = NSToolbarItem.Identifier("mode")
     static let format = NSToolbarItem.Identifier("format")
-    static let h1 = NSToolbarItem.Identifier("h1")
-    static let h2 = NSToolbarItem.Identifier("h2")
-    static let h3 = NSToolbarItem.Identifier("h3")
-    static let para = NSToolbarItem.Identifier("para")
+    static let style = NSToolbarItem.Identifier("style")
     static let color = NSToolbarItem.Identifier("color")
     static let status = NSToolbarItem.Identifier("status")
     static let browser = NSToolbarItem.Identifier("browser")
