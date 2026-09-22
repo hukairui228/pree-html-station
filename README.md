@@ -6,6 +6,24 @@ Open any `.html` file, click and type like a Word document, `⌘S` saves back to
 
 ![screenshot](screenshot.png)
 
+## Install
+
+**One-liner** — downloads the latest release, strips the quarantine flag, installs to /Applications and launches:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hukairui228/pree-html-station/main/tools/install.sh | bash
+```
+
+**Homebrew** (asks you to trust the tap once):
+
+```bash
+brew install --cask hukairui228/tap/pree-html-station
+```
+
+**Or download** [`PreeHTMLStation-macOS.zip`](https://github.com/hukairui228/pree-html-station/releases/latest) and drag to Applications — since the build is ad-hoc signed, right-click → Open on first launch.
+
+Universal binary (Apple Silicon + Intel), macOS 13+.
+
 ## Why
 
 AI agents (Claude, ChatGPT, WorkBuddy, …) now generate a huge amount of standalone HTML — reports, briefings, one-off pages. Tweaking that output by hand has no good tool:

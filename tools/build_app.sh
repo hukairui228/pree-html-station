@@ -8,7 +8,10 @@ MAC="$APP/Contents/MacOS"
 rm -rf "$APP"; mkdir -p "$MAC" "$RES"
 
 echo "→ Compiling host with swiftc"
-xcrun swiftc -O -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/PreeHTMLStation"
+xcrun swiftc -O -target arm64-apple-macos13.0 -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/PreeHTMLStation.arm64"
+xcrun swiftc -O -target x86_64-apple-macos13.0 -framework Cocoa -framework WebKit "$ROOT/tools/host/main.swift" -o "$MAC/PreeHTMLStation.x86_64"
+lipo -create "$MAC/PreeHTMLStation.arm64" "$MAC/PreeHTMLStation.x86_64" -output "$MAC/PreeHTMLStation"
+rm -f "$MAC/PreeHTMLStation.arm64" "$MAC/PreeHTMLStation.x86_64"
 
 echo "→ Writing Info.plist"
 cat > "$APP/Contents/Info.plist" <<'PLIST'

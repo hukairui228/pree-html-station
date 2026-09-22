@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build universal app
+        run: ./tools/build_app.sh
+
+      - name: Package
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          zip -qry PreeHTMLStation-macOS.zip "Pree HTML Station.app"
+          shasum -a 256 PreeHTMLStation-macOS.zip
+
+      - name: Create release with zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" PreeHTMLStation-macOS.zip \
+            --title "$GITHUB_REF_NAME" --generate-notes \
+            || gh release upload "$GITHUB_REF_NAME" PreeHTMLStation-macOS.zip --clobber
