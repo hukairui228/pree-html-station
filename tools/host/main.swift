@@ -567,11 +567,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             return tb(id, symbol: "square.and.arrow.up", tip: "Save As (⇧⌘S)", action: #selector(saveAsDoc))
         case .mode:
             let it = NSToolbarItem(itemIdentifier: id)
-            let seg = NSSegmentedControl(labels: ["Read", "Edit"], trackingMode: .selectOne,
+            let bookImg = NSImage(systemSymbolName: "book", accessibilityDescription: "Read mode")
+            let pencilImg = NSImage(systemSymbolName: "pencil", accessibilityDescription: "Edit mode")
+            let seg = NSSegmentedControl(images: [bookImg, pencilImg].compactMap { $0 }, trackingMode: .selectOne,
                                          target: self, action: #selector(modeChanged(_:)))
             seg.segmentStyle = .texturedRounded
             seg.selectedSegment = 0
-            seg.toolTip = "Read mode: clicks don't edit (⌘E to switch)"
+            seg.setWidth(38, forSegment: 0)
+            seg.setWidth(38, forSegment: 1)
+            seg.setToolTip("Read mode — clicks don't edit (⌘E switches)", forSegment: 0)
+            seg.setToolTip("Edit mode — click text and type (⌘E switches)", forSegment: 1)
             modeSeg = seg
             it.view = seg
             it.label = "Mode"; it.paletteLabel = "Toggle Read / Edit Mode"
