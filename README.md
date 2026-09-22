@@ -1,6 +1,6 @@
 # Pree HTML Station
 
-**A tiny native macOS WYSIWYG editor for AI-agent-generated HTML.**
+**An HTML editor for macOS.**
 
 Open any `.html` file, click and type like a Word document, `⌘S` saves back to the original file. Native Swift + WKWebView, ~2 MB, zero dependencies.
 
