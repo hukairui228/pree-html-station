@@ -27,6 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     var modeSeg: NSSegmentedControl?
     var modeMenuItem: NSMenuItem?
     var formatPopover: NSPopover?
+    var recentSubmenu: NSMenu?
     var currentURL: URL?
     var pendingURL: URL?
     var pendingShot = false
@@ -175,7 +176,58 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         let home = URL(fileURLWithPath: NSHomeDirectory())
         let access = url.standardizedFileURL.path.hasPrefix(home.path) ? home : url.deletingLastPathComponent()
         webView.loadFileURL(url, allowingReadAccessTo: access)
+        rememberRecent(url)
         refreshChrome()
+    }
+
+    // ---------- Recent files ----------
+    private func rememberRecent(_ url: URL) {
+        var recents = UserDefaults.standard.stringArray(forKey: "recentFiles") ?? []
+        recents.removeAll { $0 == url.path }
+        recents.insert(url.path, at: 0)
+        UserDefaults.standard.set(Array(recents.prefix(8)), forKey: "recentFiles")
+        rebuildRecentMenu()
+    }
+
+    private func rebuildRecentMenu() {
+        guard let m = recentSubmenu else { return }
+        m.removeAllItems()
+        let recents = UserDefaults.standard.stringArray(forKey: "recentFiles") ?? []
+        if recents.isEmpty {
+            let mi = m.addItem(withTitle: "No Recent Files", action: nil, keyEquivalent: "")
+            mi.isEnabled = false
+            return
+        }
+        for p in recents {
+            let mi = m.addItem(withTitle: URL(fileURLWithPath: p).lastPathComponent,
+                               action: #selector(recentOpen(_:)), keyEquivalent: "")
+            mi.representedObject = p
+            mi.toolTip = p
+        }
+        m.addItem(.separator())
+        m.addItem(withTitle: "Clear Menu", action: #selector(clearRecents), keyEquivalent: "")
+    }
+
+    @objc func recentOpen(_ sender: NSMenuItem) {
+        if let p = sender.representedObject as? String { loadFile(URL(fileURLWithPath: p)) }
+    }
+
+    @objc func clearRecents() {
+        UserDefaults.standard.removeObject(forKey: "recentFiles")
+        rebuildRecentMenu()
+        if currentURL == nil { showWelcome() }
+    }
+
+    static func escHTML(_ s: String) -> String {
+        s.replacingOccurrences(of: "&", with: "&amp;")
+         .replacingOccurrences(of: "<", with: "&lt;")
+         .replacingOccurrences(of: ">", with: "&gt;")
+    }
+
+    static func jsEscape(_ s: String) -> String {
+        s.replacingOccurrences(of: "\\", with: "\\\\")
+         .replacingOccurrences(of: "'", with: "\\'")
+         .replacingOccurrences(of: "\"", with: "\\\"")
     }
 
     @objc func openPanel(_ sender: Any?) {
@@ -250,16 +302,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         refreshChrome()
     }
 
-    // Drawer: B / I / U / S tucked behind a single toolbar button
+    // Drawer: B / I / U / S / Highlight tucked behind a single toolbar button
     @objc func toggleFormat(_ sender: NSButton) {
         if let p = formatPopover, p.isShown { p.performClose(sender); return }
-        let container = NSView(frame: NSRect(x: 0, y: 0, width: 4 * 40 + 3 * 8 + 24, height: 56))
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 5 * 40 + 4 * 8 + 24, height: 56))
         var x: CGFloat = 12
         let items: [(String, Selector, String)] = [
             ("bold", #selector(execBold), "Bold (⌘B)"),
             ("italic", #selector(execItalic), "Italic (⌘I)"),
             ("underline", #selector(execUnderline), "Underline (⌘U)"),
             ("strikethrough", #selector(execStrike), "Strikethrough"),
+            ("highlighter", #selector(execHighlight), "Highlight"),
         ]
         for (sym, action, tip) in items {
             let b = NSButton(frame: NSRect(x: x, y: 12, width: 40, height: 32))
@@ -297,6 +350,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     private func showWelcome() {
+        var recentRows = ""
+        for p in (UserDefaults.standard.stringArray(forKey: "recentFiles") ?? []).prefix(5) {
+            let f = URL(fileURLWithPath: p)
+            let name = Self.escHTML(f.lastPathComponent)
+            let raw = f.deletingLastPathComponent().path
+            let home = NSHomeDirectory()
+            let short = raw.hasPrefix(home) ? "~" + raw.dropFirst(home.count) : raw
+            let dir = Self.escHTML(short)
+            let jp = Self.jsEscape(p)
+            recentRows += "<div class=\"rrow\" onclick=\"post('openpath','\(jp)')\"><b>\(name)</b><span>\(dir)</span></div>"
+        }
+        let recentBlock = recentRows.isEmpty ? "" : "<div class=\"recent\"><div class=\"rtitle\">Recent files</div>\(recentRows)</div>"
         let html = """
         <!DOCTYPE html><html><head><meta charset="utf-8"><style>
         body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d1117;color:#e6edf3;font-family:-apple-system,"Helvetica Neue",sans-serif;overflow:hidden}
@@ -319,17 +384,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         kbd{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px;font-family:Menlo,monospace;font-size:12.5px;color:#79c0ff}
         .hints{color:#8b949e;font-size:13px;margin-top:26px}
         .hints span{margin:0 7px}
+        .recent{margin-top:30px;text-align:left;width:100%}
+        .rtitle{color:#8b949e;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+        .rrow{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 14px;border-radius:8px;cursor:pointer;transition:background .15s ease}
+        .rrow:hover{background:#161b22}
+        .rrow b{font-size:13.5px;font-weight:600}
+        .rrow span{color:#8b949e;font-size:12px;font-family:Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         </style></head><body><div class="hero">
         <div class="glyph"><span class="b">&lt;</span>/<span class="b">&gt;</span></div>
         <div class="bar"></div>
         <h1>Pree HTML Station</h1>
         <p class="tag">An HTML editor for macOS.</p>
-        <div class="drop" onclick="window.webkit.messageHandlers.host.postMessage('open')">
+        <div class="drop" onclick="post('open','')">
           <b>Drop a .html file here</b>
           <p>or click to browse — ⌘O works too</p>
         </div>
+        \(recentBlock)
         <p class="hints"><span><kbd>⌘E</kbd> Edit like a doc</span><span><kbd>⌘S</kbd> Save to original</span><span><kbd>⌃⌘B</kbd> Preview</span></p>
-        </div></body></html>
+        </div><script>function post(k,v){window.webkit.messageHandlers.host.postMessage({kind:k,path:v})}</script></body></html>
         """
         webView.loadHTMLString(html, baseURL: nil)
     }
@@ -339,6 +411,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     @objc func execItalic()      { exec("italic");      isDirty = true }
     @objc func execUnderline()   { exec("underline");   isDirty = true }
     @objc func execStrike()      { exec("strikeThrough"); isDirty = true }
+    @objc func execHighlight()   { exec("hiliteColor", "#FFD54A"); isDirty = true }
 
     @objc func applyBlock(_ sender: NSMenuItem) {
         if let blk = sender.representedObject as? String { exec("formatBlock", blk); isDirty = true }
@@ -410,9 +483,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     // ---------- JS messages ----------
     func userContentController(_ ucc: WKUserContentController, didReceive message: WKScriptMessage) {
-        switch message.body as? String {
-        case "dirty": isDirty = true
+        if (message.body as? String) == "dirty" { isDirty = true; return }
+        guard let d = message.body as? [String: String] else { return }
+        switch d["kind"] {
         case "open": openPanel(nil)          // welcome page drop-card click
+        case "openpath":                     // welcome page recent-files click
+            if let p = d["path"] { loadFile(URL(fileURLWithPath: p)) }
         default: break
         }
     }
@@ -516,6 +592,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         let fileItem = NSMenuItem(); main.addItem(fileItem)
         let file = NSMenu(title: "File"); fileItem.submenu = file
         file.addItem(withTitle: "Open…", action: #selector(openPanel(_:)), keyEquivalent: "o")
+        let recentItem = file.addItem(withTitle: "Open Recent", action: nil, keyEquivalent: "")
+        let recentMenu = NSMenu(title: "Open Recent")
+        recentItem.submenu = recentMenu
+        recentSubmenu = recentMenu
+        rebuildRecentMenu()
         file.addItem(.separator())
         file.addItem(withTitle: "Save", action: #selector(saveDoc), keyEquivalent: "s")
         let saveAsMi = file.addItem(withTitle: "Save As…", action: #selector(saveAsDoc), keyEquivalent: "s")
@@ -541,6 +622,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         fmt.addItem(withTitle: "Italic", action: #selector(execItalic), keyEquivalent: "i")
         fmt.addItem(withTitle: "Underline", action: #selector(execUnderline), keyEquivalent: "u")
         fmt.addItem(withTitle: "Strikethrough", action: #selector(execStrike), keyEquivalent: "")
+        fmt.addItem(withTitle: "Highlight", action: #selector(execHighlight), keyEquivalent: "")
         fmt.addItem(.separator())
         for (t, blk) in [("Heading 1", "<h1>"), ("Heading 2", "<h2>"), ("Heading 3", "<h3>"), ("Body Text", "<p>")] {
             let m = fmt.addItem(withTitle: t, action: #selector(applyBlock(_:)), keyEquivalent: "")
