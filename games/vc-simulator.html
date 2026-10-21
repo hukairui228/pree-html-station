@@ -7,307 +7,440 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@500;700;800&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: a deal-room desk — sticky fund ticker on top, pitch memos on the left, the portfolio ledger on the right; each year closes on a full-sheet annual report */
+/* Layout: a night-time deal table. A chunky game HUD on top; the home base is a bento of pressable rooms; each room opens full-view; year-end plays as a card-dealing cinematic. Single deliberate dark world. */
 :root{
-  --bg:#EDF0EE; --paper:#FBFCFB; --ink:#15212B; --muted:#5B6970; --line:#D3DAD7; --soft:#E2E8E5;
-  --accent:#2742D0; --accent-ink:#FFFFFF; --accent-soft:#DCE2FA;
-  --gain:#0C7F55; --gain-soft:#D4EEE2; --loss:#C2381F; --loss-soft:#F6DCD4;
-  --brass:#A86F00; --brass-soft:#F4E6C4;
-  --k-normal:#2B6C66; --k-ai:#2742D0; --k-abstract:#A92C78;
-  --k-normal-soft:#D7EAE7; --k-ai-soft:#DCE2FA; --k-abstract-soft:#F5DCEB;
-  --scrim:rgba(14,22,28,.52);
-  --shadow:0 1px 0 rgba(21,33,43,.05),0 10px 28px -16px rgba(21,33,43,.28);
-  --f-display:"Bricolage Grotesque","Noto Sans SC",system-ui,sans-serif;
-  --f-serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --table:#16122B; --table-2:#1E1839; --panel:#231C42; --panel-2:#2C2452; --line:#3A3166;
+  --text:#F4EFFF; --muted:#A79FC9; --ink:#1A1530;
+  --cream:#FFF4DC; --cream-d:#D9C59B; --paper-line:#E9DCBE;
+  --gold:#FFC23D; --gold-d:#C98B10;
+  --sky:#5AB8FF; --sky-d:#2C7BC2;
+  --mint:#3DDC97; --mint-d:#1E9A64;
+  --coral:#FF6B5B; --coral-d:#C23D2F;
+  --violet:#9B8CFF; --violet-d:#5E4FC9;
+  --pink:#FF7AD0; --pink-d:#C23F92;
+  --k-normal:#3DDC97; --k-ai:#5AB8FF; --k-abstract:#FF7AD0;
+  --f-fx:"ZCOOL QingKe HuangYou","Noto Sans SC",system-ui,sans-serif;
   --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0D1316; --paper:#151E23; --ink:#E3EAED; --muted:#93A2A9; --line:#27343B; --soft:#1C272D;
-  --accent:#8399FF; --accent-ink:#0D1316; --accent-soft:#1E2752;
-  --gain:#41C88F; --gain-soft:#11342A; --loss:#FF7B62; --loss-soft:#3B1C16;
-  --brass:#E3AE3F; --brass-soft:#382C10;
-  --k-normal:#62BBB1; --k-ai:#8399FF; --k-abstract:#EE6DBA;
-  --k-normal-soft:#15302D; --k-ai-soft:#1E2752; --k-abstract-soft:#3A1830;
-  --scrim:rgba(0,0,0,.62);
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 30px -16px rgba(0,0,0,.7);
-  color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --bg:#0D1316; --paper:#151E23; --ink:#E3EAED; --muted:#93A2A9; --line:#27343B; --soft:#1C272D;
-  --accent:#8399FF; --accent-ink:#0D1316; --accent-soft:#1E2752;
-  --gain:#41C88F; --gain-soft:#11342A; --loss:#FF7B62; --loss-soft:#3B1C16;
-  --brass:#E3AE3F; --brass-soft:#382C10;
-  --k-normal:#62BBB1; --k-ai:#8399FF; --k-abstract:#EE6DBA;
-  --k-normal-soft:#15302D; --k-ai-soft:#1E2752; --k-abstract-soft:#3A1830;
-  --scrim:rgba(0,0,0,.62);
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 30px -16px rgba(0,0,0,.7);
+  --f-num:"Rubik","Noto Sans SC",system-ui,sans-serif;
+  --f-arcade:"Bungee","Rubik",system-ui,sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{min-height:100%}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
-button{font:inherit;color:inherit;cursor:pointer}
+html,body{height:100%}
+body{background:var(--table);color:var(--text);font-family:var(--f-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 80% 60% at 50% -10%, rgba(155,140,255,.18), transparent 70%),radial-gradient(rgba(255,255,255,.045) 1px, transparent 1.2px);
+  background-size:auto,22px 22px;background-attachment:fixed}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
 button:disabled{cursor:not-allowed}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
-.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{text-wrap:balance;margin:0}
-.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:12px}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+.fx{font-family:var(--f-fx);font-weight:400;letter-spacing:.02em}
+.n{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700}
+.arc{font-family:var(--f-arcade);font-weight:400;letter-spacing:.01em}
+.up{color:var(--mint)} .down{color:var(--coral)}
+.wrap{width:100%;max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
-/* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--paper);padding:8px 14px;border-radius:999px;font-weight:500;font-size:13px;transition:transform .12s,background .15s,border-color .15s}
-.btn:hover:not(:disabled){border-color:var(--ink)}
-.btn:active:not(:disabled){transform:translateY(1px)}
-.btn:disabled{opacity:.42}
-.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.btn.primary:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.ghost{background:transparent}
-.btn.big{padding:13px 24px;font-size:15px}
-.btn .cost{font-family:var(--f-mono);font-size:11px;opacity:.7}
+/* ---------- chunky buttons ---------- */
+.b3{--c:var(--gold);--cd:var(--gold-d);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:14px;background:var(--c);color:var(--ink);font-weight:900;font-size:14px;box-shadow:0 5px 0 var(--cd);transform:translateY(0);transition:transform .08s,box-shadow .08s,filter .15s;white-space:nowrap}
+.b3:hover:not(:disabled){filter:brightness(1.07)}
+.b3:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 var(--cd)}
+.b3:disabled{filter:grayscale(1) brightness(.6);opacity:.7}
+.b3.sky{--c:var(--sky);--cd:var(--sky-d)} .b3.mint{--c:var(--mint);--cd:var(--mint-d)} .b3.coral{--c:var(--coral);--cd:var(--coral-d)}
+.b3.violet{--c:var(--violet);--cd:var(--violet-d)} .b3.pink{--c:var(--pink);--cd:var(--pink-d)} .b3.cream{--c:var(--cream);--cd:var(--cream-d)}
+.b3.dark{--c:var(--panel-2);--cd:#14102A;color:var(--text)}
+.b3.lg{padding:15px 26px;font-size:17px;border-radius:18px;box-shadow:0 7px 0 var(--cd)}
+.b3.lg:active:not(:disabled){transform:translateY(6px);box-shadow:0 1px 0 var(--cd)}
+.b3.sm{padding:7px 12px;font-size:12.5px;border-radius:11px;box-shadow:0 4px 0 var(--cd)}
+.b3 .bolt{display:inline-flex;align-items:center;gap:2px;font-family:var(--f-num);font-size:.85em;opacity:.85}
+.back{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--muted);padding:8px 12px 8px 8px;border-radius:12px;background:var(--panel);border:2px solid var(--line)}
+.back:hover{color:var(--text);border-color:var(--violet)}
 
-/* ---------- start screen ---------- */
-.start{padding-block:48px 64px}
-.start-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:start}
-.title-big{font-family:var(--f-serif);font-weight:900;font-size:clamp(56px,10vw,120px);line-height:.95;letter-spacing:-.02em}
-.title-big em{font-style:normal;color:var(--accent)}
-.start .lede{font-size:17px;color:var(--muted);max-width:34em;margin:20px 0 28px}
-.ticker-tape{font-family:var(--f-mono);font-size:12px;display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:28px}
-.ticker-tape b{color:var(--ink);font-weight:600}
-.rules{display:grid;gap:14px;margin:0;padding:0;list-style:none}
-.rules li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px}
-.rules .n{font-family:var(--f-mono);font-size:12px;color:var(--accent);padding-top:2px}
-.rules b{display:block}
-.rules span{color:var(--muted)}
-.setup{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);display:grid;gap:18px}
-.field label{display:block;margin-bottom:6px;font-weight:500}
-.field input{width:100%;font:inherit;font-size:16px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-.personas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.persona{text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px;display:grid;gap:4px;transition:border-color .15s,background .15s}
-.persona:hover{border-color:var(--muted)}
-.persona[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.persona b{font-size:14px}
-.persona small{color:var(--muted);font-size:12px;line-height:1.45}
-.persona .perk{font-family:var(--f-mono);font-size:11px;color:var(--ink)}
+/* ---------- HUD ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--table-2)}
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:linear-gradient(var(--table-2),rgba(30,24,57,.94));border-bottom:2px solid var(--line);backdrop-filter:blur(8px)}
+.hud-in{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.crest{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto}
+.crest .seal{width:44px;height:44px;border-radius:14px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-family:var(--f-fx);font-size:24px;box-shadow:0 4px 0 var(--gold-d);flex:none}
+.crest .nm{font-family:var(--f-fx);font-size:21px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.crest .sub{font-size:12px;color:var(--muted)}
+.gauges{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.g{display:flex;align-items:center;gap:8px;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:5px 12px 5px 6px;min-height:46px}
+.g .ic{width:32px;height:32px;flex:none}
+.g .k{font-size:10.5px;color:var(--muted);line-height:1.1;letter-spacing:.04em}
+.g .v{font-family:var(--f-num);font-weight:800;font-size:17px;line-height:1.15;font-variant-numeric:tabular-nums}
+.g.tvpi .v{font-family:var(--f-arcade);font-size:20px}
+.ring{position:relative;width:34px;height:34px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-num);font-size:12px;font-weight:800}
+.bats{display:flex;gap:3px;margin-top:3px}
+.bats i{width:10px;height:16px;border-radius:3px;background:var(--panel-2);border:2px solid var(--line)}
+.bats i.on{background:var(--gold);border-color:var(--gold-d);box-shadow:0 0 8px rgba(255,194,61,.5)}
+.repbar{width:70px;height:8px;border-radius:5px;background:var(--panel-2);overflow:hidden;margin-top:4px}
+.repbar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--pink));border-radius:5px;transition:width .5s}
+.iconbtn{width:44px;height:44px;border-radius:14px;background:var(--panel);border:2px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.iconbtn:hover{color:var(--text);border-color:var(--violet)}
 
-/* ---------- header ---------- */
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
-.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
-.hud-top{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto}
-.brand .mark{width:34px;height:34px;border-radius:9px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--f-serif);font-weight:900;font-size:18px;flex:none}
-.brand .nm{font-family:var(--f-serif);font-weight:700;font-size:17px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand .sub{font-size:12px;color:var(--muted)}
-.stats{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end}
-.stat .k{font-size:11px;color:var(--muted);letter-spacing:.04em}
-.stat .v{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:17px;font-weight:600;line-height:1.2}
-.stat.tvpi .v{font-family:var(--f-display);font-size:26px;font-weight:800;letter-spacing:-.02em}
-.up{color:var(--gain)} .down{color:var(--loss)}
-.meter{width:72px;height:6px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:6px}
-.meter i{display:block;height:100%;background:var(--brass);border-radius:4px;transition:width .5s}
-.pips{display:flex;gap:4px;margin-top:6px}
-.pips i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--accent);transition:background .2s}
-.pips i.on{background:var(--accent)}
-.hud-bot{display:flex;align-items:center;gap:14px;padding-block:8px;border-top:1px dashed var(--line);font-size:13px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;background:var(--soft);white-space:nowrap}
-.chip.bull{background:var(--gain-soft);color:var(--gain)}
-.chip.bear{background:var(--loss-soft);color:var(--loss)}
-.chip.flat{background:var(--soft);color:var(--ink)}
-.chip.hype{background:var(--brass-soft);color:var(--brass)}
-.headline{color:var(--muted);min-width:0;flex:1 1 240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.headline b{color:var(--ink);font-weight:500}
+/* ---------- views ---------- */
+.view{padding-block:22px 48px;animation:viewIn .35s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:none}}
+.vhead{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.vhead h2{font-family:var(--f-fx);font-size:34px;line-height:1.1;font-weight:400}
+.vhead .tip{color:var(--muted);font-size:13px;flex:1 1 260px}
 
-/* ---------- main ---------- */
-.main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:28px;padding-block:24px 64px;align-items:start}
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.sec-head h2{font-family:var(--f-serif);font-weight:900;font-size:26px;letter-spacing:-.01em}
-.sec-head p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.deal{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px;align-content:start;box-shadow:var(--shadow);animation:rise .45s both}
-.deal.gone{opacity:.55}
-.deal.gone .acts{visibility:hidden}
-@keyframes rise{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
-.deal-h{display:flex;gap:12px;align-items:center}
-.logo{width:42px;height:42px;flex:none;display:grid;place-items:center;font-family:var(--f-serif);font-weight:900;font-size:19px;color:var(--paper)}
-.logo.k-normal{background:var(--k-normal)} .logo.k-ai{background:var(--k-ai)} .logo.k-abstract{background:var(--k-abstract)}
-.logo.s0{border-radius:12px} .logo.s1{border-radius:50%} .logo.s2{border-radius:4px 16px 4px 16px} .logo.s3{border-radius:16px 16px 4px 16px}
-.deal-h .nm{font-weight:700;font-size:16px;line-height:1.25}
-.deal-h .meta{font-size:12px;color:var(--muted)}
-.kchip{margin-left:auto;align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:6px}
-.kchip.k-normal{background:var(--k-normal-soft);color:var(--k-normal)}
-.kchip.k-ai{background:var(--k-ai-soft);color:var(--k-ai)}
-.kchip.k-abstract{background:var(--k-abstract-soft);color:var(--k-abstract)}
-.serial{font-family:var(--f-mono);font-size:10px;color:var(--muted);letter-spacing:.08em}
-.tagline{font-weight:500;font-size:14px;margin:0}
-.quote{margin:0;padding:10px 12px;background:var(--bg);border-radius:10px;font-size:13px}
-.quote p{margin:0 0 4px}
-.quote cite{font-style:normal;font-size:12px;color:var(--muted)}
-.mets{display:grid;gap:7px}
-.met{display:grid;grid-template-columns:36px minmax(0,1fr) 34px;align-items:center;gap:8px;font-size:12px}
-.met .lab{color:var(--muted)}
-.met .val{font-family:var(--f-mono);text-align:right;font-size:12px}
-.track{position:relative;height:8px;background:var(--soft);border-radius:4px}
-.track .band{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--accent);opacity:.22;transition:left .5s,width .5s,opacity .3s}
-.track .band.sure{opacity:.9}
-.track .tick{position:absolute;top:-3px;width:3px;height:14px;border-radius:2px;background:var(--ink);transform:translateX(-50%);transition:left .5s}
-.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:10px}
+/* hub */
+.hub{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(150px,auto);gap:18px}
+.tile{--c:var(--gold);--cd:var(--gold-d);position:relative;display:flex;flex-direction:column;gap:8px;text-align:left;padding:18px 18px 16px;border-radius:24px;background:var(--c);color:var(--ink);overflow:hidden;
+  box-shadow:0 8px 0 var(--cd),0 22px 34px -14px rgba(0,0,0,.7);transition:transform .12s,box-shadow .12s;min-width:0}
+.tile:hover:not(:disabled){transform:translateY(-4px) rotate(-.3deg);box-shadow:0 12px 0 var(--cd),0 30px 40px -14px rgba(0,0,0,.75)}
+.tile:active:not(:disabled){transform:translateY(6px);box-shadow:0 2px 0 var(--cd),0 10px 20px -10px rgba(0,0,0,.6)}
+.tile:disabled{filter:saturate(.35) brightness(.75)}
+.tile::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 0%, rgba(255,255,255,.35), transparent 45%);pointer-events:none}
+.tile .tt{font-family:var(--f-fx);font-size:28px;line-height:1.05}
+.tile .ts{font-size:13px;font-weight:500;opacity:.78}
+.tile .art{position:absolute;right:-6px;bottom:-8px;width:120px;height:120px;opacity:.95;pointer-events:none}
+.tile .big{font-family:var(--f-arcade);font-size:30px;line-height:1}
+.tile .foot{margin-top:auto;display:flex;align-items:center;gap:8px;font-weight:900;font-size:13px;position:relative;z-index:1}
+.tile .badge{position:absolute;top:14px;right:14px;min-width:30px;height:30px;padding:0 8px;border-radius:999px;background:var(--ink);color:var(--gold);display:grid;place-items:center;font-family:var(--f-num);font-weight:800;font-size:14px;z-index:2}
+.tile .badge.pulse{animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(26,21,48,.55)}60%{box-shadow:0 0 0 12px rgba(26,21,48,0)}}
+.t-pitch{grid-column:span 2;grid-row:span 2;--c:var(--gold);--cd:var(--gold-d)}
+.t-port{grid-column:span 2;--c:var(--sky);--cd:var(--sky-d)}
+.t-market{--c:var(--mint);--cd:var(--mint-d)}
+.t-inbox{--c:var(--coral);--cd:var(--coral-d)}
+.t-fund{--c:var(--violet);--cd:var(--violet-d)}
+.t-trophy{--c:var(--pink);--cd:var(--pink-d)}
+.t-end{grid-column:span 2;--c:var(--cream);--cd:var(--cream-d)}
+.t-pitch .tt{font-size:44px}
+.lineup{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;position:relative;z-index:1}
+.lineup .who{display:grid;justify-items:center;gap:4px;width:92px}
+.lineup .who .av{width:84px;height:84px;border-radius:50%;border:4px solid var(--ink);background:var(--cream);overflow:hidden;transition:transform .2s}
+.t-pitch:hover .lineup .who:nth-child(1) .av{transform:translateY(-4px) rotate(-4deg)}
+.t-pitch:hover .lineup .who:nth-child(2) .av{transform:translateY(-6px)}
+.t-pitch:hover .lineup .who:nth-child(3) .av{transform:translateY(-4px) rotate(4deg)}
+.lineup .who b{font-size:12.5px;line-height:1.2;text-align:center}
+.lineup .who small{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--ink);color:var(--gold)}
+.lineup .who.gone .av{filter:grayscale(1);opacity:.55}
+.chips{display:flex;gap:6px;flex-wrap:wrap;position:relative;z-index:1}
+.mini-logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:var(--f-fx);font-size:18px;color:var(--ink);border:3px solid var(--ink)}
+.t-end .tt{font-size:34px}
+.clock{display:flex;gap:6px;position:relative;z-index:1}
+.clock i{flex:1;height:12px;border-radius:6px;background:rgba(26,21,48,.15);border:2px solid rgba(26,21,48,.35)}
+.clock i.done{background:var(--ink);border-color:var(--ink)}
+.clock i.now{background:var(--gold);border-color:var(--ink);animation:blink 1.2s infinite}
+@keyframes blink{50%{background:var(--coral)}}
+
+/* panels */
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:18px;min-width:0}
+.panel h3{font-family:var(--f-fx);font-size:22px;font-weight:400;margin-bottom:10px}
+.cols{display:grid;gap:18px}
+.pcols{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start}
+.k-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:900;letter-spacing:.06em;padding:2px 8px;border-radius:8px;color:var(--ink)}
+.k-tag.k-normal{background:var(--k-normal)} .k-tag.k-ai{background:var(--k-ai)} .k-tag.k-abstract{background:var(--k-abstract)}
+.logo{display:grid;place-items:center;font-family:var(--f-fx);color:var(--ink);border:3px solid var(--ink);flex:none}
+.logo.k-normal,.mini-logo.k-normal{background:var(--k-normal)} .logo.k-ai,.mini-logo.k-ai{background:var(--k-ai)} .logo.k-abstract,.mini-logo.k-abstract{background:var(--k-abstract)}
+.logo.s0{border-radius:14px} .logo.s1{border-radius:50%} .logo.s2{border-radius:6px 18px 6px 18px} .logo.s3{border-radius:18px 18px 6px 18px}
+
+/* ---------- pitch room ---------- */
+.queue{display:flex;gap:10px;flex-wrap:wrap}
+.qtab{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--panel);border:2px solid var(--line);font-weight:700;font-size:13px}
+.qtab .av{width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--cream);border:2px solid var(--ink)}
+.qtab[aria-current="true"]{border-color:var(--gold);background:var(--panel-2);box-shadow:0 0 0 3px rgba(255,194,61,.25)}
+.qtab .st{font-size:11px;color:var(--muted);font-weight:500}
+.qtab.gone{opacity:.55}
+.stage{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+.spot{position:relative;border-radius:26px;padding:22px;background:radial-gradient(ellipse 60% 55% at 50% 30%, rgba(255,194,61,.22), transparent 70%),var(--panel);border:2px solid var(--line);overflow:hidden;min-height:470px;display:flex;flex-direction:column}
+.spot .who-top{display:flex;align-items:center;gap:12px}
+.spot .who-top .logo{width:52px;height:52px;font-size:26px}
+.spot .who-top h3{font-family:var(--f-fx);font-size:30px;font-weight:400;line-height:1.05}
+.spot .who-top .meta{font-size:12.5px;color:var(--muted)}
+.spot .who-top .k-tag{margin-left:auto;align-self:flex-start}
+.founder{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:end;margin-top:auto;padding-top:18px}
+.founder .av{width:150px;height:150px;border-radius:50%;border:5px solid var(--ink);background:var(--cream);overflow:hidden;box-shadow:0 8px 0 rgba(0,0,0,.35);animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.founder .card{display:grid;gap:2px}
+.founder .card b{font-size:18px}
+.founder .card span{font-size:12.5px;color:var(--muted)}
+.bubble{position:relative;margin-top:18px;background:var(--cream);color:var(--ink);border-radius:20px;padding:16px 18px;font-size:16px;font-weight:500;line-height:1.6;min-height:96px;box-shadow:0 6px 0 var(--cream-d)}
+.bubble::after{content:"";position:absolute;left:58px;bottom:-16px;border:10px solid transparent;border-top:12px solid var(--cream)}
+.bubble .who{display:block;font-size:11.5px;font-weight:900;color:var(--gold-d);letter-spacing:.06em;margin-bottom:2px}
+.bubble .caret{display:inline-block;width:2px;height:1.1em;background:var(--ink);vertical-align:-3px;margin-left:2px;animation:blink2 .8s steps(1) infinite}
+@keyframes blink2{50%{opacity:0}}
+.tagline{margin-top:12px;font-size:15px;font-weight:700}
+.spot .sticker{position:absolute;top:84px;right:18px;transform:rotate(9deg);font-family:var(--f-fx);font-size:30px;padding:4px 14px;border:4px solid currentColor;border-radius:10px;background:var(--panel);animation:stamp .4s cubic-bezier(.2,1.7,.4,1) both;z-index:3}
+.sticker.inv{color:var(--mint)} .sticker.pass{color:var(--muted)} .sticker.bad{color:var(--coral)}
+@keyframes stamp{from{transform:rotate(9deg) scale(2.6);opacity:0}to{transform:rotate(9deg) scale(1);opacity:1}}
+.xray{display:grid;gap:12px}
+.mets{display:grid;gap:10px}
+.met{display:grid;grid-template-columns:44px minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:13px}
+.met .lab{color:var(--muted);font-weight:700}
+.met .val{text-align:right;font-family:var(--f-num);font-weight:800}
+.track{position:relative;height:14px;border-radius:8px;background:var(--panel-2);overflow:hidden}
+.track .fog{position:absolute;top:0;bottom:0;border-radius:8px;background:repeating-linear-gradient(45deg,rgba(155,140,255,.55) 0 6px,rgba(155,140,255,.25) 6px 12px);transition:left .6s,width .6s}
+.track .fog.known{background:linear-gradient(90deg,var(--violet),var(--sky))}
+.track .fog.sure{background:linear-gradient(90deg,var(--mint),var(--gold))}
+.track .tick{position:absolute;top:0;bottom:0;width:3px;background:var(--text);transform:translateX(-50%);transition:left .6s}
+.asks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ask{text-align:left;padding:10px 12px;border-radius:14px;background:var(--panel-2);border:2px solid var(--line);font-size:13px;font-weight:500;transition:border-color .15s,transform .1s}
+.ask:hover:not(:disabled){border-color:var(--gold);transform:translateY(-2px)}
+.ask:disabled{opacity:.4}
+.ask small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.terms > div{background:var(--panel-2);border-radius:14px;padding:10px 12px}
 .terms .k{font-size:11px;color:var(--muted)}
-.terms .v{font-family:var(--f-mono);font-weight:600;font-size:14px}
-.heat{display:flex;gap:3px;padding-top:6px}
-.heat i{width:14px;height:6px;border-radius:2px;background:var(--soft)}
-.heat i.on{background:var(--loss)}
-.flags{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.flags li{font-size:12.5px;padding:6px 10px;border-radius:8px;display:flex;gap:8px;align-items:flex-start}
-.flags li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;margin-top:6px}
-.flags .g{background:var(--gain-soft)} .flags .g::before{background:var(--gain)}
-.flags .r{background:var(--loss-soft)} .flags .r::before{background:var(--loss)}
-.flags .x{background:var(--loss-soft);font-weight:700} .flags .x::before{background:var(--loss);border-radius:1px}
-.acts{display:flex;gap:8px;flex-wrap:wrap}
-.acts .btn{flex:1 1 auto}
-.note{font-size:12px;color:var(--muted)}
-.note.warn{color:var(--loss)}
-.stamp{position:absolute;top:44px;right:14px;transform:rotate(-9deg);font-family:var(--f-serif);font-weight:900;font-size:22px;letter-spacing:.12em;padding:4px 12px;border:3px solid currentColor;border-radius:6px;color:var(--muted);background:var(--paper);opacity:.92;pointer-events:none;animation:stamp .35s cubic-bezier(.2,1.6,.4,1) both}
-.stamp.inv{color:var(--accent)}
-.stamp.bad{color:var(--loss)}
-.stamp.good{color:var(--gain)}
-@keyframes stamp{from{transform:rotate(-9deg) scale(2.2);opacity:0}to{transform:rotate(-9deg) scale(1);opacity:.92}}
-.empty{border:1.5px dashed var(--line);border-radius:16px;padding:28px;text-align:center;color:var(--muted)}
-.empty b{display:block;color:var(--ink);font-family:var(--f-serif);font-size:18px;margin-bottom:4px}
-.endbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;border-radius:16px;background:var(--ink);color:var(--paper)}
-.endbar p{margin:0;font-size:13px;opacity:.8}
-.endbar .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
-.endbar .btn:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.terms .v{font-family:var(--f-num);font-weight:800;font-size:18px}
+.flames{display:flex;gap:2px;padding-top:4px}
+.flames svg{width:18px;height:20px}
+.flags{display:grid;gap:6px;list-style:none;margin:0;padding:0}
+.flags li{font-size:13px;font-weight:500;padding:8px 12px;border-radius:12px;display:flex;gap:8px;align-items:flex-start;animation:viewIn .35s both}
+.flags li b{flex:none;font-size:11px;font-weight:900;padding:1px 6px;border-radius:6px;color:var(--ink)}
+.flags .g{background:rgba(61,220,151,.14)} .flags .g b{background:var(--mint)}
+.flags .r{background:rgba(255,107,91,.14)} .flags .r b{background:var(--coral)}
+.flags .x{background:rgba(255,107,91,.28);outline:2px solid var(--coral)} .flags .x b{background:var(--coral)}
+.actbar{display:flex;gap:10px;flex-wrap:wrap}
+.actbar .b3{flex:1 1 auto}
+.warn{font-size:12.5px;color:var(--gold);font-weight:500}
+.empty{border:2px dashed var(--line);border-radius:22px;padding:36px 20px;text-align:center;color:var(--muted);display:grid;gap:8px;justify-items:center}
+.empty b{font-family:var(--f-fx);font-size:26px;color:var(--text);font-weight:400}
 
 /* ---------- portfolio ---------- */
-.side{display:grid;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 140px)}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.panel-h{display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px 10px;gap:10px}
-.panel-h h3{font-family:var(--f-serif);font-weight:900;font-size:18px}
-.panel-h span{font-size:12px;color:var(--muted)}
-.prow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
-.prow .logo{width:34px;height:34px;font-size:15px}
-.prow .nm{font-weight:600;font-size:13.5px;display:flex;gap:6px;align-items:center;min-width:0}
-.prow .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.prow .sub{font-size:11.5px;color:var(--muted);font-family:var(--f-mono)}
-.prow .r{text-align:right}
-.prow .r .v{font-family:var(--f-mono);font-weight:600;font-size:13px}
-.prow .r .m{font-family:var(--f-mono);font-size:11.5px}
-.prow.closed{opacity:.6}
-.help{grid-column:2 / -1;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-.help .btn{padding:4px 10px;font-size:12px}
-.help .dots{display:flex;gap:3px}
-.help .dots i{width:7px;height:7px;border-radius:50%;background:var(--soft)}
-.help .dots i.on{background:var(--gain)}
-.st{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:5px;letter-spacing:.04em;flex:none}
-.st.alive{background:var(--soft);color:var(--muted)}
-.st.ipo{background:var(--gain-soft);color:var(--gain)}
-.st.acq{background:var(--gain-soft);color:var(--gain)}
-.st.dead,.st.fraud{background:var(--loss-soft);color:var(--loss)}
-.alloc{display:flex;height:8px;margin:0 16px 14px;border-radius:4px;overflow:hidden;background:var(--soft)}
-.alloc i{display:block;height:100%}
-.alloc .k-normal{background:var(--k-normal)} .alloc .k-ai{background:var(--k-ai)} .alloc .k-abstract{background:var(--k-abstract)}
-.legend{display:flex;gap:12px;padding:0 16px 12px;font-size:11.5px;color:var(--muted);flex-wrap:wrap}
-.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0;background:var(--c)}
-.log{list-style:none;margin:0;padding:4px 16px 14px;display:grid;gap:8px;max-height:260px;overflow:auto}
-.log li{font-size:12.5px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px}
-.log .y{font-family:var(--f-mono);color:var(--muted);font-size:11px;padding-top:2px}
-.closed-toggle{width:100%;border:0;border-top:1px solid var(--line);background:transparent;padding:10px 16px;text-align:left;font-size:12px;color:var(--muted)}
-
-/* ---------- modal ---------- */
-.overlay{position:fixed;inset:0;z-index:50;background:var(--scrim);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .2s both}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.sheet{background:var(--paper);border-radius:20px;width:min(560px,100%);max-height:100%;overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:pop .3s cubic-bezier(.2,1.2,.4,1) both}
-.sheet.wide{width:min(880px,100%)}
-@keyframes pop{from{transform:translateY(16px) scale(.98);opacity:0}to{transform:none;opacity:1}}
-.sheet-h{padding:22px 24px 6px}
-.sheet-h h2{font-family:var(--f-serif);font-weight:900;font-size:26px;line-height:1.2}
-.sheet-b{padding:12px 24px 22px;display:grid;gap:18px}
-.sheet-f{position:sticky;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:14px 24px;display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
-.sheet-f .info{margin-right:auto;font-size:12.5px;color:var(--muted)}
-.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.kv div{background:var(--bg);border-radius:10px;padding:10px 12px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.pcard{position:relative;text-align:left;border-radius:20px;padding:14px;background:var(--panel);border:2px solid var(--line);display:grid;gap:10px;transition:transform .12s,border-color .15s;min-width:0}
+.pcard:hover{transform:translateY(-3px);border-color:var(--violet)}
+.pcard[aria-current="true"]{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,194,61,.22)}
+.pcard .top{display:flex;gap:10px;align-items:center;min-width:0}
+.pcard .top .logo{width:40px;height:40px;font-size:20px}
+.pcard .nm{font-weight:900;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard .sub{font-size:11.5px;color:var(--muted)}
+.pcard .row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.pcard .val{font-family:var(--f-num);font-weight:800;font-size:18px}
+.pcard .mul{font-family:var(--f-arcade);font-size:15px}
+.pcard.closed{opacity:.6}
+.ladder{display:flex;gap:3px}
+.ladder i{flex:1;height:6px;border-radius:3px;background:var(--panel-2)}
+.ladder i.on{background:var(--gold)}
+.ladder i.end{background:var(--mint)}
+.ladder.dead i.on{background:var(--coral)}
+.spark{width:100%;height:36px;display:block}
+.stat-chip{position:absolute;top:12px;right:12px;font-size:10.5px;font-weight:900;padding:2px 7px;border-radius:7px;color:var(--ink)}
+.stat-chip.ipo,.stat-chip.acq{background:var(--mint)} .stat-chip.dead,.stat-chip.fraud{background:var(--coral)} .stat-chip.alive{background:var(--panel-2);color:var(--muted)}
+.pdetail{display:grid;gap:14px;position:sticky;top:100px}
+.pdetail .head{display:flex;gap:12px;align-items:center}
+.pdetail .head .logo{width:60px;height:60px;font-size:30px}
+.pdetail .head h3{font-family:var(--f-fx);font-size:30px;font-weight:400;margin:0}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.kv > div{background:var(--panel-2);border-radius:14px;padding:10px 12px}
 .kv .k{font-size:11px;color:var(--muted)}
-.kv .v{font-family:var(--f-mono);font-weight:600;font-size:16px}
-.range{display:grid;gap:8px}
-.range-top{display:flex;justify-content:space-between;align-items:baseline}
-.range-top b{font-family:var(--f-display);font-size:34px;font-weight:800;letter-spacing:-.02em}
-input[type=range]{width:100%;accent-color:var(--accent)}
-.nego{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--brass-soft);flex-wrap:wrap}
-.nego p{margin:0;font-size:13px;flex:1 1 220px}
-.nego b{color:var(--brass)}
+.kv .v{font-family:var(--f-num);font-weight:800;font-size:18px}
+.boosts{display:grid;gap:8px}
+.boost{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;padding:10px;border-radius:14px;background:var(--panel-2);border:2px solid var(--line);transition:border-color .15s}
+.boost:hover:not(:disabled){border-color:var(--mint)}
+.boost:disabled{opacity:.45}
+.boost .bi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--mint);color:var(--ink)}
+.boost b{display:block;font-size:13.5px}
+.boost small{color:var(--muted);font-size:12px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:200px;overflow:auto}
+.timeline li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;font-size:12.5px}
+.timeline .y{font-family:var(--f-num);color:var(--muted);font-weight:700}
 
-/* report */
-.rep-sec{display:grid;gap:10px}
-.rep-sec > h3{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;border-bottom:1px solid var(--line);padding-bottom:6px}
-.news{margin:0;padding:0;list-style:none;display:grid;gap:6px}
-.news li{font-size:14px;padding-left:16px;position:relative}
-.news li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:2px;background:var(--brass)}
-.rrow{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--bg);animation:rise .4s both}
-.rrow .logo{width:36px;height:36px;font-size:15px}
-.rrow .t{font-size:13px;color:var(--muted)}
-.rrow .nm{font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.rrow .d{text-align:right;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
-.rrow .d b{display:block;font-size:14px}
-.rrow .fo{grid-column:2 / -1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;padding-top:4px;border-top:1px dashed var(--line);margin-top:2px}
-.rtag{font-family:var(--f-serif);font-weight:900;font-size:12px;letter-spacing:.08em;padding:1px 7px;border:2px solid currentColor;border-radius:4px;transform:rotate(-4deg);display:inline-block}
-.rtag.good{color:var(--gain)} .rtag.bad{color:var(--loss)} .rtag.meh{color:var(--muted)} .rtag.wow{color:var(--brass)}
-.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.switch input{appearance:none;width:34px;height:20px;border-radius:999px;background:var(--line);position:relative;margin:0;cursor:pointer;transition:background .2s;flex:none}
-.switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--paper);transition:left .2s}
-.switch input:checked{background:var(--accent)}
-.switch input:checked::after{left:16px}
-.switch input:disabled{opacity:.4;cursor:not-allowed}
-.event{border:1.5px solid var(--brass);border-radius:14px;padding:16px;display:grid;gap:10px;background:var(--brass-soft)}
-.event h4{margin:0;font-family:var(--f-serif);font-size:18px}
-.event p{margin:0;font-size:13.5px}
-.opts{display:grid;gap:8px}
-.opt{text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 12px;display:grid;gap:2px}
-.opt small{color:var(--muted);font-size:12px}
-.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+/* ---------- market ---------- */
+.mgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+.gauge{width:100%;max-width:420px;display:block;margin:0 auto}
+.gauge .needle{transition:transform 1s cubic-bezier(.3,1.6,.5,1);transform-origin:200px 200px}
+.gauge text{font-family:var(--f-fx);font-size:22px;fill:var(--text)}
+.thermo{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;align-items:end}
+.thermo .tube{position:relative;width:56px;height:220px;border-radius:28px;background:var(--panel-2);border:3px solid var(--line);overflow:hidden}
+.thermo .tube i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,var(--sky),var(--pink));transition:height 1s}
+.thermo .tube.crashed i{background:linear-gradient(0deg,var(--coral),var(--gold))}
+.news{list-style:none;margin:0;padding:0;display:grid;gap:8px;max-height:420px;overflow:auto}
+.news li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;font-size:13.5px;padding:10px 12px;border-radius:14px;background:var(--panel-2)}
+.news .y{font-family:var(--f-num);font-weight:800;color:var(--gold)}
+
+/* ---------- inbox ---------- */
+.mail{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px;align-items:start}
+.mlist{display:grid;gap:8px}
+.mitem{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:center;text-align:left;padding:10px 12px;border-radius:16px;background:var(--panel);border:2px solid var(--line);position:relative}
+.mitem[aria-current="true"]{border-color:var(--gold)}
+.mitem .av{width:42px;height:42px;border-radius:50%;overflow:hidden;background:var(--cream);border:2px solid var(--ink)}
+.mitem b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mitem small{font-size:11.5px;color:var(--muted)}
+.mitem.todo::after{content:"";position:absolute;top:10px;right:10px;width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 3px var(--panel)}
+.mitem.done{opacity:.6}
+.letter{background:var(--cream);color:var(--ink);border-radius:22px;padding:24px;box-shadow:0 8px 0 var(--cream-d);display:grid;gap:14px;background-image:repeating-linear-gradient(transparent 0 31px,var(--paper-line) 31px 32px);animation:viewIn .3s both}
+.letter .from{display:flex;gap:12px;align-items:center}
+.letter .from .av{width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--ink);background:var(--cream)}
+.letter h3{font-family:var(--f-fx);font-size:28px;font-weight:400;line-height:1.15}
+.letter p{font-size:15px;line-height:1.75}
+.letter .meta{font-size:12px;color:#6E6284}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;padding:12px 14px;border-radius:14px;background:#fff;border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s;color:var(--ink)}
+.opt:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 0 var(--ink)}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 .opt:disabled{opacity:.45}
+.opt b{display:block;font-size:14.5px}
+.opt small{font-size:12.5px;color:#6E6284}
+.resolved{font-weight:900;color:var(--mint-d);font-size:14px;padding:10px 14px;border-radius:12px;background:rgba(61,220,151,.18)}
 
-/* final */
-.final-hero{display:grid;gap:6px;text-align:center;padding:12px 0 4px}
-.final-hero .rank{font-family:var(--f-serif);font-weight:900;font-size:clamp(30px,6vw,46px);line-height:1.15}
-.final-hero .big{font-family:var(--f-display);font-weight:800;font-size:clamp(56px,12vw,96px);line-height:1;letter-spacing:-.03em}
-.final-hero p{margin:0;color:var(--muted)}
+/* ---------- trophy / fund ---------- */
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.medal{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;padding:12px;border-radius:18px;background:var(--panel);border:2px solid var(--line)}
+.medal .m{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--gold);border:3px solid var(--ink);box-shadow:0 4px 0 var(--gold-d);font-family:var(--f-fx);font-size:24px;color:var(--ink)}
+.medal.off{opacity:.45}
+.medal.off .m{background:var(--panel-2);color:var(--muted);box-shadow:none;border-color:var(--line)}
+.medal b{display:block;font-size:14px}
+.medal small{font-size:12px;color:var(--muted)}
+.lrow{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-radius:16px;background:var(--panel-2)}
+.lrow .logo{width:42px;height:42px;font-size:20px}
+.lrow b{display:block}
+.lrow small{color:var(--muted);font-size:12px}
+.lrow .r{text-align:right;font-family:var(--f-num);font-weight:800}
+.list{display:grid;gap:8px}
 .chart{width:100%;height:auto;display:block}
-.chart text{font-family:var(--f-mono);font-size:10px;fill:var(--muted)}
-.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.badge{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
-.badge b{font-size:13.5px}
-.badge small{font-size:12px;color:var(--muted)}
-.badge.off{opacity:.38;border-style:dashed}
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.chart text{font-family:var(--f-num);font-size:11px;fill:var(--muted)}
+.alloc{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--panel-2);border:2px solid var(--line)}
+.alloc i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c);vertical-align:-1px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:340px;overflow:auto}
+.log li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;font-size:13px}
+.log .y{font-family:var(--f-num);color:var(--muted);font-weight:700}
 
-/* toast */
-.toasts{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;display:grid;gap:8px;width:min(440px,calc(100% - 32px));pointer-events:none}
-.toast{background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:12px;font-size:13.5px;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);animation:pop .25s both}
-.toast.good{background:var(--gain);color:var(--paper)}
-.toast.bad{background:var(--loss);color:var(--paper)}
+/* ---------- overlays ---------- */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(10,7,24,.78);backdrop-filter:blur(6px);display:grid;place-items:center;overflow:auto;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .2s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.ts-doc{width:min(560px,100%);background:var(--cream);color:var(--ink);border-radius:20px;padding:26px;box-shadow:0 10px 0 var(--cream-d),0 40px 80px -20px rgba(0,0,0,.8);display:grid;gap:16px;animation:pop .35s cubic-bezier(.2,1.3,.4,1) both;position:relative}
+@keyframes pop{from{transform:translateY(30px) rotate(-2deg) scale(.95);opacity:0}to{transform:none;opacity:1}}
+.ts-doc .eyebrow{font-size:11px;font-weight:900;letter-spacing:.18em;color:#6E6284}
+.ts-doc h3{font-family:var(--f-fx);font-size:32px;font-weight:400;line-height:1.1}
+.ts-doc hr{border:0;border-top:2px dashed var(--paper-line);margin:0}
+.ts-row{display:grid;gap:6px}
+.ts-row .lab{display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.ts-row .lab b{font-family:var(--f-arcade);font-size:22px;font-weight:400}
+.ts-row small{color:#6E6284;font-size:12px}
+.ts-doc input[type=range]{width:100%;accent-color:var(--violet-d);height:28px}
+.mood{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;padding:12px;border-radius:16px;background:#fff;border:3px solid var(--ink)}
+.mood .av{width:64px;height:64px;border-radius:50%;overflow:hidden;border:3px solid var(--ink)}
+.mood .bar{height:12px;border-radius:6px;background:#EEE3CB;overflow:hidden;margin-top:6px}
+.mood .bar i{display:block;height:100%;border-radius:6px;transition:width .25s,background .25s}
+.mood p{font-size:13.5px;font-weight:500}
+.ts-act{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.ts-stamp{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);font-family:var(--f-fx);font-size:64px;color:var(--coral);border:6px solid currentColor;border-radius:14px;padding:4px 22px;background:rgba(255,244,220,.85);animation:bigstamp .45s cubic-bezier(.2,1.7,.4,1) both;pointer-events:none}
+.ts-stamp.ok{color:var(--mint-d)}
+@keyframes bigstamp{from{transform:translate(-50%,-50%) rotate(-12deg) scale(3);opacity:0}to{transform:translate(-50%,-50%) rotate(-12deg) scale(1);opacity:1}}
 
-.reset{font-size:12px;color:var(--muted);background:none;border:0;text-decoration:underline;text-underline-offset:3px;padding:0}
+/* cinematic */
+.cine{position:fixed;inset:0;z-index:70;background:radial-gradient(ellipse 70% 50% at 50% 20%, rgba(155,140,255,.25), transparent 70%),#0E0A20;overflow:auto;
+  padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cine-in{max-width:1100px;margin:0 auto;display:grid;gap:22px}
+.cine-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.yearflip{text-align:center;display:grid;gap:6px;padding-top:6px}
+.yearflip .lbl{font-family:var(--f-fx);font-size:26px;color:var(--gold)}
+.yearflip .yr{font-family:var(--f-arcade);font-size:clamp(64px,13vw,128px);line-height:1;animation:yr .7s cubic-bezier(.2,1.5,.4,1) both;text-shadow:0 6px 0 var(--violet-d)}
+@keyframes yr{from{transform:scale(.4) rotateX(80deg);opacity:0}to{transform:none;opacity:1}}
+.headlines{display:grid;gap:8px;max-width:760px;margin:0 auto;width:100%}
+.headlines div{padding:10px 16px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-size:15px;font-weight:500;animation:slideIn .4s both}
+.headlines div b{color:var(--gold);margin-right:8px}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.deal-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;perspective:1200px}
+.rcard{position:relative;height:220px;transform-style:preserve-3d;animation:deal .5s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes deal{from{transform:translateY(-60px) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}
+.rcard .face,.rcard .backside{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.3,1.3,.5,1)}
+.rcard .backside{background:repeating-linear-gradient(45deg,var(--violet-d) 0 12px,var(--violet) 12px 24px);border:4px solid var(--cream);display:grid;place-items:center;font-family:var(--f-fx);font-size:40px;color:var(--cream)}
+.rcard .face{transform:rotateY(180deg);background:var(--cream);color:var(--ink);border:4px solid var(--ink);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 0 rgba(0,0,0,.4)}
+.rcard.flip .face{transform:rotateY(0)}
+.rcard.flip .backside{transform:rotateY(-180deg)}
+.rcard .face .top{display:flex;gap:10px;align-items:center}
+.rcard .face .top .logo{width:40px;height:40px;font-size:20px}
+.rcard .face .top b{font-size:15px;line-height:1.2}
+.rcard .face .top small{display:block;font-size:11px;color:#6E6284}
+.rcard .face p{font-size:13px;line-height:1.5;flex:1}
+.rcard .face .delta{font-family:var(--f-num);font-weight:800;font-size:15px}
+.rcard .face .delta.up{color:var(--mint-d)} .rcard .face .delta.down{color:var(--coral-d)}
+.rcard .rstamp{position:absolute;right:12px;bottom:12px;font-family:var(--f-fx);font-size:26px;padding:0 10px;border:4px solid currentColor;border-radius:8px;transform:rotate(10deg);background:var(--cream)}
+.rcard.flip .rstamp{animation:stamp .4s .35s cubic-bezier(.2,1.7,.4,1) both}
+.rstamp.good{color:var(--mint-d)} .rstamp.bad{color:var(--coral-d)} .rstamp.meh{color:#8A7FA6} .rstamp.wow{color:var(--gold-d)}
+.rcard.miss .face{background:#2A1C34;color:var(--text);border-color:var(--coral)}
+.rcard.miss .face small{color:var(--muted)}
+.cine-sum{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;padding:18px;border-radius:22px;background:var(--panel);border:2px solid var(--line);animation:viewIn .4s both}
+.cine-sum .big{font-family:var(--f-arcade);font-size:clamp(36px,7vw,58px);line-height:1}
+.cine-sum .lbl{font-size:12px;color:var(--muted)}
+.sec-t{font-family:var(--f-fx);font-size:24px;color:var(--gold);margin-top:6px}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translate(-8px,3px)}40%{transform:translate(7px,-4px)}60%{transform:translate(-5px,2px)}80%{transform:translate(4px,-1px)}}
 
-@media (max-width:980px){
-  .main{grid-template-columns:minmax(0,1fr)}
-  .side{position:static}
-  .start-grid{grid-template-columns:minmax(0,1fr);gap:32px}
+/* start & final */
+.title-screen{min-height:100%;display:grid;place-items:center;padding-block:40px;position:relative;overflow:hidden}
+.floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.floaters span{position:absolute;bottom:-80px;font-family:var(--f-arcade);color:var(--gold);opacity:.35;animation:floatUp linear infinite}
+@keyframes floatUp{to{transform:translateY(-120vh) rotate(360deg)}}
+.ts-wrap{position:relative;z-index:1;display:grid;gap:26px;justify-items:center;text-align:center;width:100%}
+.logo-big{font-family:var(--f-fx);font-size:clamp(72px,15vw,168px);line-height:.95;color:var(--gold);text-shadow:0 8px 0 var(--gold-d),0 20px 40px rgba(0,0,0,.6);animation:yr .8s cubic-bezier(.2,1.5,.4,1) both}
+.logo-big small{display:block;font-family:var(--f-arcade);font-size:clamp(14px,2.4vw,22px);color:var(--text);text-shadow:none;letter-spacing:.3em;margin-top:14px}
+.ts-lede{max-width:620px;color:var(--muted);font-size:16px}
+.personas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;width:100%;max-width:1040px}
+.pcard2{--c:var(--gold);--cd:var(--gold-d);text-align:left;border-radius:22px;padding:14px;background:var(--panel);border:3px solid var(--line);display:grid;gap:8px;transition:transform .12s,border-color .15s;justify-items:start}
+.pcard2:hover{transform:translateY(-4px)}
+.pcard2[aria-pressed="true"]{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 30%,transparent),0 8px 0 var(--cd)}
+.pcard2 .av{width:76px;height:76px;border-radius:50%;overflow:hidden;border:4px solid var(--ink);background:var(--c)}
+.pcard2 b{font-family:var(--f-fx);font-size:22px;font-weight:400}
+.pcard2 small{color:var(--muted);font-size:12.5px;line-height:1.5}
+.pcard2 .perk{font-size:11.5px;font-weight:900;padding:3px 8px;border-radius:8px;background:var(--c);color:var(--ink)}
+.namebox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.namebox input{font:inherit;font-family:var(--f-fx);font-size:24px;padding:10px 16px;border-radius:16px;border:3px solid var(--line);background:var(--panel);color:var(--text);width:min(300px,80vw);text-align:center}
+.namebox input:focus{outline:none;border-color:var(--gold)}
+.howto{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;width:100%;max-width:1040px;text-align:left}
+.howto div{padding:12px 14px;border-radius:16px;background:rgba(35,28,66,.7);border:2px solid var(--line)}
+.howto b{display:block;font-family:var(--f-fx);font-size:19px;font-weight:400;color:var(--gold)}
+.howto span{font-size:12.5px;color:var(--muted)}
+.final{display:grid;gap:18px}
+.final-hero{text-align:center;display:grid;gap:8px;padding:20px;border-radius:26px;background:radial-gradient(ellipse at 50% 0%, rgba(255,194,61,.25), transparent 70%),var(--panel);border:2px solid var(--line)}
+.final-hero .big{font-family:var(--f-arcade);font-size:clamp(64px,14vw,130px);line-height:1}
+.final-hero .rank{font-family:var(--f-fx);font-size:clamp(34px,7vw,60px);color:var(--gold);line-height:1.1}
+.final-hero p{color:var(--muted);font-size:15px}
+.fstats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.fstats > div{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:12px}
+.fstats .k{font-size:11.5px;color:var(--muted)}
+.fstats .v{font-family:var(--f-num);font-weight:800;font-size:20px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+
+.toasts{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(460px,calc(100% - 32px));pointer-events:none}
+.toast{padding:12px 16px;border-radius:16px;font-size:14px;font-weight:700;background:var(--cream);color:var(--ink);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);animation:pop .3s both}
+.toast.good{background:var(--mint)} .toast.bad{background:var(--coral)} .toast.gold{background:var(--gold)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:95;width:100%;height:100%}
+
+@media (max-width:1080px){
+  .hub{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stage,.mgrid,.mail{grid-template-columns:minmax(0,1fr)}
+  .personas,.howto{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fstats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pdetail{position:static}
+  .pcols{grid-template-columns:minmax(0,1fr)}
+  .spot{min-height:0}
 }
 @media (max-width:640px){
-  .stats{gap:12px 18px;width:100%}
-  .stat .v{font-size:15px}
-  .stat.tvpi .v{font-size:22px}
-  .hud-top{gap:10px}
-  .kv{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .personas,.two{grid-template-columns:minmax(0,1fr)}
-  .sheet-h,.sheet-b{padding-left:16px;padding-right:16px}
-  .sheet-f{padding-left:16px;padding-right:16px}
-  .overlay{padding:8px;align-items:end}
-  .rrow{grid-template-columns:32px minmax(0,1fr)}
-  .rrow .d{grid-column:2;text-align:left}
+  .hub{grid-template-columns:minmax(0,1fr)}
+  .t-pitch,.t-port,.t-end{grid-column:span 1}
+  .t-pitch{grid-row:span 1}
+  .t-pitch .tt{font-size:36px}
+  .lineup .who{width:80px} .lineup .who .av{width:70px;height:70px}
+  .hud{position:relative;top:0}
+  .gauges{gap:6px;width:100%}
+  .g{padding:4px 10px 4px 5px;min-height:40px}
+  .g .ic{width:26px;height:26px}
+  .g .v{font-size:15px}
+  .g.tvpi .v{font-size:17px}
+  .g.hide-s{display:none}
+  .crest .nm{font-size:18px;max-width:150px}
+  .founder{grid-template-columns:100px minmax(0,1fr)}
+  .founder .av{width:100px;height:100px}
+  .asks,.two{grid-template-columns:minmax(0,1fr)}
+  .personas,.howto{grid-template-columns:minmax(0,1fr)}
+  .fstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vhead h2{font-size:28px}
+  .ts-doc{padding:18px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -315,8 +448,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 </head>
 <body>
 <div id="app"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
 <div class="toasts" id="toasts" aria-live="polite"></div>
-
 <script>
 /*ENGINE*/
 const R = () => Math.random();
@@ -413,43 +546,7 @@ const AI_NEWS = ['某大厂发布新一代大模型，参数量又翻了十倍',
 function kindPrice(g,k){ return k==='ai' ? g.market.aiHype : k==='abstract' ? rnd(.6,1.4) : 1; }
 function cycleMult(c){ return {bull:1.25, flat:1, bear:.78}[c]; }
 
-function genDeal(g){
-  const p = PERSONAS[g.persona];
-  const pool = TPL.filter(t => !g.used.includes(t.n));
-  let tot = 0;
-  const w = pool.map(t => { let x = 1; if (p.bias && p.bias[t.k]) x *= p.bias[t.k]; if (t.k==='ai') x *= .6 + g.market.aiHype*.3; tot += x; return x; });
-  let rr = R()*tot, t = pool[pool.length-1];
-  for (let i=0;i<pool.length;i++){ rr -= w[i]; if (rr<=0){ t = pool[i]; break; } }
-  g.used.push(t.n);
-  const q = clamp(t.m + gauss()*(t.k==='abstract'?.12:.14) + (g.rep-50)/700, .03, .97);
-  const sr = R(), stage = sr<.4 ? 0 : sr<.75 ? 1 : 2;
-  const base = [[2.5,7],[8,20],[25,60]][stage];
-  const heat = clamp(1 + (q>.58?1:0) + (R()<.3?1:0) + (t.k==='ai' && !g.market.aiCrashed && g.market.aiHype>1.7?1:0), 1, 3);
-  const pre = rnd(base[0],base[1]) * kindPrice(g,t.k) * (1+.18*(heat-1)) * cycleMult(g.market.cycle);
-  const ask = pre * rnd(.15,.25);
-  const fraud = R() < ({normal:.05, ai:.1, abstract:.12}[t.k] + (q<.35?.06:0));
-  const tru = {}, est = {};
-  ['team','market','product','traction'].forEach(k => {
-    tru[k] = clamp(1 + 4*(q + gauss()*.13), .5, 5);
-    est[k] = clamp(tru[k] + gauss()*.85 + (fraud && k==='traction' ? 1.2 : 0), .5, 5);
-  });
-  return {id:g.nid++, k:t.k, name:t.n, tag:t.t, founder:t.f, bio:t.b, quote:t.q, sector:t.s,
-    stage, pre:r2(pre), ask:r2(ask), q, sigma:KIND[t.k].sigma, fraud, heat, tru, est,
-    dd:false, flags:[], negotiated:false, state:'open', lead:pick(LEADS), shape:Math.floor(R()*4)};
-}
-function genDeals(g,n){ const a=[]; for(let i=0;i<n;i++) a.push(genDeal(g)); return a; }
 
-function newGame(pid, fund){
-  const p = PERSONAS[pid];
-  const g = {v:1, fund:fund||'鲸落资本', persona:pid, year:1, maxYear:8, investYears:5, startYear:2027,
-    fundSize:p.cash, cash:p.cash, dist:0, rep:p.rep, energy:p.energy, maxEnergy:p.energy,
-    market:{cycle:'flat', aiHype:1.5, aiCrashed:false, crashYear:0}, headline:'新基金完成首关募资，第一批 BP 已经塞满邮箱',
-    deals:[], port:[], passed:[], used:[], hist:[{y:0, tvpi:1}], roadshow:false, nid:1, log:[], pending:null,
-    follows:0, bigPie:false, over:false};
-  g.deals = genDeals(g,3);
-  addLog(g, `${g.fund} 成立，规模 $${g.fundSize}M`);
-  return g;
-}
 function addLog(g, t){ g.log.unshift({y:g.startYear+g.year-1, t}); g.log = g.log.slice(0,40); }
 
 function stats(g){
@@ -457,12 +554,6 @@ function stats(g){
   g.port.forEach(c => { cost += c.cost; if (c.status==='alive') nav += c.own*c.val; });
   const total = g.dist + nav + g.cash;
   return {nav, cost, total, tvpi: total/g.fundSize, dpi: g.dist/g.fundSize};
-}
-function maxCheck(g,d){ return d.heat===3 && g.rep<60 ? r2(d.ask*.3) : d.ask; }
-function minCheck(g,d){ return Math.min(maxCheck(g,d), Math.max(.1, r2(d.ask*.12))); }
-function negoChance(g,d){
-  const p = PERSONAS[g.persona];
-  return clamp(.38 + (g.rep-50)/150 - (d.heat-1)*.12 + (d.k==='ai' && p.aiNego ? p.aiNego : 0), .08, .85);
 }
 
 function makeFlags(g,d){
@@ -484,33 +575,6 @@ function makeFlags(g,d){
   }
   return out;
 }
-function doDD(g,d){
-  if (g.energy < 1 || d.dd || d.state!=='open') return {err:'精力不足'};
-  g.energy--;
-  if (d.heat===3 && R()<.3){ d.state='sniped'; addLog(g, `尽调期间，${d.name} 被 ${d.lead} 抢先签了 TS`); return {sniped:true}; }
-  d.dd = true; d.flags = makeFlags(g,d);
-  return {ok:true};
-}
-function negotiate(g,d){
-  if (d.negotiated) return {err:'只能谈一次'};
-  d.negotiated = true;
-  if (R() < negoChance(g,d)){ d.pre = r2(d.pre*.8); return {ok:true}; }
-  if (R() < .3 + d.heat*.1){ d.state='walked'; addLog(g, `砍价太狠，${d.name} 的创始人拂袖而去`); return {walked:true}; }
-  return {no:true};
-}
-function invest(g,d,amt){
-  amt = r2(clamp(amt, minCheck(g,d), Math.min(maxCheck(g,d), g.cash)));
-  if (amt <= 0 || amt > g.cash + 1e-9) return null;
-  const post = d.pre + d.ask;
-  g.cash = r2(g.cash - amt);
-  const c = Object.assign({}, d, {own: amt/post, cost: amt, entry: post, val: post, status:'alive', invYear:g.year, help:0, age:0, proceeds:0, exitVal:0, last:'新投'});
-  delete c.est;
-  g.port.push(c);
-  d.state = 'invested';
-  g.rep = clamp(g.rep + 1, 0, 100);
-  addLog(g, `以投后 $${r2(post)}M 投资 ${d.name} $${amt}M，持股 ${(c.own*100).toFixed(1)}%`);
-  return c;
-}
 function payout(c, E){ return Math.max(c.own*E, Math.min(c.cost, E*.5)); }
 
 function marketStep(g){
@@ -527,68 +591,6 @@ function marketStep(g){
   return {news, crashed};
 }
 
-function stepCompany(g, c, crashed, mine){
-  if (c.status !== 'alive') return null;
-  const m = g.market, p = PERSONAS[g.persona];
-  const ev = {id:c.id, name:c.name, k:c.k, shape:c.shape, before:c.val, ownBefore:c.own, stageBefore:c.stage, type:'', text:'', raise:null, pay:0};
-  c.age++;
-  if (c.fraud && R() < .38){
-    c.status='fraud'; c.val=0; ev.type='fraud';
-    ev.text = pick([`被曝虚构八成收入，创始人已失联`,`审计发现“头部客户”是创始人表弟的公司`,`账上资金被挪去炒币，全部归零`]);
-    if (mine) g.rep = clamp(g.rep-6,0,100);
-    return fin(ev,c);
-  }
-  if (crashed && c.k==='ai') c.val *= rnd(.35,.6);
-  if (c.k==='abstract' && R() < .025*(p.moon||1)*(m.cycle==='bull'?1.4:1)){
-    c.val *= rnd(4,12); c.stage = Math.min(5, c.stage+2); c.q = Math.min(.9, c.q+.25);
-    ev.type='moon';
-    ev.text = pick(['在海外社交媒体意外爆火，一周涨粉 2000 万','被顶流明星直播带货，订单排到明年','成为年度现象级网络梗，估值一夜暴涨']);
-    if (mine) g.rep = clamp(g.rep+4,0,100);
-    return fin(ev,c);
-  }
-  const mk = {bull:.07, flat:0, bear:-.08}[m.cycle];
-  const ai = c.k==='ai' ? (m.aiCrashed ? (crashed ? -.15 : -.03) : (m.aiHype-1.6)*.1) : 0;
-  const r = c.q + gauss()*c.sigma + mk + ai + c.help*.07 + (c.bridge?.08:0) - (c.bridgeDenied?.15:0);
-  c.help = 0; c.bridge = false; c.bridgeDenied = false;
-
-  if (c.stage>=4 && r>.5 && R() < .5 + (c.age>=5?.2:0)){
-    if (r>.64 && m.cycle!=='bear'){ c.status='ipo'; c.exitVal = c.val*rnd(1.3,3)*(m.cycle==='bull'?1.25:1); ev.type='ipo'; ev.text=`在${pick(BOARDS)}挂牌上市，首日上涨 ${Math.round(rnd(20,160))}%`; }
-    else { c.status='acq'; c.exitVal = c.val*rnd(.8,1.6); ev.type='acq'; ev.text=`被${pick(BUYERS)}全资收购`; }
-    if (mine){ ev.pay = payout(c,c.exitVal); c.proceeds += ev.pay; g.dist += ev.pay; g.rep = clamp(g.rep + (ev.pay>c.cost?6:1),0,100); }
-    c.val = 0; return fin(ev,c);
-  }
-  if (c.stage>=2 && r>.38 && r<.62 && R()<.07){
-    c.status='acq'; c.exitVal = c.val*rnd(.6,1.3); ev.type='acq'; ev.text=`被${pick(BUYERS)}战略收购`;
-    if (mine){ ev.pay = payout(c,c.exitVal); c.proceeds += ev.pay; g.dist += ev.pay; g.rep = clamp(g.rep+(ev.pay>c.cost?3:0),0,100); }
-    c.val = 0; return fin(ev,c);
-  }
-  if (r < .26 || (r < .36 && c.stage <= 1 && R() < .5)){
-    c.status='dead'; c.val=0; ev.type='dead';
-    ev.text = c.k==='ai' ? pick(['被基础模型的一次更新直接取代','烧光了算力预算，宣布解散','核心团队集体跳槽去了大厂'])
-            : c.k==='abstract' ? pick(['热度退去，库存堆满了创始人老家的院子','创始人宣布“回归初心”，公司注销','被监管约谈后火速关停'])
-            : pick(['现金流断裂，宣布解散','团队解散，创始人去考公了','被巨头补贴战打穿，黯然离场']);
-    if (mine) g.rep = clamp(g.rep-2,0,100);
-    return fin(ev,c);
-  }
-  if (r < .42){
-    c.val *= rnd(.45,.8); c.own *= .9; ev.type='down';
-    ev.text = pick(['以折价完成过桥融资，估值下调','业绩不及预期，被迫降价融资','裁员三分之一，勉强续命']);
-    return fin(ev,c);
-  }
-  if (r < .62){
-    c.val *= rnd(.85,1.15); ev.type='flat';
-    ev.text = pick(['稳步经营，暂未开启新一轮','收入稳步增长，但还没到融资节点','在细分市场站稳脚跟']);
-    return fin(ev,c);
-  }
-  const mult = clamp(1.25 + (r-.62)*5 + rnd(-.2,.45), 1.2, 4.5);
-  const pre = c.val*mult, amt = pre*rnd(.15,.25);
-  c.val = pre + amt; c.stage = Math.min(5, c.stage+1);
-  ev.type='up'; ev.text=`完成${STAGES[c.stage]}融资，${pick(LEADS)}领投，估值涨 ${mult.toFixed(1)} 倍`;
-  ev.raise = {amt:r2(amt), dil: pre/(pre+amt), cost: r2(c.own*amt)};
-  if (mine) g.rep = clamp(g.rep+1,0,100);
-  return fin(ev,c);
-}
-function fin(ev,c){ ev.after = c.val; ev.status = c.status; ev.stage = c.stage; c.last = ev.type; return ev; }
 
 const EVENTS = {
   bridge:{
@@ -671,59 +673,7 @@ const EVENTS = {
   }
 };
 
-function endYear(g){
-  g.deals.forEach(d => { if (d.state==='open' || d.state==='passed'){ g.passed.push(Object.assign({}, d, {own:0, cost:0, entry:d.pre+d.ask, val:d.pre+d.ask, status:'alive', help:0, age:0, proceeds:0, passYear:g.year})); } });
-  g.deals = [];
-  const {news, crashed} = marketStep(g);
-  if (g.bigPie && R()<.35){ g.rep = clamp(g.rep-10,0,100); g.bigPie=false; news.push('有 LP 翻出你去年画的大饼逐条核对，你的声誉受损'); }
-  const evs = g.port.filter(c => c.status==='alive').map(c => stepCompany(g,c,crashed,true)).filter(Boolean);
-  const missed = [];
-  g.passed.forEach(c => {
-    const e = stepCompany(g,c,crashed,false);
-    if (!e || c.notified) return;
-    const v = c.status==='alive' ? c.val : (c.exitVal||0);
-    if (v >= 1000 || v/c.entry >= 10){ c.notified = true; missed.push({name:c.name, k:c.k, shape:c.shape, entry:c.entry, v, passYear:c.passYear, status:c.status}); }
-  });
-  let event = null;
-  if (R() < .8){
-    const keys = Object.keys(EVENTS).filter(k => EVENTS[k].cond(g));
-    if (keys.length) event = EVENTS[pick(keys)].build(g);
-  }
-  g.pending = {year:g.year, news, crashed, evs, missed, event, choice:null, follow:{}};
-  return g.pending;
-}
 
-function confirmYear(g){
-  const P = g.pending;
-  P.evs.forEach(e => {
-    if (!e.raise) return;
-    const c = g.port.find(x => x.id===e.id);
-    if (c.status==='alive' && P.follow[e.id] && g.cash >= e.raise.cost){
-      g.cash = r2(g.cash - e.raise.cost); c.cost += e.raise.cost; g.follows++;
-      addLog(g, `跟投 ${c.name} $${e.raise.cost}M，保住 ${(c.own*100).toFixed(1)}% 股份`);
-    } else c.own *= e.raise.dil;
-  });
-  P.evs.forEach(e => {
-    if (e.type==='ipo') addLog(g, `${e.name} 上市，回款 $${r2(e.pay)}M`);
-    else if (e.type==='acq') addLog(g, `${e.name} 被收购，回款 $${r2(e.pay)}M`);
-    else if (e.type==='dead') addLog(g, `${e.name} 倒闭`);
-    else if (e.type==='fraud') addLog(g, `${e.name} 暴雷`);
-    else if (e.type==='moon') addLog(g, `${e.name} 爆火，估值暴涨`);
-  });
-  if (P.event && P.choice != null){
-    const opt = P.event.opts[P.choice];
-    if (!(opt.cost && opt.cost > g.cash)) addLog(g, EVENTS[P.event.type].apply(g, P.event, P.choice));
-  }
-  g.cash = r2(Math.max(0, g.cash));
-  g.hist.push({y:g.year, tvpi:stats(g).tvpi});
-  g.headline = P.news[0];
-  g.pending = null;
-  g.year++;
-  if (g.year > g.maxYear){ g.over = true; return; }
-  g.energy = g.maxEnergy; g.roadshow = false;
-  g.deals = g.year <= g.investYears ? genDeals(g,3) : [];
-  g.port.forEach(c => c.helpUsed = 0);
-}
 
 function rankFor(t){
   if (t < .5) return ['LP 正在起诉你','钱基本都打水漂了。下次募资，可能只能找亲戚了。'];
@@ -750,396 +700,962 @@ function achievements(g){
     {n:'圈内红人', d:'声誉达到 85', ok: g.rep >= 85}
   ];
 }
+
+const METRICS = {team:'团队', market:'市场', product:'产品', traction:'增长'};
+const QUESTIONS = {
+  team:'你们团队之前做过什么？',
+  market:'这个市场到底有多大？',
+  product:'能现场演示一下产品吗？',
+  traction:'现在收入和增长怎么样？'
+};
+const ANSWERS = {
+  team:[['目前就我和我表弟，他负责……其他所有事。','核心成员上个月走了两个，正在招。'],['团队十来个人，大部分是我以前的同事。','CTO 是我大学室友，技术很扎实。'],['核心团队一起做成过一家上市公司。','三位合伙人都在这个行业干了十年以上。']],
+  market:['说实话，全国潜在客户也就几千家。','这个市场……需要我们自己去教育。'],
+  product:['Demo 今天服务器出了点问题，下次给你看。','（打开 PPT）产品目前主要在这一页上。'],
+  traction:['我们在专注打磨产品，还没开始收费。','上个月有几个朋友帮忙下了单。']
+};
+ANSWERS.market = [ANSWERS.market, ['细分市场大概百亿规模，够我们做到上市。','竞争不算激烈，我们排第三。'], ['万亿级市场，每年增长 30%，我们是唯一能做的。','三个国家的客户都在主动找我们。']];
+ANSWERS.product = [ANSWERS.product, ['核心功能已经上线，体验还在打磨。','老客户说比竞品好用一点。'], ['（掏出手机）你看，三秒出结果，客户当场就下单了。','这是第三版产品，NPS 72。']];
+ANSWERS.traction = [ANSWERS.traction, ['有一些付费客户，每月增长 8% 左右。','收入不多，但现金流是正的。'], ['月收入连续 12 个月环比增长 20%。','上个月刚刚盈亏平衡，订单排到了下季度。']];
+
+function genDeal(g){
+  const p = PERSONAS[g.persona];
+  const pool = TPL.filter(t => !g.used.includes(t.n));
+  let tot = 0;
+  const w = pool.map(t => { let x = 1; if (p.bias && p.bias[t.k]) x *= p.bias[t.k]; if (t.k==='ai') x *= .6 + g.market.aiHype*.3; tot += x; return x; });
+  let rr = R()*tot, t = pool[pool.length-1];
+  for (let i=0;i<pool.length;i++){ rr -= w[i]; if (rr<=0){ t = pool[i]; break; } }
+  g.used.push(t.n);
+  const q = clamp(t.m + gauss()*(t.k==='abstract'?.12:.14) + (g.rep-50)/700, .03, .97);
+  const sr = R(), stage = sr<.4 ? 0 : sr<.75 ? 1 : 2;
+  const base = [[2.5,7],[8,20],[25,60]][stage];
+  const heat = clamp(1 + (q>.58?1:0) + (R()<.3?1:0) + (t.k==='ai' && !g.market.aiCrashed && g.market.aiHype>1.7?1:0), 1, 3);
+  const pre = rnd(base[0],base[1]) * kindPrice(g,t.k) * (1+.18*(heat-1)) * cycleMult(g.market.cycle);
+  const ask = pre * rnd(.15,.25);
+  const fraud = R() < ({normal:.05, ai:.1, abstract:.12}[t.k] + (q<.35?.06:0));
+  const tru = {}, est = {};
+  Object.keys(METRICS).forEach(k => {
+    tru[k] = clamp(1 + 4*(q + gauss()*.13), .5, 5);
+    est[k] = clamp(tru[k] + gauss()*.85 + (fraud && k==='traction' ? 1.2 : 0), .5, 5);
+  });
+  // founder's walk-away price, as a share of the asked pre-money
+  const res = clamp(.74 + .07*heat + rnd(-.05,.08) - (g.rep-50)/500 - (t.k==='ai' && p.aiNego ? .05 : 0), .62, 1.02);
+  return {id:g.nid++, k:t.k, name:t.n, tag:t.t, founder:t.f, bio:t.b, quote:t.q, sector:t.s,
+    stage, pre:r2(pre), ask:r2(ask), q, sigma:KIND[t.k].sigma, fraud, heat, tru, est, known:{},
+    dd:false, flags:[], state:'open', lead:pick(LEADS), shape:Math.floor(R()*4), seed:Math.floor(R()*1e6),
+    res, patience:3, qLeft:2, mood:'neutral', floor:null};
+}
+function genDeals(g,n){ const a=[]; for(let i=0;i<n;i++) a.push(genDeal(g)); return a; }
+
+function newGame(pid, fund){
+  const p = PERSONAS[pid];
+  const g = {v:2, fund:fund||'鲸落资本', persona:pid, year:1, maxYear:8, investYears:5, startYear:2027,
+    fundSize:p.cash, cash:p.cash, dist:0, rep:p.rep, energy:p.energy, maxEnergy:p.energy,
+    market:{cycle:'flat', aiHype:1.5, aiCrashed:false, crashYear:0}, headline:'新基金完成首关募资，第一批 BP 已经塞满邮箱',
+    deals:[], port:[], passed:[], used:[], hist:[{y:0, tvpi:1}], roadshow:false, nid:1, log:[], inbox:[], newsHist:[],
+    follows:0, bigPie:false, over:false, cine:null};
+  g.deals = genDeals(g,3);
+  g.newsHist.unshift({y:g.startYear, t:g.headline});
+  g.inbox.unshift({id:g.nid++, type:'note', from:'LP 代表', title:`欢迎加入，${g.fund}`, body:`$${g.fundSize}M 已经全部到账。接下来五年是投资期，之后三年专心退出。我们只看一个数字：TVPI。别让我们失望。`, y:g.startYear, done:false});
+  addLog(g, `${g.fund} 成立，规模 $${g.fundSize}M`);
+  return g;
+}
+function maxCheck(g,d){ return d.heat===3 && g.rep<60 ? r2(d.ask*.3) : d.ask; }
+function minCheck(g,d){ return Math.min(maxCheck(g,d), Math.max(.1, r2(d.ask*.12))); }
+
+function askQuestion(g,d,k){
+  if (d.qLeft < 1 || d.known[k] || d.dd || d.state!=='open') return null;
+  d.qLeft--; d.known[k] = true;
+  // a founder who cooks the books answers the growth question with the fake number
+  const v = d.fraud && k==='traction' ? d.est[k] : d.tru[k];
+  if (d.fraud && k==='traction') d.est[k] = v; else d.est[k] = d.tru[k];
+  const lvl = v < 2.4 ? 0 : v < 3.6 ? 1 : 2;
+  d.mood = lvl===2 ? 'smile' : lvl===0 ? 'sweat' : 'neutral';
+  return pick(ANSWERS[k][lvl]);
+}
+function doDD(g,d){
+  if (g.energy < 1 || d.dd || d.state!=='open') return {err:'精力不足'};
+  g.energy--;
+  if (d.heat===3 && R()<.3){ d.state='sniped'; d.mood='smile'; addLog(g, `尽调期间，${d.name} 被 ${d.lead} 抢先签了 TS`); return {sniped:true}; }
+  d.dd = true; d.flags = makeFlags(g,d);
+  Object.keys(METRICS).forEach(k => d.known[k] = true);
+  return {ok:true};
+}
+// founder's private floor for the pre-money, in $M
+function floorPre(d){ return d.floor ?? d.pre*d.res; }
+function makeOffer(g,d,offerPre){
+  const f = floorPre(d);
+  if (offerPre >= f - 1e-9){ d.mood='smile'; return {accept:true, pre:r2(offerPre)}; }
+  const gap = offerPre / f;
+  d.patience -= gap >= .88 ? 1 : 2;
+  if (d.patience <= 0){ d.state='walked'; d.mood='angry'; addLog(g, `砍价太狠，${d.name} 的创始人拂袖而去`); return {walked:true}; }
+  d.floor = r2(f * (gap >= .88 ? rnd(.99,1.02) : rnd(1.02,1.08)));
+  d.mood = gap >= .88 ? 'neutral' : 'angry';
+  return {counter:true, floor:d.floor};
+}
+function invest(g,d,amt,pre){
+  amt = r2(clamp(amt, minCheck(g,d), Math.min(maxCheck(g,d), g.cash)));
+  if (amt <= 0 || amt > g.cash + 1e-9) return null;
+  d.pre = r2(pre);
+  const post = d.pre + d.ask;
+  g.cash = r2(g.cash - amt);
+  const c = Object.assign({}, d, {own:amt/post, cost:amt, entry:post, val:post, status:'alive', invYear:g.year, help:0, age:0, proceeds:0, exitVal:0, last:'new',
+    hist:[{y:g.startYear+g.year-1, val:post, t:'new', txt:`${g.fund} 以投后 ${r2(post)}M 投资 $${amt}M`}]});
+  delete c.est;
+  g.port.push(c);
+  d.state = 'invested'; d.mood='smile';
+  g.rep = clamp(g.rep + 1, 0, 100);
+  addLog(g, `投资 ${d.name} $${amt}M，持股 ${(c.own*100).toFixed(1)}%`);
+  return c;
+}
+const BOOSTS = {
+  clients:{label:'介绍大客户', hint:'明年冲新一轮的成功率提高', ic:'handshake'},
+  hire:{label:'帮忙挖人', hint:'永久提升公司质量一点点', ic:'people'},
+  pr:{label:'安排媒体曝光', hint:'估值立刻 +8%，声誉 +1', ic:'mega'}
+};
+function boost(g,c,kind){
+  if (g.energy < 1 || c.help >= 2 || c.status!=='alive') return null;
+  g.energy--; c.help++;
+  if (kind==='hire') c.q = Math.min(.95, c.q + .025);
+  if (kind==='pr'){ c.val *= 1.08; g.rep = clamp(g.rep+1,0,100); c.help = Math.max(c.help, 1); }
+  return true;
+}
+
+function stepCompany(g, c, crashed, mine){
+  if (c.status !== 'alive') return null;
+  const m = g.market, p = PERSONAS[g.persona];
+  const ev = {id:c.id, name:c.name, k:c.k, shape:c.shape, before:c.val, ownBefore:c.own, stageBefore:c.stage, type:'', text:'', raise:null, pay:0};
+  c.age++;
+  const done = () => { ev.after = c.val; ev.status = c.status; ev.stage = c.stage; ev.ownAfter = c.own; c.last = ev.type;
+    if (c.hist) c.hist.push({y:g.startYear+g.year-1, val:c.val || c.exitVal || 0, t:ev.type, txt:ev.text}); return ev; };
+  if (c.fraud && R() < .38){
+    c.status='fraud'; c.val=0; ev.type='fraud';
+    ev.text = pick(['被曝虚构八成收入，创始人已失联','审计发现“头部客户”是创始人表弟的公司','账上资金被挪去炒币，全部归零']);
+    if (mine) g.rep = clamp(g.rep-6,0,100);
+    return done();
+  }
+  if (crashed && c.k==='ai') c.val *= rnd(.35,.6);
+  if (c.k==='abstract' && R() < .025*(p.moon||1)*(m.cycle==='bull'?1.4:1)){
+    c.val *= rnd(4,12); c.stage = Math.min(5, c.stage+2); c.q = Math.min(.9, c.q+.25);
+    ev.type='moon'; ev.text = pick(['在海外社交媒体意外爆火，一周涨粉 2000 万','被顶流明星直播带货，订单排到明年','成为年度现象级网络梗，估值一夜暴涨']);
+    if (mine) g.rep = clamp(g.rep+4,0,100);
+    return done();
+  }
+  const mk = {bull:.07, flat:0, bear:-.08}[m.cycle];
+  const ai = c.k==='ai' ? (m.aiCrashed ? (crashed ? -.15 : -.03) : (m.aiHype-1.6)*.1) : 0;
+  const r = c.q + gauss()*c.sigma + mk + ai + c.help*.07 + (c.bridge?.08:0) - (c.bridgeDenied?.15:0);
+  c.help = 0; c.bridge = false; c.bridgeDenied = false;
+  const exit = (status, mult, text) => {
+    c.status = status; c.exitVal = c.val*mult; ev.type = status; ev.text = text;
+    if (mine){ ev.pay = payout(c,c.exitVal); c.proceeds += ev.pay; g.dist += ev.pay; g.rep = clamp(g.rep + (ev.pay>c.cost ? (status==='ipo'?6:3) : 0),0,100); }
+    c.val = 0; return done();
+  };
+  if (c.stage>=4 && r>.5 && R() < .5 + (c.age>=5?.2:0)){
+    if (r>.64 && m.cycle!=='bear') return exit('ipo', rnd(1.3,3)*(m.cycle==='bull'?1.25:1), `在${pick(BOARDS)}敲钟上市，首日上涨 ${Math.round(rnd(20,160))}%`);
+    return exit('acq', rnd(.8,1.6), `被${pick(BUYERS)}全资收购`);
+  }
+  if (c.stage>=2 && r>.38 && r<.62 && R()<.07) return exit('acq', rnd(.6,1.3), `被${pick(BUYERS)}战略收购`);
+  if (r < .26 || (r < .36 && c.stage <= 1 && R() < .5)){
+    c.status='dead'; c.val=0; ev.type='dead';
+    ev.text = c.k==='ai' ? pick(['被基础模型的一次更新直接取代','烧光了算力预算，宣布解散','核心团队集体跳槽去了大厂'])
+            : c.k==='abstract' ? pick(['热度退去，库存堆满了创始人老家的院子','创始人宣布“回归初心”，公司注销','被监管约谈后火速关停'])
+            : pick(['现金流断裂，宣布解散','团队解散，创始人去考公了','被巨头补贴战打穿，黯然离场']);
+    if (mine) g.rep = clamp(g.rep-2,0,100);
+    return done();
+  }
+  if (r < .42){ c.val *= rnd(.45,.8); c.own *= .9; ev.type='down'; ev.text = pick(['以折价完成过桥融资，估值下调','业绩不及预期，被迫降价融资','裁员三分之一，勉强续命']); return done(); }
+  if (r < .62){ c.val *= rnd(.85,1.15); ev.type='flat'; ev.text = pick(['稳步经营，暂未开启新一轮','收入稳步增长，但还没到融资节点','在细分市场站稳了脚跟']); return done(); }
+  const mult = clamp(1.25 + (r-.62)*5 + rnd(-.2,.45), 1.2, 4.5);
+  const pre = c.val*mult, amt = pre*rnd(.15,.25), dil = pre/(pre+amt);
+  c.val = pre + amt; c.stage = Math.min(5, c.stage+1);
+  ev.type='up'; ev.text=`完成${STAGES[c.stage]}融资，${pick(LEADS)}领投，估值涨 ${mult.toFixed(1)} 倍`;
+  ev.raise = {amt:r2(amt), cost:r2(c.own*amt), ownBefore:c.own, ownAfter:c.own*dil};
+  c.own *= dil;
+  if (mine) g.rep = clamp(g.rep+1,0,100);
+  return done();
+}
+
+function endYear(g){
+  const before = stats(g).tvpi, yr = g.startYear + g.year - 1;
+  g.deals.forEach(d => { if (d.state==='open' || d.state==='passed') g.passed.push(Object.assign({}, d, {own:0, cost:0, entry:d.pre+d.ask, val:d.pre+d.ask, status:'alive', help:0, age:0, proceeds:0, passYear:g.year})); });
+  g.deals = [];
+  const {news, crashed} = marketStep(g);
+  if (g.bigPie && R()<.35){ g.rep = clamp(g.rep-10,0,100); g.bigPie=false; news.push('有 LP 翻出你去年画的大饼逐条核对，你的声誉受损'); }
+  news.forEach(t => g.newsHist.unshift({y:yr, t}));
+  const evs = g.port.filter(c => c.status==='alive').map(c => stepCompany(g,c,crashed,true)).filter(Boolean);
+  const missed = [];
+  g.passed.forEach(c => {
+    const e = stepCompany(g,c,crashed,false);
+    if (!e || c.notified) return;
+    const v = c.status==='alive' ? c.val : (c.exitVal||0);
+    if (v >= 1000 || v/c.entry >= 10){ c.notified = true; missed.push({name:c.name, k:c.k, shape:c.shape, entry:c.entry, v, passYear:c.passYear, status:c.status}); }
+  });
+  evs.forEach(e => {
+    const t = {ipo:`${e.name} 上市，回款 $${r2(e.pay)}M`, acq:`${e.name} 被收购，回款 $${r2(e.pay)}M`, dead:`${e.name} 倒闭`, fraud:`${e.name} 暴雷`, moon:`${e.name} 爆火，估值暴涨`, up:`${e.name} 完成${STAGES[e.stage]}融资`}[e.type];
+    if (t) addLog(g, t);
+  });
+  const last = g.year >= g.maxYear;
+  if (!last){
+    const ny = yr + 1;
+    evs.filter(e => e.raise && e.status==='alive').forEach(e => g.inbox.unshift({id:g.nid++, type:'follow', cid:e.id, y:ny, done:false,
+      from:`${e.name} 创始人`, title:`${e.name} 正在融${STAGES[e.stage]}`, cost:e.raise.cost, ownBefore:e.raise.ownBefore, ownAfter:e.raise.ownAfter, round:STAGES[e.stage]}));
+    if (R() < .85){
+      const keys = Object.keys(EVENTS).filter(k => EVENTS[k].cond(g));
+      if (keys.length){ const ev = EVENTS[pick(keys)].build(g); g.inbox.unshift({id:g.nid++, type:'event', y:ny, done:false, from:ev.cid ? (g.port.find(c=>c.id===ev.cid)||{}).name : '基金办公室', cid:ev.cid, title:ev.title, ev}); }
+    }
+    missed.forEach(x => g.inbox.unshift({id:g.nid++, type:'note', y:ny, done:false, from:'行业八卦群', title:`你 Pass 掉的 ${x.name} 发达了`, body:`还记得 ${yearLabelOf(g,x.passYear)} 年那个被你 Pass 掉的 ${x.name} 吗？当时投后才 $${r2(x.entry)}M，现在已经是 $${r2(x.v)}M 了。群里有人 @ 了你。`}));
+  }
+  g.cash = r2(Math.max(0, g.cash));
+  const after = stats(g).tvpi;
+  g.hist.push({y:g.year, tvpi:after});
+  g.headline = news[0];
+  g.cine = {year:yr, news, evs, missed, before, after, last};
+  g.year++;
+  if (g.year > g.maxYear){ g.over = true; return g.cine; }
+  g.energy = g.maxEnergy; g.roadshow = false;
+  g.deals = g.year <= g.investYears ? genDeals(g,3) : [];
+  return g.cine;
+}
+function yearLabelOf(g,y){ return g.startYear + y - 1; }
+function pendingCount(g){ return g.inbox.filter(m => !m.done && m.type!=='note').length; }
+function resolveMsg(g,m,i){
+  if (m.done) return null;
+  if (m.type==='note'){ m.done = true; return null; }
+  if (m.type==='follow'){
+    const c = g.port.find(x => x.id===m.cid);
+    if (i===0){
+      if (g.cash < m.cost || c.status!=='alive') return null;
+      g.cash = r2(g.cash - m.cost); c.cost += m.cost; c.own = m.ownBefore; g.follows++;
+      m.done = true; m.result = `已跟投 $${m.cost}M，保住 ${(m.ownBefore*100).toFixed(1)}% 股份`;
+      addLog(g, `跟投 ${c.name} $${m.cost}M`);
+    } else { m.done = true; m.result = `放弃跟投，持股稀释到 ${(m.ownAfter*100).toFixed(1)}%`; }
+    return m.result;
+  }
+  const opt = m.ev.opts[i];
+  if (opt.cost && opt.cost > g.cash) return null;
+  const txt = EVENTS[m.ev.type].apply(g, m.ev, i);
+  g.cash = r2(Math.max(0, g.cash));
+  addLog(g, txt); m.done = true; m.result = txt; m.choice = i;
+  return txt;
+}
 /*END ENGINE*/
 
-/* ---------------- UI ---------------- */
-const KEY = 'vc-life-save-v1';
+/* ================= UI ================= */
+const KEY = 'vc-life-save-v2';
 let G = null;
-let ui = {persona:'veteran', fund:'鲸落资本', showClosed:false, modal:null};
+const ui = {view:'hub', deal:0, comp:null, msg:null, persona:'veteran', fund:'鲸落资本', say:null, typing:false, sound:true};
 const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function save(){ try{ if (G) localStorage.setItem(KEY, JSON.stringify(G)); else localStorage.removeItem(KEY); }catch(e){} }
 function loadSave(){ try{ const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
-function money(x){ x = +x || 0; if (!x) return '$0'; if (Math.abs(x) >= 1000) return '$' + (x/1000).toFixed(2) + 'B'; if (Math.abs(x) >= 100) return '$' + x.toFixed(0) + 'M'; if (Math.abs(x) >= 1) return '$' + x.toFixed(1) + 'M'; return '$' + Math.round(x*1000) + 'K'; }
+function money(x){ x = +x || 0; if (!x) return '$0'; const a = Math.abs(x); if (a >= 1000) return '$' + (x/1000).toFixed(2) + 'B'; if (a >= 100) return '$' + x.toFixed(0) + 'M'; if (a >= 1) return '$' + x.toFixed(1) + 'M'; return '$' + Math.round(x*1000) + 'K'; }
 const pct = x => (x*100).toFixed(x < .1 ? 2 : 1) + '%';
-const yearLabel = y => G.startYear + y - 1;
-const logo = c => `<div class="logo k-${c.k} s${c.shape||0}" aria-hidden="true">${esc([...c.name][0])}</div>`;
+const yl = y => G.startYear + y - 1;
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const logo = (c, cls='') => `<div class="logo k-${c.k} s${c.shape||0} ${cls}" aria-hidden="true">${esc([...c.name][0])}</div>`;
+
+/* ---------- sound ---------- */
+let AC = null;
+function sfx(type){
+  if (!ui.sound) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const t = AC.currentTime;
+    const tone = (f, d, when=0, wave='square', vol=.06, f2) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = wave; o.frequency.setValueAtTime(f, t+when); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t+when+d);
+      g.gain.setValueAtTime(vol, t+when); g.gain.exponentialRampToValueAtTime(.0001, t+when+d);
+      o.connect(g).connect(AC.destination); o.start(t+when); o.stop(t+when+d+.02);
+    };
+    if (type==='click') tone(620,.06,0,'square',.035);
+    if (type==='coin'){ tone(988,.08,0,'square',.05); tone(1319,.22,.07,'square',.05); }
+    if (type==='stamp'){ tone(140,.18,0,'triangle',.25,60); tone(90,.12,0,'sawtooth',.06,50); }
+    if (type==='bad'){ tone(330,.25,0,'sawtooth',.06,110); }
+    if (type==='win'){ [523,659,784,1047].forEach((f,i) => tone(f,.18,i*.09,'square',.045)); }
+    if (type==='flip') tone(420,.07,0,'triangle',.08,700);
+    if (type==='talk') tone(300+Math.random()*200,.03,0,'square',.015);
+  }catch(e){}
+}
+
+/* ---------- effects ---------- */
 function toast(t, cls=''){
   const el = document.createElement('div'); el.className = 'toast ' + cls; el.textContent = t;
-  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 2600);
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 2800);
+}
+let parts = [], fxRun = false;
+function confetti(n=120, x=.5, y=.35){
+  if (reduced()) return;
+  const cv = $('#fx'), W = cv.width = innerWidth, H = cv.height = innerHeight;
+  const cols = ['#FFC23D','#5AB8FF','#3DDC97','#FF6B5B','#FF7AD0','#9B8CFF','#FFF4DC'];
+  for (let i=0;i<n;i++) parts.push({x:W*x, y:H*y, vx:rnd(-9,9), vy:rnd(-15,-4), s:rnd(5,11), r:rnd(0,6), vr:rnd(-.3,.3), c:pick(cols), life:rnd(70,130), coin:R()<.2});
+  if (!fxRun){ fxRun = true; requestAnimationFrame(tick); }
+}
+function tick(){
+  const cv = $('#fx'), ctx = cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  parts = parts.filter(p => p.life > 0);
+  parts.forEach(p => {
+    p.life--; p.vy += .42; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.min(1, p.life/30);
+    if (p.coin){ ctx.fillStyle = '#FFC23D'; ctx.beginPath(); ctx.ellipse(0,0,p.s,p.s*Math.abs(Math.cos(p.r*2))+1,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#C98B10'; ctx.lineWidth=2; ctx.stroke(); }
+    else { ctx.fillStyle = p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); }
+    ctx.restore();
+  });
+  if (parts.length) requestAnimationFrame(tick); else { fxRun = false; ctx.clearRect(0,0,cv.width,cv.height); }
+}
+function shake(el){ if (reduced()) return; el = el || document.body; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+/* ---------- avatars ---------- */
+function hashN(s){ let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function avatar(seed, kind, mood='neutral', bg){
+  const h = hashN(seed);
+  const skin = ['#F6D3B3','#EBBE97','#D29B73','#A86F4C','#7A4E33'][h%5];
+  const hair = ['#2B1E1A','#5A3825','#1A1530','#C9A36B','#B5482F','#E8E2F0'][(h>>>3)%6];
+  const shirt = kind==='ai' ? ['#2C7BC2','#1A1530','#5E4FC9'][(h>>>6)%3] : kind==='abstract' ? ['#FF7AD0','#FFC23D','#3DDC97'][(h>>>6)%3] : ['#1A1530','#3A3166','#2B5A55'][(h>>>6)%3];
+  const back = bg || {normal:'#C9F3DF', ai:'#CDE7FF', abstract:'#FFD6EF'}[kind] || '#FFF4DC';
+  const style = (h>>>9)%5, glasses = ((h>>>12)%10) < 3, beard = ((h>>>14)%10) < 2;
+  const hairP = [
+    `<path d="M28 44 C26 20 40 14 50 14 C62 14 75 20 72 44 C68 31 60 27 50 27 C40 27 32 31 28 44Z" fill="${hair}"/>`,
+    `<path d="M27 66 C22 30 36 14 50 14 C66 14 78 30 73 66 L68 66 C70 40 62 28 50 28 C38 28 30 40 32 66Z" fill="${hair}"/><path d="M28 44 C28 22 42 15 50 15 C62 15 72 24 72 44 C64 30 40 30 28 44Z" fill="${hair}"/>`,
+    `<path d="M29 46 C27 36 30 30 34 28 L34 44Z M71 46 C73 36 70 30 66 28 L66 44Z" fill="${hair}"/>`,
+    `<circle cx="50" cy="13" r="9" fill="${hair}"/><path d="M28 44 C26 22 40 16 50 16 C60 16 74 22 72 44 C66 30 34 30 28 44Z" fill="${hair}"/>`,
+    `<path d="M28 42 L32 22 L38 30 L44 16 L50 28 L56 15 L62 29 L68 21 L72 42 C64 32 36 32 28 42Z" fill="${hair}"/>`
+  ][style];
+  const ey = mood==='sweat' ? 46 : 45;
+  const eyes = mood==='angry'
+    ? `<path d="M37 40 L46 43 M63 40 L54 43" stroke="#1A1530" stroke-width="2.6" stroke-linecap="round"/><circle cx="42" cy="47" r="2.5" fill="#1A1530"/><circle cx="58" cy="47" r="2.5" fill="#1A1530"/>`
+    : mood==='smile' ? `<path d="M38 46 Q42 42 46 46 M54 46 Q58 42 62 46" stroke="#1A1530" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
+    : `<circle cx="42" cy="${ey}" r="2.6" fill="#1A1530"/><circle cx="58" cy="${ey}" r="2.6" fill="#1A1530"/>`;
+  const mouth = {smile:`<path d="M41 55 Q50 64 59 55 Z" fill="#7A2A2A"/>`, neutral:`<path d="M44 57 L56 57" stroke="#1A1530" stroke-width="2.6" stroke-linecap="round"/>`,
+    sweat:`<path d="M43 59 Q47 55 50 58 Q53 61 57 57" stroke="#1A1530" stroke-width="2.4" fill="none" stroke-linecap="round"/>`,
+    angry:`<path d="M42 60 Q50 53 58 60" stroke="#1A1530" stroke-width="2.8" fill="none" stroke-linecap="round"/>`,
+    wow:`<ellipse cx="50" cy="58" rx="4" ry="5" fill="#7A2A2A"/>`}[mood] || '';
+  const glassesS = glasses ? `<g fill="none" stroke="#1A1530" stroke-width="2.2"><circle cx="42" cy="45" r="6.5"/><circle cx="58" cy="45" r="6.5"/><path d="M48.5 45 L51.5 45"/></g>` : '';
+  const beardS = beard ? `<path d="M33 50 C34 66 42 70 50 70 C58 70 66 66 67 50 C62 60 38 60 33 50Z" fill="${hair}" opacity=".9"/>` : '';
+  const extra = kind==='abstract' ? (h%2 ? `<path d="M40 22 L50 -2 L60 22Z" fill="#FFC23D" stroke="#1A1530" stroke-width="2"/><circle cx="50" cy="-2" r="4" fill="#FF6B5B"/><circle cx="46" cy="14" r="2" fill="#FF6B5B"/><circle cx="54" cy="9" r="2" fill="#5AB8FF"/>`
+      : `<rect x="33" y="40" width="34" height="9" rx="4" fill="#1A1530"/><path d="M36 42 L44 42" stroke="#FF7AD0" stroke-width="2"/>`)
+    : kind==='ai' && h%3===0 ? `<path d="M27 46 C27 24 73 24 73 46" stroke="#1A1530" stroke-width="3" fill="none"/><rect x="23" y="42" width="8" height="12" rx="3" fill="#1A1530"/><rect x="69" y="42" width="8" height="12" rx="3" fill="#1A1530"/><path d="M73 52 Q72 62 60 62" stroke="#1A1530" stroke-width="2" fill="none"/>` : '';
+  const sweatS = mood==='sweat' ? `<path d="M68 34 Q71 40 68 42 Q65 40 68 34Z" fill="#5AB8FF"/>` : '';
+  const blush = mood==='smile' ? `<ellipse cx="36" cy="53" rx="4" ry="2.4" fill="#FF7AD0" opacity=".55"/><ellipse cx="64" cy="53" rx="4" ry="2.4" fill="#FF7AD0" opacity=".55"/>` : '';
+  return `<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><rect width="100" height="100" fill="${back}"/>
+    <path d="M14 104 C16 80 32 71 50 71 C68 71 84 80 86 104Z" fill="${shirt}"/><path d="M44 71 L50 80 L56 71Z" fill="#fff" opacity=".85"/>
+    <rect x="44" y="60" width="12" height="13" rx="4" fill="${skin}"/>
+    <ellipse cx="50" cy="45" rx="21" ry="24" fill="${skin}"/>${beardS}${hairP}${eyes}${glassesS}${mouth}${blush}${sweatS}${extra}</svg>`;
 }
 
-/* ----- start screen ----- */
-function renderStart(){
-  const saved = loadSave();
-  const resume = saved && !saved.over ? `<button class="btn ghost big" id="resume">继续：${esc(saved.fund)} · ${saved.startYear + saved.year - 1} 年</button>` : '';
-  $('#app').innerHTML = `
-  <main class="wrap start">
-    <div class="start-grid">
-      <section>
-        <div class="eyebrow">Term Sheet · 一只基金的八年</div>
-        <h1 class="title-big">风投<em>人生</em></h1>
-        <p class="lede">你刚募完一只新基金。接下来五年，你要从一堆 BP 里挑出值得下注的公司；再用三年，等它们上市、被收购，或者倒闭。最后，LP 只看一个数字。</p>
-        <div class="ticker-tape"><span>基金期限 <b>8 年</b></span><span>投资期 <b>5 年</b></span><span>项目类型 <b>常规 / AI / 抽象</b></span><span>考核指标 <b>TVPI</b></span></div>
-        <ul class="rules">
-          <li><span class="n">规则 1</span><div><b>BP 上的数字都有水分</b><span>每个项目的团队、市场、产品、增长只是一个模糊区间。花 1 点精力尽调，才能看清真实水平，还可能挖出红旗。</span></div></li>
-          <li><span class="n">规则 2</span><div><b>热门项目不等人</b><span>热度满格的项目，尽调期间可能被别人抢走；声誉不够，只能拿到一小部分额度。</span></div></li>
-          <li><span class="n">规则 3</span><div><b>钱要留一些给跟投</b><span>被投公司融新一轮时，不跟投就会被稀释。投后赋能可以提高公司的成功率。</span></div></li>
-          <li><span class="n">规则 4</span><div><b>回款才是硬道理</b><span>上市、被收购才算真金白银。AI 估值贵且波动大，抽象项目大多归零，偶尔百倍。</span></div></li>
-        </ul>
-      </section>
-      <section class="setup" aria-label="创建基金">
-        <div class="field"><label for="fund">基金名称</label><input id="fund" maxlength="12" value="${esc(ui.fund)}" autocomplete="off"></div>
-        <div>
-          <div class="field"><label>你是哪种投资人</label></div>
-          <div class="personas">${Object.entries(PERSONAS).map(([k,p]) => `
-            <button class="persona" data-p="${k}" aria-pressed="${ui.persona===k}"><b>${p.name}</b><small>${p.desc}</small><span class="perk">${p.perk}</span></button>`).join('')}
-          </div>
-        </div>
-        <button class="btn primary big" id="go">开始募资</button>
-        ${resume}
-      </section>
-    </div>
-  </main>`;
-  document.querySelectorAll('.persona').forEach(b => b.onclick = () => { ui.persona = b.dataset.p; ui.fund = $('#fund').value; renderStart(); });
-  $('#fund').oninput = e => ui.fund = e.target.value;
-  $('#go').onclick = () => { G = newGame(ui.persona, ($('#fund').value || '鲸落资本').trim()); save(); render(); window.scrollTo(0,0); toast(`${G.fund} 募资完成：$${G.fundSize}M 到账`, 'good'); };
-  if (resume) $('#resume').onclick = () => { G = saved; render(); };
-}
+/* ---------- icons ---------- */
+const ICON = {
+  coin:`<svg class="ic" viewBox="0 0 32 32"><circle cx="16" cy="17" r="12" fill="#C98B10"/><circle cx="16" cy="15" r="12" fill="#FFC23D"/><text x="16" y="20" text-anchor="middle" font-family="Bungee" font-size="13" fill="#1A1530">$</text></svg>`,
+  chart:`<svg class="ic" viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="9" fill="#3DDC97"/><path d="M8 21 L13 15 L17 18 L24 9" stroke="#1A1530" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  pie:`<svg class="ic" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#5AB8FF"/><path d="M16 16 L16 3 A13 13 0 0 1 28.4 20Z" fill="#1A1530"/></svg>`,
+  sound:`<svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  mute:`<svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  home:`<svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  flag:`<svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 21V4h11l-2 4 2 4H7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round"/></svg>`,
+  flame:on => `<svg viewBox="0 0 18 20"><path d="M9 1 C12 6 16 8 16 13 A7 7 0 0 1 2 13 C2 9 5 8 6 4 C7 7 8 8 9 8 C9 6 8 4 9 1Z" fill="${on?'#FF6B5B':'#3A3166'}"/><path d="M9 10 C11 12 12 13 12 15 A3 3 0 0 1 6 15 C6 13 8 12 9 10Z" fill="${on?'#FFC23D':'#2C2452'}"/></svg>`,
+  handshake:`<svg viewBox="0 0 24 24" width="24" height="24"><path d="M2 12l4-4 4 2 3-2 3 1 6 3-3 4-5-2-4 4-3-1z" fill="#1A1530"/></svg>`,
+  people:`<svg viewBox="0 0 24 24" width="24" height="24"><circle cx="8" cy="8" r="3.5" fill="#1A1530"/><circle cx="16.5" cy="9" r="3" fill="#1A1530"/><path d="M2 20c0-4 3-6 6-6s6 2 6 6zM13 20c0-3 2-5 4-5s5 1.5 5 5z" fill="#1A1530"/></svg>`,
+  mega:`<svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 10v4h3l9 5V5L6 10z" fill="#1A1530"/><path d="M18 9a4 4 0 0 1 0 6" stroke="#1A1530" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`
+};
+const ART = {
+  pitch:`<svg class="art" viewBox="0 0 120 120" style="width:170px;height:170px;right:-14px;bottom:-14px"><rect x="20" y="22" width="84" height="56" rx="8" fill="#1A1530"/><rect x="26" y="28" width="72" height="44" rx="4" fill="#FFF4DC"/><path d="M34 62 L48 48 L60 56 L80 36" stroke="#FF6B5B" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 36 L80 46 M80 36 L70 36" stroke="#FF6B5B" stroke-width="5" stroke-linecap="round"/><rect x="58" y="78" width="8" height="22" fill="#1A1530"/><rect x="40" y="98" width="44" height="8" rx="4" fill="#1A1530"/></svg>`,
+  port:`<svg class="art" viewBox="0 0 120 120"><rect x="18" y="40" width="84" height="62" rx="10" fill="#1A1530"/><rect x="44" y="28" width="32" height="16" rx="6" fill="none" stroke="#1A1530" stroke-width="7"/><rect x="18" y="62" width="84" height="8" fill="#2C7BC2"/><rect x="52" y="58" width="16" height="16" rx="3" fill="#FFC23D"/></svg>`,
+  market:`<svg class="art" viewBox="0 0 120 120"><rect x="22" y="70" width="14" height="34" rx="3" fill="#1A1530"/><rect x="44" y="52" width="14" height="52" rx="3" fill="#1A1530"/><rect x="66" y="60" width="14" height="44" rx="3" fill="#1A1530"/><rect x="88" y="30" width="14" height="74" rx="3" fill="#1A1530"/><path d="M20 56 L50 34 L72 44 L104 14" stroke="#FFF4DC" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`,
+  inbox:`<svg class="art" viewBox="0 0 120 120"><rect x="16" y="34" width="88" height="62" rx="10" fill="#1A1530"/><path d="M18 40 L60 72 L102 40" stroke="#FFF4DC" stroke-width="6" fill="none" stroke-linejoin="round"/></svg>`,
+  fund:`<svg class="art" viewBox="0 0 120 120"><ellipse cx="60" cy="96" rx="34" ry="10" fill="#1A1530"/><rect x="26" y="74" width="68" height="22" fill="#1A1530"/><ellipse cx="60" cy="74" rx="34" ry="10" fill="#FFC23D" stroke="#1A1530" stroke-width="5"/><ellipse cx="60" cy="58" rx="34" ry="10" fill="#FFC23D" stroke="#1A1530" stroke-width="5"/><ellipse cx="60" cy="42" rx="34" ry="10" fill="#FFC23D" stroke="#1A1530" stroke-width="5"/></svg>`,
+  trophy:`<svg class="art" viewBox="0 0 120 120"><path d="M36 22 H84 V48 A24 24 0 0 1 36 48Z" fill="#1A1530"/><path d="M36 30 H22 A16 16 0 0 0 40 56 M84 30 H98 A16 16 0 0 1 80 56" stroke="#1A1530" stroke-width="7" fill="none"/><rect x="54" y="70" width="12" height="16" fill="#1A1530"/><rect x="38" y="86" width="44" height="14" rx="4" fill="#1A1530"/><path d="M60 30 L63 38 L71 38 L65 43 L67 51 L60 46 L53 51 L55 43 L49 38 L57 38Z" fill="#FFC23D"/></svg>`,
+  end:`<svg class="art" viewBox="0 0 120 120"><circle cx="60" cy="62" r="40" fill="#1A1530"/><circle cx="60" cy="62" r="31" fill="#FFF4DC"/><path d="M60 62 V40 M60 62 L76 70" stroke="#1A1530" stroke-width="6" stroke-linecap="round"/><rect x="50" y="12" width="20" height="10" rx="3" fill="#1A1530"/></svg>`
+};
 
-/* ----- tween numbers in HUD ----- */
+/* ---------- tweened numbers ---------- */
 const prev = {};
 function tween(id, to, fmt){
   const el = document.getElementById(id); if (!el) return;
   const from = prev[id] ?? to; prev[id] = to;
-  if (from === to || matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent = fmt(to); return; }
-  const t0 = performance.now(), dur = 700;
+  if (from === to || reduced()){ el.textContent = fmt(to); return; }
+  const t0 = performance.now(), dur = 800;
   const step = t => { const k = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-k,3); el.textContent = fmt(from + (to-from)*e); if (k<1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
 
-/* ----- main game screen ----- */
-function render(){
-  if (!G){ renderStart(); return; }
-  const s = stats(G);
-  const m = G.market;
-  const cyc = {bull:['bull','牛市'], flat:['flat','平稳'], bear:['bear','熊市']}[m.cycle];
-  const investing = G.year <= G.investYears;
-  const alive = G.port.filter(c => c.status==='alive');
-  const closed = G.port.filter(c => c.status!=='alive');
-  const allocCost = {normal:0, ai:0, abstract:0}; G.port.forEach(c => allocCost[c.k] += c.cost);
-  const ac = s.cost || 1;
+/* ---------- start screen ---------- */
+function renderStart(){
+  const saved = loadSave();
+  const P = {veteran:['#FFC23D','#C98B10','normal'], ai:['#5AB8FF','#2C7BC2','ai'], abstract:['#FF7AD0','#C23F92','abstract'], heir:['#9B8CFF','#5E4FC9','normal']};
+  const floaters = reduced() ? '' : Array.from({length:18}, (_,i) => `<span style="left:${(i*57)%100}%;font-size:${14+(i*7)%26}px;animation-duration:${9+(i*5)%12}s;animation-delay:-${(i*3)%14}s">${['$','%','×','¥','$'][i%5]}</span>`).join('');
   $('#app').innerHTML = `
-  <header class="hud">
-    <div class="wrap hud-top">
-      <div class="brand"><div class="mark">${esc([...G.fund][0]||'鲸')}</div><div style="min-width:0"><div class="nm">${esc(G.fund)}</div><div class="sub">${PERSONAS[G.persona].name} · 规模 $${G.fundSize}M</div></div></div>
-      <div class="stats">
-        <div class="stat"><div class="k">${yearLabel(G.year)} · 第 ${G.year}/${G.maxYear} 年</div><div class="v">${investing?'投资期':'退出期'}</div></div>
-        <div class="stat"><div class="k">可投资金</div><div class="v" id="h-cash"></div></div>
-        <div class="stat"><div class="k">组合估值</div><div class="v" id="h-nav"></div></div>
-        <div class="stat"><div class="k">已回款 DPI</div><div class="v" id="h-dpi"></div></div>
-        <div class="stat tvpi"><div class="k">账面 TVPI</div><div class="v ${s.tvpi>=1?'up':'down'}" id="h-tvpi"></div></div>
-        <div class="stat"><div class="k">声誉 <span class="num">${Math.round(G.rep)}</span></div><div class="meter"><i style="width:${G.rep}%"></i></div></div>
-        <div class="stat"><div class="k">精力 <span class="num">${G.energy}/${G.maxEnergy}</span></div><div class="pips">${Array.from({length:G.maxEnergy},(_,i)=>`<i class="${i<G.energy?'on':''}"></i>`).join('')}</div></div>
+  <div class="floaters">${floaters}</div>
+  <main class="wrap title-screen">
+    <div class="ts-wrap">
+      <h1 class="logo-big">风投人生<small>VENTURE · LIFE</small></h1>
+      <p class="ts-lede">你刚募完一只新基金。五年时间挑项目，三年时间等退出。常规生意、AI 风口、还有一堆看不懂的抽象项目，全在你的邮箱里。</p>
+      <div class="personas" role="group" aria-label="选择投资人身份">${Object.entries(PERSONAS).map(([k,p]) => `
+        <button class="pcard2" data-act="persona" data-id="${k}" aria-pressed="${ui.persona===k}" style="--c:${P[k][0]};--cd:${P[k][1]}">
+          <div class="av">${avatar('gp-'+k, P[k][2], ui.persona===k?'smile':'neutral', P[k][0])}</div>
+          <b>${p.name}</b><small>${p.desc}</small><span class="perk">${p.perk}</span></button>`).join('')}
+      </div>
+      <div class="namebox"><label for="fund" class="fx" style="font-size:20px">基金名</label><input id="fund" maxlength="10" value="${esc(ui.fund)}" autocomplete="off">
+        <button class="b3 lg" data-act="start">开始募资 ▶</button>
+        ${saved && !saved.over ? `<button class="b3 lg dark" data-act="resume">继续 ${esc(saved.fund)} · ${saved.startYear+saved.year-1}</button>` : ''}
+      </div>
+      <div class="howto">
+        <div><b>见创始人</b><span>每年 3 个项目。当面提问看清底细，或者花精力深度尽调。</span></div>
+        <div><b>谈 Term Sheet</b><span>压价太狠，创始人会翻脸走人；热门项目还会被别人抢走。</span></div>
+        <div><b>管好组合</b><span>投后赋能、跟投新一轮、处理收件箱里的突发事件。</span></div>
+        <div><b>年终开牌</b><span>上市、收购、倒闭、暴雷，一年一次揭晓。最后比 TVPI。</span></div>
       </div>
     </div>
-    <div class="wrap hud-bot">
-      <span class="chip ${cyc[0]}">${cyc[1]}</span>
-      <span class="chip hype">AI 热度 <span class="num">${m.aiHype.toFixed(2)}×</span>${m.aiCrashed?' · 已破裂':''}</span>
-      <span class="headline"><b>头条</b> ${esc(G.headline)}</span>
-    </div>
-  </header>
-  <main class="wrap main">
-    <section>
-      <div class="sec-head">
-        <div><h2>${investing ? '本年 Deal Flow' : '投后管理'}</h2>
-          <p>${investing ? `邮箱里的 BP。尽调要花精力，热门项目可能被抢。投资期还剩 ${G.investYears - G.year + 1} 年。` : '投资期结束，不再看新项目。用精力帮被投公司冲刺退出。'}</p></div>
-        ${investing ? `<button class="btn" id="roadshow" ${G.roadshow||G.energy<2?'disabled':''}>参加路演日，多看 1 个项目 <span class="cost">2 精力</span></button>` : ''}
-      </div>
-      ${investing ? `<div class="deals">${G.deals.map(dealCard).join('')}</div>` :
-        `<div class="empty"><b>不再出手</b>你还有 ${alive.length} 家公司在跑。给最有希望的那几家多花些精力，然后进入下一年。</div>`}
-      <div class="endbar">
-        <p>${G.year < G.maxYear ? `结束 ${yearLabel(G.year)} 年：市场变化、被投公司融资或倒闭，未处理的项目视为 Pass。` : '这是最后一年。结束后将按当前估值清算整只基金。'}</p>
-        <button class="btn big" id="end">${G.year < G.maxYear ? `结束 ${yearLabel(G.year)} 年` : '清算基金'}</button>
-      </div>
-    </section>
-    <aside class="side">
-      <div class="panel">
-        <div class="panel-h"><h3>投资组合</h3><span>${alive.length} 家在营 · 已投 ${money(s.cost)}</span></div>
-        ${G.port.length ? `<div class="alloc">${['normal','ai','abstract'].map(k => allocCost[k] ? `<i class="k-${k}" style="width:${allocCost[k]/ac*100}%"></i>` : '').join('')}</div>
-        <div class="legend"><span style="--c:var(--k-normal)">常规 ${money(allocCost.normal)}</span><span style="--c:var(--k-ai)">AI ${money(allocCost.ai)}</span><span style="--c:var(--k-abstract)">抽象 ${money(allocCost.abstract)}</span></div>` : ''}
-        ${alive.map(portRow).join('') || `<div class="prow" style="grid-template-columns:1fr"><span class="note">还没有投资任何公司。左边的 BP 等着你。</span></div>`}
-        ${closed.length ? `<button class="closed-toggle" id="toggle-closed" aria-expanded="${ui.showClosed}">${ui.showClosed?'收起':'查看'}已退出 / 已归零（${closed.length}）</button>${ui.showClosed?closed.map(portRow).join(''):''}` : ''}
-      </div>
-      <div class="panel">
-        <div class="panel-h"><h3>大事记</h3><span>${G.log.length} 条</span></div>
-        <ul class="log">${G.log.slice(0,14).map(l => `<li><span class="y">${l.y}</span><span>${esc(l.t)}</span></li>`).join('')}</ul>
-      </div>
-      <button class="reset" id="restart">放弃这只基金，重新开始</button>
-    </aside>
   </main>`;
-  tween('h-cash', G.cash, money);
-  tween('h-nav', s.nav, money);
-  tween('h-dpi', s.dpi, v => v.toFixed(2)+'×');
-  tween('h-tvpi', s.tvpi, v => v.toFixed(2)+'×');
-  bindMain();
-  if (G.pending) openReport();
-  else if (G.over) openFinal();
 }
 
-function band(d, k){
-  const v = d.dd ? d.tru[k] : d.est[k];
-  const spread = d.dd ? .22 : 1.3;
+/* ---------- HUD ---------- */
+function hud(){
+  const s = stats(G), yr = Math.min(G.year, G.maxYear), yrPct = G.over ? 1 : (G.year-1)/G.maxYear;
+  return `<header class="hud"><div class="wrap hud-in">
+    <div class="crest"><div class="seal">${esc([...G.fund][0]||'鲸')}</div><div style="min-width:0"><div class="nm">${esc(G.fund)}</div><div class="sub">${PERSONAS[G.persona].name}</div></div></div>
+    <div class="gauges">
+      <div class="g"><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="#2C2452" stroke-width="5"/><circle cx="18" cy="18" r="15" fill="none" stroke="#FFC23D" stroke-width="5" stroke-dasharray="${(yrPct*94.2).toFixed(1)} 94.2" stroke-linecap="round"/></svg><b>${yr}</b></div>
+        <div><div class="k">${G.over?'已清算':G.year<=G.investYears?'投资期':'退出期'}</div><div class="v">${yl(yr)}</div></div></div>
+      <div class="g">${ICON.coin}<div><div class="k">可投资金</div><div class="v" id="h-cash">${money(G.cash)}</div></div></div>
+      <div class="g hide-s">${ICON.pie}<div><div class="k">组合估值</div><div class="v" id="h-nav">${money(s.nav)}</div></div></div>
+      <div class="g tvpi">${ICON.chart}<div><div class="k">TVPI</div><div class="v ${s.tvpi>=1?'up':'down'}" id="h-tvpi">${s.tvpi.toFixed(2)}×</div></div></div>
+      <div class="g hide-s"><div><div class="k">声誉 ${Math.round(G.rep)}</div><div class="repbar"><i style="width:${G.rep}%"></i></div></div></div>
+      <div class="g"><div><div class="k">精力 ${G.energy}/${G.maxEnergy}</div><div class="bats">${Array.from({length:G.maxEnergy},(_,i)=>`<i class="${i<G.energy?'on':''}"></i>`).join('')}</div></div></div>
+      <button class="iconbtn" data-act="sound" aria-label="${ui.sound?'关闭音效':'打开音效'}">${ui.sound?ICON.sound:ICON.mute}</button>
+      <button class="iconbtn" data-act="menu" aria-label="重新开始">${ICON.flag}</button>
+    </div>
+  </div></header>`;
+}
+function backBtn(){ return `<button class="back" data-act="go" data-id="hub">${ICON.home} 总部</button>`; }
+
+/* ---------- hub ---------- */
+function viewHub(){
+  const s = stats(G), alive = G.port.filter(c => c.status==='alive');
+  const investing = G.year <= G.investYears;
+  const openDeals = G.deals.filter(d => d.state==='open').length;
+  const pend = pendingCount(G), unread = G.inbox.filter(m => !m.done).length;
+  const latest = G.inbox.find(m => !m.done);
+  const ach = achievements(G), got = ach.filter(a => a.ok).length;
+  const cyc = {bull:'牛市', flat:'平稳', bear:'熊市'}[G.market.cycle];
+  const stateLbl = {invested:'已投', passed:'Pass', sniped:'被抢', walked:'谈崩', open:STAGES[0]};
+  return `<section class="view wrap">
+    <div class="hub">
+      <button class="tile t-pitch" data-act="go" data-id="pitch">
+        ${openDeals && investing ? `<span class="badge pulse">${openDeals}</span>` : ''}
+        <span class="ts">${investing ? `${yl(G.year)} 年 · 投资期还剩 ${G.investYears-G.year+1} 年` : '投资期已结束'}</span>
+        <span class="tt">路演厅</span>
+        ${investing ? `<span class="ts" style="font-size:15px">${openDeals ? `${openDeals} 位创始人正在会议室等你` : '今年的项目都处理完了'}</span>
+        <div class="lineup">${G.deals.map(d => `<div class="who ${d.state!=='open'?'gone':''}"><div class="av">${avatar(d.seed,d.k,d.state==='invested'?'smile':d.state==='walked'?'angry':'neutral')}</div><b>${esc(d.name)}</b><small>${d.state==='open'?KIND[d.k].label:stateLbl[d.state]}</small></div>`).join('')}</div>`
+        : `<span class="ts" style="font-size:15px">不再看新项目了。去投资组合里帮公司冲刺退出。</span>`}
+        <span class="foot">${investing ? '进入会议室 →' : '查看'}</span>${ART.pitch}
+      </button>
+      <button class="tile t-port" data-act="go" data-id="port">
+        <span class="ts">${alive.length} 家在营 · 共投 ${G.port.length} 家</span>
+        <span class="tt">投资组合</span>
+        <span class="big">${money(s.nav)}</span>
+        <div class="chips">${alive.slice(0,9).map(c => `<span class="mini-logo k-${c.k}">${esc([...c.name][0])}</span>`).join('') || '<span class="ts">还没有投资任何公司</span>'}</div>
+        ${ART.port}
+      </button>
+      <button class="tile t-market" data-act="go" data-id="market">
+        <span class="ts">市场情绪</span><span class="tt">行情</span>
+        <span class="big" style="font-size:24px">${cyc}</span>
+        <span class="ts">AI 热度 ${G.market.aiHype.toFixed(2)}×${G.market.aiCrashed?' · 已破裂':''}</span>${ART.market}
+      </button>
+      <button class="tile t-inbox" data-act="go" data-id="inbox">
+        ${unread ? `<span class="badge ${pend?'pulse':''}">${unread}</span>` : ''}
+        <span class="ts">${pend ? `${pend} 件需要你拍板` : '暂无待办'}</span><span class="tt">收件箱</span>
+        <span class="ts" style="position:relative;z-index:1">${latest ? esc(latest.title) : '一切安静。'}</span>${ART.inbox}
+      </button>
+      <button class="tile t-fund" data-act="go" data-id="fund">
+        <span class="ts">基金账本</span><span class="tt">LP 报表</span>
+        <span class="big">${s.tvpi.toFixed(2)}×</span><span class="ts">已回款 ${money(G.dist)} · DPI ${s.dpi.toFixed(2)}×</span>${ART.fund}
+      </button>
+      <button class="tile t-trophy" data-act="go" data-id="trophy">
+        <span class="ts">成就与遗憾</span><span class="tt">荣誉室</span>
+        <span class="big">${got}/${ach.length}</span><span class="ts">错过的项目 ${G.passed.length} 个</span>${ART.trophy}
+      </button>
+      <button class="tile t-end" data-act="endyear" ${pend?'disabled':''}>
+        <span class="ts">${pend ? `收件箱还有 ${pend} 件事没处理` : G.year < G.maxYear ? '没处理的项目视为 Pass。市场、公司、命运，一起揭晓。' : '最后一年。结束后整只基金清算。'}</span>
+        <span class="tt">${G.year < G.maxYear ? `结束 ${yl(G.year)} 年 ▶` : '清算基金 ▶'}</span>
+        <div class="clock">${Array.from({length:G.maxYear},(_,i)=>`<i class="${i+1<G.year?'done':i+1===G.year?'now':''}"></i>`).join('')}</div>
+        ${ART.end}
+      </button>
+    </div>
+  </section>`;
+}
+
+/* ---------- pitch room ---------- */
+function fogBand(d,k){
+  const known = d.known[k];
+  const v = known ? (d.dd ? d.tru[k] : d.est[k]) : d.est[k];
+  const spread = d.dd ? .2 : known ? .45 : 1.4;
   const lo = clamp(v-spread,0,5), hi = clamp(v+spread,0,5);
-  return `<div class="track"><span class="band ${d.dd?'sure':''}" style="left:${lo/5*100}%;width:${(hi-lo)/5*100}%"></span><span class="tick" style="left:${v/5*100}%"></span></div>`;
+  return `<div class="track"><span class="fog ${d.dd?'sure':known?'known':''}" style="left:${lo/5*100}%;width:${(hi-lo)/5*100}%"></span>${known?`<span class="tick" style="left:${v/5*100}%"></span>`:''}</div>`;
 }
-function dealCard(d){
-  const labels = {team:'团队', market:'市场', product:'产品', traction:'增长'};
-  const stamp = {invested:['已投资','inv'], passed:['PASS',''], sniped:['被抢走','bad'], walked:['谈崩了','bad']}[d.state];
-  const mc = maxCheck(G,d);
+function viewPitch(){
+  const investing = G.year <= G.investYears;
+  if (!investing || !G.deals.length) return `<section class="view wrap"><div class="vhead">${backBtn()}<h2>路演厅</h2></div>
+    <div class="empty"><b>${investing?'会议室空了':'投资期已结束'}</b>${investing?'今年的项目都看完了，回总部结束这一年吧。':'不再接触新项目。把精力花在投资组合上。'}</div></section>`;
+  ui.deal = clamp(ui.deal, 0, G.deals.length-1);
+  const d = G.deals[ui.deal];
   const gone = d.state !== 'open';
-  return `<article class="deal ${gone?'gone':''}" style="animation-delay:${(d.id%3)*80}ms">
-    <div class="serial">BP-${String(d.id).padStart(4,'0')} · ${STAGES[d.stage]}</div>
-    <div class="deal-h">${logo(d)}<div style="min-width:0"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(d.sector)}</div></div><span class="kchip k-${d.k}">${KIND[d.k].label}</span></div>
-    <p class="tagline">${esc(d.tag)}</p>
-    <blockquote class="quote"><p>“${esc(d.quote)}”</p><cite>${esc(d.founder)}，${esc(d.bio)}</cite></blockquote>
-    <div class="mets">${Object.keys(labels).map(k => `<div class="met"><span class="lab">${labels[k]}</span>${band(d,k)}<span class="val">${d.dd ? d.tru[k].toFixed(1) : '≈' + Math.round(d.est[k])}</span></div>`).join('')}</div>
-    ${d.dd ? `<ul class="flags">${d.flags.map(f => `<li class="${f.c}">${f.c==='x'?'红旗：':''}${esc(f.t)}</li>`).join('')}</ul>` : ''}
-    <div class="terms">
-      <div><div class="k">投前估值</div><div class="v">${money(d.pre)}</div></div>
-      <div><div class="k">本轮融资</div><div class="v">${money(d.ask)}</div></div>
-      <div><div class="k">热度</div><div class="heat" aria-label="热度 ${d.heat}/3">${[1,2,3].map(i=>`<i class="${i<=d.heat?'on':''}"></i>`).join('')}</div></div>
+  const sticker = {invested:['已投资','inv'], passed:['PASS','pass'], sniped:['被抢走','bad'], walked:['谈崩了','bad']}[d.state];
+  const say = ui.say && ui.say.id===d.id ? ui.say : {who:d.founder, text:d.quote};
+  const mc = maxCheck(G,d);
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>路演厅</h2>
+      <div class="queue">${G.deals.map((x,i) => `<button class="qtab ${x.state!=='open'?'gone':''}" data-act="deal" data-id="${i}" aria-current="${i===ui.deal}"><span class="av">${avatar(x.seed,x.k,x.mood)}</span><span>${esc(x.name)}<br><span class="st">${{open:KIND[x.k].label+' · '+STAGES[x.stage],invested:'已投资',passed:'Pass',sniped:'被抢走',walked:'谈崩了'}[x.state]}</span></span></button>`).join('')}
+        <button class="b3 sm violet" data-act="roadshow" ${G.roadshow||G.energy<2?'disabled':''}>＋ 路演日加约一个 <span class="bolt">⚡2</span></button>
+      </div>
     </div>
-    ${!gone && d.heat===3 ? `<div class="note warn">${G.rep<60 ? `抢手项目：声誉不足 60，最多只能投 ${money(mc)}。` : '抢手项目：你的声誉够格，可以拿到全额。'}${d.dd?'':' 尽调期间有 30% 概率被别人抢走。'}</div>` : ''}
-    <div class="acts">
-      <button class="btn" data-dd="${d.id}" ${gone||d.dd||G.energy<1?'disabled':''}>${d.dd?'已尽调':'尽调'} ${d.dd?'':'<span class="cost">1 精力</span>'}</button>
-      <button class="btn primary" data-inv="${d.id}" ${gone||G.cash < minCheck(G,d)?'disabled':''}>投资</button>
-      <button class="btn ghost" data-pass="${d.id}">Pass</button>
-    </div>
-    ${stamp ? `<div class="stamp ${stamp[1]}">${stamp[0]}</div>` : ''}
-  </article>`;
-}
-function portRow(c){
-  const stLabel = {alive:STAGES[c.stage], ipo:'已上市', acq:'已收购', dead:'已倒闭', fraud:'暴雷'}[c.status];
-  const value = c.status==='alive' ? c.own*c.val : c.proceeds;
-  const mult = c.cost ? (c.proceeds + (c.status==='alive'?c.own*c.val:0))/c.cost : 0;
-  const canHelp = c.status==='alive';
-  return `<div class="prow ${c.status==='alive'?'':'closed'}">
-    ${logo(c)}
-    <div style="min-width:0"><div class="nm"><span>${esc(c.name)}</span><span class="st ${c.status}">${stLabel}</span></div>
-      <div class="sub">${c.status==='alive' ? `持股 ${pct(c.own)} · 估值 ${money(c.val)}` : `成本 ${money(c.cost)} · 回款 ${money(c.proceeds)}`}</div></div>
-    <div class="r"><div class="v">${money(value)}</div><div class="m ${mult>=1?'up':'down'}">${mult.toFixed(2)}×</div></div>
-    ${canHelp ? `<div class="help"><span class="dots" aria-label="本年赋能 ${c.help}/2">${[0,1].map(i=>`<i class="${i<c.help?'on':''}"></i>`).join('')}</span>
-      <button class="btn" data-help="${c.id}" ${G.energy<1||c.help>=2?'disabled':''}>投后赋能 <span class="cost">1 精力</span></button>
-      <span>${c.help ? '明年成功率提升' : '帮忙招人、对接客户'}</span></div>` : ''}
-  </div>`;
-}
-
-function bindMain(){
-  document.querySelectorAll('[data-dd]').forEach(b => b.onclick = () => {
-    const d = G.deals.find(x => x.id == b.dataset.dd);
-    const r = doDD(G,d);
-    if (r.sniped) toast(`尽调还没做完，${d.name} 已经被 ${d.lead} 签走了`, 'bad');
-    else if (r.ok){ const red = d.flags.filter(f=>f.c!=='g').length; toast(`尽调完成：${red ? `发现 ${red} 个风险点` : '没有发现明显问题'}`, red ? '' : 'good'); }
-    save(); render();
-  });
-  document.querySelectorAll('[data-inv]').forEach(b => b.onclick = () => openInvest(+b.dataset.inv));
-  document.querySelectorAll('[data-pass]').forEach(b => b.onclick = () => {
-    const d = G.deals.find(x => x.id == b.dataset.pass);
-    if (d.state==='open') d.state='passed'; else if (d.state==='passed') d.state='open';
-    save(); render();
-  });
-  document.querySelectorAll('[data-help]').forEach(b => b.onclick = () => {
-    const c = G.port.find(x => x.id == b.dataset.help);
-    if (G.energy < 1 || c.help >= 2) return;
-    G.energy--; c.help++;
-    toast(pick([`帮 ${c.name} 挖来一位销售 VP`,`给 ${c.name} 介绍了三个大客户`,`陪 ${c.name} 创始人复盘到凌晨两点`,`帮 ${c.name} 打磨了下一轮的融资 BP`]), 'good');
-    save(); render();
-  });
-  const rs = $('#roadshow'); if (rs) rs.onclick = () => {
-    if (G.energy < 2 || G.roadshow) return;
-    G.energy -= 2; G.roadshow = true; G.deals.push(genDeal(G));
-    toast('在路演日认识了一个新项目'); save(); render();
-  };
-  $('#end').onclick = () => { endYear(G); save(); render(); };
-  const tc = $('#toggle-closed'); if (tc) tc.onclick = () => { ui.showClosed = !ui.showClosed; render(); };
-  $('#restart').onclick = () => openConfirmRestart();
-}
-
-/* ----- modals ----- */
-function openModal(html, wide){
-  closeModal();
-  const o = document.createElement('div'); o.className = 'overlay'; o.id = 'overlay';
-  o.innerHTML = `<div class="sheet ${wide?'wide':''}" role="dialog" aria-modal="true">${html}</div>`;
-  document.body.appendChild(o);
-  document.body.style.overflow = 'hidden';
-  return o;
-}
-function closeModal(){ const o = $('#overlay'); if (o) o.remove(); document.body.style.overflow = ''; }
-
-function openConfirmRestart(){
-  const o = openModal(`<div class="sheet-h"><h2>放弃 ${esc(G.fund)}？</h2></div>
-    <div class="sheet-b"><p style="margin:0">这一局的进度会被清空，回到开局界面重新募资。</p></div>
-    <div class="sheet-f"><button class="btn ghost" id="c-no">继续这局</button><button class="btn primary" id="c-yes">重新开始</button></div>`);
-  o.querySelector('#c-no').onclick = closeModal;
-  o.querySelector('#c-yes').onclick = () => { closeModal(); G = null; save(); render(); window.scrollTo(0,0); };
-}
-
-function openInvest(id){
-  const d = G.deals.find(x => x.id === id);
-  if (!d || d.state !== 'open') return;
-  const draw = () => {
-    const mn = minCheck(G,d), mx = Math.min(maxCheck(G,d), G.cash);
-    const amt = clamp(ui.amt ?? mx, mn, mx);
-    const post = d.pre + d.ask;
-    const chance = Math.round(negoChance(G,d)*100);
-    const o = openModal(`
-      <div class="sheet-h"><div class="eyebrow">Term Sheet · ${STAGES[d.stage]}</div><h2>投资 ${esc(d.name)}</h2></div>
-      <div class="sheet-b">
-        <div class="kv">
+    <div class="stage">
+      <div class="spot">
+        <div class="who-top">${logo(d)}<div style="min-width:0"><h3>${esc(d.name)}</h3><div class="meta">${esc(d.sector)} · ${STAGES[d.stage]} · BP-${String(d.id).padStart(4,'0')}</div></div><span class="k-tag k-${d.k}">${KIND[d.k].label}</span></div>
+        <p class="tagline">${esc(d.tag)}</p>
+        <div class="bubble" id="bubble"><span class="who">${esc(say.who)}</span><span id="say" data-text="${esc(say.text)}">${ui.typing ? '' : esc(say.text)}</span>${ui.typing?'<span class="caret"></span>':''}</div>
+        <div class="founder"><div class="av">${avatar(d.seed,d.k,d.mood)}</div><div class="card"><b>${esc(d.founder)}</b><span>${esc(d.bio)}</span><span>本次会议还能问 <b class="n" style="color:var(--gold)">${d.dd?0:d.qLeft}</b> 个问题</span></div></div>
+        ${sticker ? `<div class="sticker ${sticker[1]}">${sticker[0]}</div>` : ''}
+      </div>
+      <div class="xray">
+        <div class="panel"><h3>BP 透视</h3>
+          <div class="mets">${Object.keys(METRICS).map(k => `<div class="met"><span class="lab">${METRICS[k]}</span>${fogBand(d,k)}<span class="val">${d.known[k] ? (d.dd?d.tru[k]:d.est[k]).toFixed(1) : '?'}</span></div>`).join('')}</div>
+          <p class="warn" style="margin-top:10px;color:var(--muted)">条纹区是你的猜测范围。提问能缩小一项，深度尽调能看清全部，还能挖出隐藏的红旗。</p>
+        </div>
+        ${d.dd ? `<div class="panel"><h3>尽调报告</h3><ul class="flags">${d.flags.map(f => `<li class="${f.c}"><b>${f.c==='g'?'亮点':f.c==='x'?'红旗':'风险'}</b>${esc(f.t)}</li>`).join('')}</ul></div>`
+        : `<div class="panel"><h3>当面提问</h3><div class="asks">${Object.keys(QUESTIONS).map(k => `<button class="ask" data-act="ask" data-id="${k}" ${gone||d.qLeft<1||d.known[k]?'disabled':''}>${QUESTIONS[k]}<small>了解${METRICS[k]}${d.known[k]?' · 已问':''}</small></button>`).join('')}</div></div>`}
+        <div class="terms">
           <div><div class="k">投前估值</div><div class="v">${money(d.pre)}</div></div>
           <div><div class="k">本轮融资</div><div class="v">${money(d.ask)}</div></div>
-          <div><div class="k">投后估值</div><div class="v">${money(post)}</div></div>
+          <div><div class="k">热度</div><div class="flames">${[1,2,3].map(i => ICON.flame(i<=d.heat)).join('')}</div></div>
         </div>
-        <div class="range">
-          <div class="range-top"><label for="amt">你的出资</label><b class="num" id="amt-v">${money(amt)}</b></div>
-          <input type="range" id="amt" min="${mn}" max="${mx}" step="0.05" value="${amt}">
-          <div class="note">获得 <b class="num" id="own-v">${pct(amt/post)}</b> 股权 · 剩余资金 <span class="num" id="left-v">${money(G.cash-amt)}</span> · 领投方 ${esc(d.lead)}${d.heat===3&&G.rep<60?' · 声誉不足，额度受限':''}</div>
+        ${!gone && d.heat===3 ? `<p class="warn">抢手项目：${G.rep<60 ? `声誉不足 60，最多只能拿 ${money(mc)} 额度。` : '你的声誉够格，可以拿全额。'}${d.dd?'':'深度尽调期间有 30% 概率被别人抢走。'}</p>` : ''}
+        <div class="actbar">
+          <button class="b3 violet" data-act="dd" ${gone||d.dd||G.energy<1?'disabled':''}>${d.dd?'已尽调':'深度尽调'} <span class="bolt">⚡1</span></button>
+          <button class="b3 mint" data-act="offer" ${gone||G.cash<minCheck(G,d)?'disabled':''}>递 Term Sheet</button>
+          <button class="b3 dark" data-act="pass" ${d.state==='open'||d.state==='passed'?'':'disabled'}>${d.state==='passed'?'撤回 Pass':'Pass'}</button>
         </div>
-        ${!d.negotiated ? `<div class="nego"><p><b>砍估值 20%</b>　成功率约 ${chance}%。谈崩的话，创始人可能直接走人。</p><button class="btn" id="nego">试着砍价</button></div>`
-          : `<div class="note">已经谈过价格了。</div>`}
-        ${!d.dd ? `<div class="note warn">你还没有尽调这个项目，看到的指标可能偏差很大。</div>` : ''}
       </div>
-      <div class="sheet-f"><button class="btn ghost" id="cancel">再想想</button><button class="btn primary" id="sign">签 Term Sheet</button></div>`);
-    const inp = o.querySelector('#amt');
-    inp.oninput = () => { const a = +inp.value; ui.amt = a; o.querySelector('#amt-v').textContent = money(a); o.querySelector('#own-v').textContent = pct(a/post); o.querySelector('#left-v').textContent = money(G.cash-a); };
-    o.querySelector('#cancel').onclick = () => { ui.amt = null; closeModal(); };
-    const ng = o.querySelector('#nego');
-    if (ng) ng.onclick = () => {
-      const r = negotiate(G,d); save();
-      if (r.ok){ toast(`谈下来了！投前估值降到 ${money(d.pre)}`, 'good'); draw(); }
-      else if (r.walked){ toast(`${d.founder}：“你们不懂我们的价值。” 项目谈崩了。`, 'bad'); ui.amt = null; closeModal(); render(); }
-      else { toast('创始人寸步不让，价格维持不变'); draw(); }
-    };
-    o.querySelector('#sign').onclick = () => {
-      const c = invest(G, d, +inp.value);
-      ui.amt = null; closeModal();
-      if (c){ toast(`已签约：持有 ${d.name} ${pct(c.own)} 股权`, 'good'); }
-      save(); render();
-    };
-  };
-  ui.amt = null; draw();
+    </div>
+  </section>`;
 }
 
-function evTag(e){
-  return {up:['融资','good'], flat:['平稳','meh'], down:['降价','bad'], dead:['倒闭','bad'], fraud:['暴雷','bad'], ipo:['上市','good'], acq:['收购','good'], moon:['爆火','wow']}[e.type];
+function typeSay(){
+  const el = $('#say'); if (!el || !ui.typing) return;
+  const text = el.dataset.text; let i = 0;
+  ui.typing = false;
+  if (reduced()){ el.textContent = text; $('#bubble .caret')?.remove(); return; }
+  const t = setInterval(() => {
+    if (!document.body.contains(el)){ clearInterval(t); return; }
+    i++; el.textContent = text.slice(0,i); if (i%3===0) sfx('talk');
+    if (i >= text.length){ clearInterval(t); $('#bubble .caret')?.remove(); }
+  }, 28);
 }
-function openReport(){
-  const P = G.pending;
-  const draw = () => {
-    const followCost = P.evs.filter(e => e.raise && P.follow[e.id]).reduce((s,e) => s + e.raise.cost, 0);
-    const left = G.cash - followCost;
-    const rows = P.evs.map((e,i) => {
-      const t = evTag(e);
-      const c = G.port.find(x => x.id === e.id);
-      const stakeBefore = e.ownBefore * e.before, stakeAfter = e.status==='alive' ? c.own*e.after : 0;
-      const delta = e.pay ? `回款 ${money(e.pay)}` : `${money(stakeBefore)} → ${money(stakeAfter)}`;
-      let fo = '';
-      if (e.raise && e.status==='alive'){
-        const on = !!P.follow[e.id];
-        const can = on || left >= e.raise.cost;
-        fo = `<div class="fo"><label class="switch"><input type="checkbox" data-fo="${e.id}" ${on?'checked':''} ${can?'':'disabled'}> 跟投 <b class="num">${money(e.raise.cost)}</b></label>
-          <span class="note">${on ? `保持 ${pct(e.ownBefore)} 持股` : `不跟则稀释到 ${pct(e.ownBefore*e.raise.dil)}`}${can?'':'　资金不足'}</span></div>`;
+
+/* ---------- term sheet ---------- */
+function openTS(){
+  const d = G.deals[ui.deal]; if (!d || d.state!=='open') return;
+  const mn = minCheck(G,d), mx = Math.min(maxCheck(G,d), G.cash);
+  let offer = d.floor ? Math.min(d.pre, d.floor) : d.pre, amt = mx;
+  const o = overlay(`<div class="ts-doc" id="tsdoc">
+    <div class="eyebrow">TERM SHEET · 投资意向书 · 第 ${4-d.patience} 轮</div>
+    <h3>${esc(d.name)} ${STAGES[d.stage]}</h3>
+    <hr>
+    <div class="ts-row"><div class="lab"><label for="ts-pre">投前估值报价</label><b id="v-pre"></b></div>
+      <input type="range" id="ts-pre" min="${r2(d.pre*.55)}" max="${d.pre}" step="0.01" value="${offer}">
+      <small>创始人开价 ${money(d.pre)}${d.floor ? ` · 上一轮他说底线是 ${money(d.floor)}` : ''}</small></div>
+    <div class="ts-row"><div class="lab"><label for="ts-amt">你的出资</label><b id="v-amt"></b></div>
+      <input type="range" id="ts-amt" min="${mn}" max="${mx}" step="0.01" value="${amt}">
+      <small id="v-own"></small></div>
+    <div class="mood"><div class="av" id="ts-av"></div><div><p id="ts-mood"></p><div class="bar"><i id="ts-bar"></i></div></div></div>
+    <div class="ts-act"><button class="b3 dark" data-act="ts-close">先不投了</button><button class="b3 lg" data-act="ts-send">签字递出</button></div>
+  </div>`);
+  const upd = () => {
+    offer = +o.querySelector('#ts-pre').value; amt = +o.querySelector('#ts-amt').value;
+    const post = offer + d.ask, ratio = offer / d.pre;
+    o.querySelector('#v-pre').textContent = money(offer);
+    o.querySelector('#v-amt').textContent = money(amt);
+    o.querySelector('#v-own').textContent = `获得 ${pct(amt/post)} 股权 · 剩余资金 ${money(G.cash-amt)} · 领投方 ${d.lead}${d.heat===3&&G.rep<60?' · 声誉不足，额度受限':''}`;
+    // shown mood is a fuzzy read of the founder's floor, not the floor itself
+    const read = clamp((offer/floorPre(d) - .82) / .2 + ((d.seed%7)-3)*.02, 0, 1);
+    const mood = read > .85 ? 'smile' : read > .45 ? 'neutral' : read > .2 ? 'sweat' : 'angry';
+    o.querySelector('#ts-av').innerHTML = avatar(d.seed, d.k, mood);
+    o.querySelector('#ts-mood').textContent = ratio >= .999 ? '按他的开价来，他会很爽快。' : read > .85 ? '他看起来能接受。' : read > .45 ? '他在犹豫，手指敲着桌子。' : read > .2 ? '他额头开始冒汗了。' : '他的脸色很难看，随时可能走人。';
+    const bar = o.querySelector('#ts-bar'); bar.style.width = (read*100)+'%'; bar.style.background = read>.6?'#3DDC97':read>.3?'#FFC23D':'#FF6B5B';
+  };
+  o.querySelector('#ts-pre').oninput = upd; o.querySelector('#ts-amt').oninput = upd;
+  upd();
+  o.onclick = e => {
+    const a = e.target.closest('[data-act]'); if (!a) return;
+    if (a.dataset.act==='ts-close'){ sfx('click'); closeOverlay(); return; }
+    if (a.dataset.act==='ts-send'){
+      const r = makeOffer(G,d,offer);
+      const doc = o.querySelector('#tsdoc');
+      if (r.accept){
+        const c = invest(G,d,amt,r.pre);
+        doc.insertAdjacentHTML('beforeend','<div class="ts-stamp ok">成交!</div>');
+        sfx('stamp'); setTimeout(() => { sfx('coin'); confetti(140); }, 160);
+        ui.say = {id:d.id, who:d.founder, text:pick(['合作愉快！我们一起干票大的。','太好了！今晚请全公司喝奶茶。','你不会后悔的，三年后见分晓。'])}; ui.typing = true;
+        save();
+        setTimeout(() => { closeOverlay(); render(); if (c) toast(`签约 ${d.name}：持股 ${pct(c.own)}`, 'good'); }, 1100);
+      } else if (r.walked){
+        doc.insertAdjacentHTML('beforeend','<div class="ts-stamp">谈崩!</div>');
+        sfx('bad'); shake(doc);
+        ui.say = {id:d.id, who:d.founder, text:pick(['你们根本不懂我们的价值。告辞。','这个价格是在侮辱我的团队。','我去找别家了，不送。'])}; ui.typing = true;
+        save(); setTimeout(() => { closeOverlay(); render(); }, 1100);
+      } else {
+        sfx('bad'); shake(doc);
+        toast(`${d.founder}：“最低 ${money(r.floor)}，不能再少了。”`);
+        ui.say = {id:d.id, who:d.founder, text:`最低 ${money(r.floor)}，不能再少了。你再考虑一下。`};
+        save(); closeOverlay(); render(); openTS();
       }
-      return `<div class="rrow" style="animation-delay:${i*90}ms">${logo(e)}
-        <div style="min-width:0"><div class="nm">${esc(e.name)} <span class="rtag ${t[1]}">${t[0]}</span></div><div class="t">${esc(e.text)}</div></div>
-        <div class="d"><b class="${(e.pay||stakeAfter)>=stakeBefore?'up':'down'}">${delta}</b>${e.status==='alive'?`公司估值 ${money(e.after)}`:''}</div>${fo}</div>`;
-    }).join('');
-    const ev = P.event;
-    const evHtml = ev ? `<div class="rep-sec"><h3>突发事件</h3><div class="event"><h4>${esc(ev.title)}</h4><p>${esc(ev.body)}</p>
-      <div class="opts">${ev.opts.map((o,i) => `<button class="opt" data-opt="${i}" aria-pressed="${P.choice===i}" ${o.cost && o.cost > left ? 'disabled' : ''}><b>${esc(o.label)}</b><small>${esc(o.hint)}${o.cost && o.cost > left ? '（扣除跟投后资金不足）' : ''}</small></button>`).join('')}</div></div></div>` : '';
-    const missed = P.missed.length ? `<div class="rep-sec"><h3>反向组合 · 你错过的</h3>${P.missed.map(x => `<div class="rrow">${logo(x)}<div style="min-width:0"><div class="nm">${esc(x.name)} <span class="rtag wow">心痛</span></div><div class="t">你在 ${yearLabel(x.passYear)} 年 Pass 掉了它，当时投后估值只有 ${money(x.entry)}</div></div><div class="d"><b class="up">${money(x.v)}</b>${(x.v/x.entry).toFixed(0)} 倍</div></div>`).join('')}</div>` : '';
-    const needChoice = ev && P.choice == null;
-    const o = openModal(`
-      <div class="sheet-h"><div class="eyebrow">Annual Report · 第 ${P.year} 年</div><h2>${yearLabel(P.year)} 年度报告</h2></div>
-      <div class="sheet-b">
-        <div class="rep-sec"><h3>市场</h3><ul class="news">${P.news.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>
-        <div class="rep-sec"><h3>组合动态</h3>${rows || '<p class="note" style="margin:0">今年没有在营的被投公司。</p>'}</div>
-        ${evHtml}
-        ${missed}
-      </div>
-      <div class="sheet-f"><span class="info">跟投合计 <b class="num">${money(followCost)}</b> · 剩余 <b class="num">${money(left)}</b></span>
-        <button class="btn primary" id="next" ${needChoice?'disabled':''}>${needChoice ? '先处理突发事件' : P.year < G.maxYear ? `进入 ${yearLabel(P.year+1)} 年` : '查看基金清算'}</button></div>`, true);
-    o.querySelectorAll('[data-fo]').forEach(cb => cb.onchange = () => { P.follow[cb.dataset.fo] = cb.checked; const st = o.querySelector('.sheet').scrollTop; draw(); $('#overlay .sheet').scrollTop = st; });
-    o.querySelectorAll('[data-opt]').forEach(b => b.onclick = () => { P.choice = +b.dataset.opt; const st = o.querySelector('.sheet').scrollTop; draw(); $('#overlay .sheet').scrollTop = st; });
-    o.querySelector('#next').onclick = () => {
-      const before = G.hist[G.hist.length-1].tvpi;
-      confirmYear(G); save(); closeModal(); render(); window.scrollTo(0,0);
-      if (!G.over){ const after = stats(G).tvpi; toast(`${yearLabel(G.year)} 年开始 · TVPI ${before.toFixed(2)}× → ${after.toFixed(2)}×`, after>=before?'good':'bad'); }
-    };
+    }
   };
-  draw();
-  // the report animates once; redraws after toggles should not replay it
-  requestAnimationFrame(() => document.querySelectorAll('#overlay .rrow').forEach(r => r.addEventListener('animationend', () => r.style.animation = 'none', {once:true})));
 }
 
+/* ---------- portfolio ---------- */
+function spark(hist, w=200, h=36){
+  const v = hist.map(x => x.val);
+  if (v.length < 2) return `<svg class="spark" viewBox="0 0 ${w} ${h}"><line x1="0" x2="${w}" y1="${h/2}" y2="${h/2}" stroke="#3A3166" stroke-dasharray="3 4"/></svg>`;
+  const mx = Math.max(...v), mn = Math.min(...v, 0);
+  const x = i => 4 + i*(w-8)/(v.length-1), y = val => h-4 - (val-mn)/((mx-mn)||1)*(h-8);
+  const pts = v.map((val,i) => `${x(i)},${y(val)}`).join(' ');
+  const last = v[v.length-1], col = last >= v[0] ? '#3DDC97' : '#FF6B5B';
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+const valOf = c => c.proceeds + (c.status==='alive' ? c.own*c.val : 0);
+function viewPort(){
+  if (!G.port.length) return `<section class="view wrap"><div class="vhead">${backBtn()}<h2>投资组合</h2></div><div class="empty"><b>还没有被投公司</b>去路演厅见见创始人吧。<button class="b3" data-act="go" data-id="pitch">去路演厅</button></div></section>`;
+  const list = G.port.slice().sort((a,b) => (a.status==='alive'?0:1)-(b.status==='alive'?0:1) || valOf(b)-valOf(a));
+  if (!ui.comp || !G.port.some(c => c.id===ui.comp)) ui.comp = list[0].id;
+  const c = G.port.find(x => x.id===ui.comp);
+  const stLbl = s => ({alive:'在营', ipo:'已上市', acq:'已收购', dead:'倒闭', fraud:'暴雷'}[s]);
+  const mult = c.cost ? valOf(c)/c.cost : 0;
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>投资组合</h2><p class="tip">每家公司每年最多赋能 2 次，每次 1 点精力。</p></div>
+    <div class="cols pcols">
+      <div class="pgrid">${list.map(x => {
+        const m = x.cost ? valOf(x)/x.cost : 0;
+        return `<button class="pcard ${x.status==='alive'?'':'closed'}" data-act="comp" data-id="${x.id}" aria-current="${x.id===c.id}">
+          <span class="stat-chip ${x.status}">${x.status==='alive'?STAGES[x.stage]:stLbl(x.status)}</span>
+          <div class="top">${logo(x)}<div style="min-width:0"><div class="nm">${esc(x.name)}</div><div class="sub">${KIND[x.k].label} · ${esc(x.sector)}</div></div></div>
+          ${spark(x.hist||[])}
+          <div class="ladder ${x.status==='dead'||x.status==='fraud'?'dead':''}">${STAGES.map((_,i)=>`<i class="${i<=x.stage?'on':''}"></i>`).join('')}<i class="${x.status==='ipo'||x.status==='acq'?'end':''}"></i></div>
+          <div class="row"><span class="val">${money(x.status==='alive'?x.own*x.val:x.proceeds)}</span><span class="mul ${m>=1?'up':'down'}">${m.toFixed(2)}×</span></div>
+        </button>`; }).join('')}</div>
+      <div class="panel pdetail">
+        <div class="head">${logo(c)}<div><h3>${esc(c.name)}</h3><span class="k-tag k-${c.k}">${KIND[c.k].label}</span> <span style="color:var(--muted);font-size:12.5px">${esc(c.founder)} · ${stLbl(c.status)}</span></div></div>
+        <div class="kv">
+          <div><div class="k">持股</div><div class="v">${c.status==='alive'?pct(c.own):'—'}</div></div>
+          <div><div class="k">公司估值</div><div class="v">${c.status==='alive'?money(c.val):money(c.exitVal||0)}</div></div>
+          <div><div class="k">总成本</div><div class="v">${money(c.cost)}</div></div>
+          <div><div class="k">回报倍数</div><div class="v ${mult>=1?'up':'down'}">${mult.toFixed(2)}×</div></div>
+        </div>
+        ${c.status==='alive' ? `<div><h3 style="font-size:19px">投后赋能 <span class="n" style="font-size:13px;color:var(--muted)">本年 ${c.help}/2</span></h3>
+          <div class="boosts">${Object.entries(BOOSTS).map(([k,b]) => `<button class="boost" data-act="boost" data-id="${k}" ${G.energy<1||c.help>=2?'disabled':''}><span class="bi">${ICON[b.ic]}</span><span><b>${b.label}</b><small>${b.hint}</small></span><span class="bolt n" style="color:var(--gold)">⚡1</span></button>`).join('')}</div></div>` : ''}
+        <div><h3 style="font-size:19px">公司大事记</h3><ul class="timeline">${(c.hist||[]).slice().reverse().map(h => `<li><span class="y">${h.y}</span><span>${esc(h.txt||'')}</span></li>`).join('')}</ul></div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ---------- market ---------- */
+function viewMarket(){
+  const m = G.market, ang = {bear:-58, flat:0, bull:58}[m.cycle];
+  const hypePct = clamp((m.aiHype-.5)/2.7, .03, 1)*100;
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>行情</h2><p class="tip">牛市里估值贵、退出容易；熊市里便宜，但公司难活。AI 越热越贵，泡沫随时可能破。</p></div>
+    <div class="mgrid">
+      <div class="panel"><h3>一级市场温度计</h3>
+        <svg class="gauge" viewBox="0 0 400 240" role="img" aria-label="市场周期：${{bull:'牛市',flat:'平稳',bear:'熊市'}[m.cycle]}">
+          <path d="M40 200 A160 160 0 0 1 120 61" stroke="#FF6B5B" stroke-width="34" fill="none"/>
+          <path d="M126 58 A160 160 0 0 1 274 58" stroke="#FFC23D" stroke-width="34" fill="none"/>
+          <path d="M280 61 A160 160 0 0 1 360 200" stroke="#3DDC97" stroke-width="34" fill="none"/>
+          <text x="58" y="236">熊市</text><text x="178" y="26">平稳</text><text x="304" y="236">牛市</text>
+          <g class="needle" style="transform:rotate(${ang}deg)"><path d="M194 200 L200 66 L206 200Z" fill="#F4EFFF"/></g>
+          <circle cx="200" cy="200" r="18" fill="#F4EFFF"/><circle cx="200" cy="200" r="8" fill="#1A1530"/>
+        </svg>
+        <div class="thermo" style="margin-top:12px">
+          <div class="tube ${m.aiCrashed?'crashed':''}"><i style="height:${hypePct}%"></i></div>
+          <div><div class="fx" style="font-size:22px">AI 热度 <span class="arc" style="color:var(--sky)">${m.aiHype.toFixed(2)}×</span></div>
+            <p style="color:var(--muted);margin-top:6px">${m.aiCrashed ? `泡沫已在 ${yl(m.crashYear)} 年破裂。AI 项目估值回到地面，活下来的公司开始慢慢回暖。` : 'AI 项目的估值会乘上这个热度。热度越高，泡沫破裂的概率也越高，而且每年都在变大。'}</p></div>
+        </div>
+      </div>
+      <div class="panel"><h3>新闻滚动</h3><ul class="news">${G.newsHist.slice(0,24).map(n => `<li><span class="y">${n.y}</span><span>${esc(n.t)}</span></li>`).join('')}</ul></div>
+    </div>
+  </section>`;
+}
+
+/* ---------- inbox ---------- */
+function viewInbox(){
+  const items = G.inbox;
+  if (!items.length) return `<section class="view wrap"><div class="vhead">${backBtn()}<h2>收件箱</h2></div><div class="empty"><b>没有新邮件</b>年终结算后，跟投请求和突发事件会出现在这里。</div></section>`;
+  if (!ui.msg || !items.some(m => m.id===ui.msg)) ui.msg = (items.find(m => !m.done) || items[0]).id;
+  const m = items.find(x => x.id===ui.msg);
+  if (m.type==='note' && !m.done){ m.done = true; save(); }
+  const c = m.cid ? G.port.find(x => x.id===m.cid) : null;
+  const fromAv = c ? avatar(c.seed, c.k, m.type==='follow'?'smile':'neutral') : avatar('office-'+m.from, 'normal', 'neutral', '#FFF4DC');
+  let body = '', opts = '';
+  if (m.type==='note') body = `<p>${esc(m.body)}</p>`;
+  if (m.type==='follow'){
+    body = `<p>${esc(c.name)} 刚拿到${esc(m.round)}的 TS，新一轮需要老股东表态。你现在持有 <b>${pct(m.ownBefore)}</b>。按比例跟投需要 <b>${money(m.cost)}</b>，不跟的话会被稀释到 <b>${pct(m.ownAfter)}</b>。</p><p class="meta">当前公司估值 ${money(c.val)} · 你的可投资金 ${money(G.cash)}</p>`;
+    opts = m.done ? `<div class="resolved">${esc(m.result)}</div>` : `<div class="opts"><button class="opt" data-act="reply" data-id="0" ${G.cash<m.cost||c.status!=='alive'?'disabled':''}><b>跟投 ${money(m.cost)}</b><small>${G.cash<m.cost?'资金不足':'保住持股比例'}</small></button><button class="opt" data-act="reply" data-id="1"><b>放弃跟投</b><small>留着子弹，接受稀释</small></button></div>`;
+  }
+  if (m.type==='event'){
+    body = `<p>${esc(m.ev.body)}</p>`;
+    opts = m.done ? `<div class="resolved">${esc(m.result)}</div>` : `<div class="opts">${m.ev.opts.map((o,i) => `<button class="opt" data-act="reply" data-id="${i}" ${o.cost && o.cost>G.cash?'disabled':''}><b>${esc(o.label)}</b><small>${esc(o.hint)}${o.cost && o.cost>G.cash?'（资金不足）':''}</small></button>`).join('')}</div>`;
+  }
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>收件箱</h2><p class="tip">红点是需要你拍板的事。处理完才能结束这一年。</p></div>
+    <div class="mail">
+      <div class="mlist">${items.slice(0,30).map(x => { const cc = x.cid ? G.port.find(p => p.id===x.cid) : null;
+        return `<button class="mitem ${!x.done && x.type!=='note'?'todo':''} ${x.done?'done':''}" data-act="msg" data-id="${x.id}" aria-current="${x.id===m.id}"><span class="av">${cc?avatar(cc.seed,cc.k,'neutral'):avatar('office-'+x.from,'normal','neutral','#FFF4DC')}</span><span style="min-width:0"><b>${esc(x.title)}</b><small>${esc(x.from||'')} · ${x.y}</small></span></button>`; }).join('')}</div>
+      <article class="letter">
+        <div class="from"><div class="av">${fromAv}</div><div><div class="meta">来自 ${esc(m.from||'')} · ${m.y}</div><h3>${esc(m.title)}</h3></div></div>
+        ${body}${opts}
+      </article>
+    </div>
+  </section>`;
+}
+
+/* ---------- fund & trophy ---------- */
 function chart(hist){
-  const W = 520, H = 170, pl = 34, pr = 12, pt = 12, pb = 24;
+  const W = 560, H = 200, pl = 38, pr = 14, pt = 14, pb = 26;
   const maxY = Math.max(2, ...hist.map(h => h.tvpi)) * 1.1;
-  const x = i => pl + i*(W-pl-pr)/Math.max(1,hist.length-1);
+  const x = i => pl + i*(W-pl-pr)/Math.max(1, G.maxYear);
   const y = v => pt + (1 - v/maxY)*(H-pt-pb);
   const pts = hist.map((h,i) => `${x(i)},${y(h.tvpi)}`).join(' ');
   const area = `${x(0)},${y(0)} ${pts} ${x(hist.length-1)},${y(0)}`;
-  const ticks = [0,1,Math.round(maxY/2*2)/2, Math.floor(maxY)].filter((v,i,a)=>a.indexOf(v)===i && v<=maxY);
+  const ticks = [...new Set([0, 1, Math.round(maxY/2), Math.floor(maxY)])].filter(v => v <= maxY);
   const last = hist[hist.length-1];
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="TVPI 走势">
-    ${ticks.map(t => `<line x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)" stroke-dasharray="${t===1?'0':'3 4'}"/><text x="${pl-6}" y="${y(t)+3}" text-anchor="end">${t}×</text>`).join('')}
-    <polygon points="${area}" fill="var(--accent)" fill-opacity=".12"/>
-    <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
-    ${hist.map((h,i) => `<text x="${x(i)}" y="${H-6}" text-anchor="middle">${i===0?'募资':G.startYear+h.y-1}</text>`).join('')}
-    <circle cx="${x(hist.length-1)}" cy="${y(last.tvpi)}" r="5" fill="var(--accent)" stroke="var(--paper)" stroke-width="2"/>
+    ${ticks.map(t => `<line x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}" stroke="#3A3166" stroke-dasharray="${t===1?'0':'3 5'}" stroke-width="${t===1?2:1}"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end">${t}×</text>`).join('')}
+    ${Array.from({length:G.maxYear+1},(_,i) => `<text x="${x(i)}" y="${H-6}" text-anchor="middle">${i===0?'募资':G.startYear+i-1}</text>`).join('')}
+    <polygon points="${area}" fill="#9B8CFF" fill-opacity=".22"/>
+    <polyline points="${pts}" fill="none" stroke="#FFC23D" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(hist.length-1)}" cy="${y(last.tvpi)}" r="7" fill="#FFC23D" stroke="#16122B" stroke-width="3"/>
   </svg>`;
 }
-function openFinal(){
+function viewFund(){
   const s = stats(G);
-  const [rank, line] = rankFor(s.tvpi);
-  const irr = s.tvpi > 0 ? (Math.pow(s.tvpi, 1/4.5) - 1) : -1;
-  const carry = Math.max(0, s.total - G.fundSize) * .2;
-  const valOf = c => c.proceeds + (c.status==='alive' ? c.own*c.val : 0);
-  const ranked = G.port.slice().sort((a,b) => (valOf(b)-b.cost) - (valOf(a)-a.cost));
-  const best = ranked.slice(0,3), worst = ranked.slice(-3).reverse().filter(c => !best.includes(c));
-  const missed = G.passed.map(c => ({...c, v: c.status==='alive' ? c.val : (c.exitVal||0)})).sort((a,b) => b.v/b.entry - a.v/a.entry).slice(0,3);
-  const ach = achievements(G);
-  const row = (c, v, sub) => `<div class="rrow">${logo(c)}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="t">${sub}</div></div><div class="d"><b class="${v>=0?'up':'down'}">${v>=0?'+':''}${money(v)}</b></div></div>`;
-  const o = openModal(`
-    <div class="sheet-h"><div class="eyebrow">Final Report · ${esc(G.fund)} · ${G.startYear}–${G.startYear+G.maxYear-1}</div></div>
-    <div class="sheet-b">
-      <div class="final-hero"><div class="eyebrow">最终 TVPI</div><div class="big ${s.tvpi>=1?'up':'down'}">${s.tvpi.toFixed(2)}×</div><div class="rank">${rank}</div><p>${line}</p></div>
-      <div class="kv">
-        <div><div class="k">累计回款</div><div class="v">${money(G.dist)}</div></div>
-        <div><div class="k">未退出估值</div><div class="v">${money(s.nav)}</div></div>
-        <div><div class="k">未投出现金</div><div class="v">${money(G.cash)}</div></div>
-        <div><div class="k">DPI</div><div class="v">${s.dpi.toFixed(2)}×</div></div>
-        <div><div class="k">约合 IRR</div><div class="v ${irr>=0?'up':'down'}">${(irr*100).toFixed(1)}%</div></div>
-        <div><div class="k">你的 Carry</div><div class="v">${money(carry)}</div></div>
-      </div>
-      <div class="rep-sec"><h3>TVPI 走势</h3>${chart(G.hist)}</div>
-      <div class="two">
-        <div class="rep-sec"><h3>最赚钱的项目</h3>${best.map(c => row(c, valOf(c)-c.cost, `${KIND[c.k].label} · 成本 ${money(c.cost)} · ${(valOf(c)/c.cost).toFixed(1)}×`)).join('') || '<p class="note">没有投资</p>'}</div>
-        <div class="rep-sec"><h3>亏得最多的</h3>${worst.map(c => row(c, valOf(c)-c.cost, `${KIND[c.k].label} · ${{alive:'仍在经营',ipo:'已上市',acq:'已收购',dead:'已倒闭',fraud:'暴雷'}[c.status]}`)).join('') || '<p class="note">没有亏损项目</p>'}</div>
-      </div>
-      <div class="rep-sec"><h3>反向组合 · 你 Pass 掉的</h3>${missed.map(c => `<div class="rrow">${logo(c)}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="t">${yearLabel(c.passYear)} 年 Pass · 当时 ${money(c.entry)}</div></div><div class="d"><b class="${c.v>=c.entry?'up':'down'}">${c.v? money(c.v) : '已归零'}</b>${c.v?(c.v/c.entry).toFixed(1)+'×':''}</div></div>`).join('') || '<p class="note">你没有 Pass 过任何项目。</p>'}</div>
-      <div class="rep-sec"><h3>成就 ${ach.filter(a=>a.ok).length}/${ach.length}</h3><div class="badges">${ach.map(a => `<div class="badge ${a.ok?'':'off'}"><b>${a.n}</b><small>${a.d}</small></div>`).join('')}</div></div>
+  const by = {normal:0, ai:0, abstract:0}; G.port.forEach(c => by[c.k] += c.cost);
+  const tot = s.cost || 1;
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>LP 报表</h2><p class="tip">TVPI = (已回款 + 未退出估值 + 剩余现金) ÷ 基金规模。DPI 只算真正回到 LP 手里的钱。</p></div>
+    <div class="fstats" style="margin-bottom:18px">
+      <div><div class="k">基金规模</div><div class="v">${money(G.fundSize)}</div></div>
+      <div><div class="k">已投出</div><div class="v">${money(s.cost)}</div></div>
+      <div><div class="k">剩余现金</div><div class="v">${money(G.cash)}</div></div>
+      <div><div class="k">组合估值</div><div class="v">${money(s.nav)}</div></div>
+      <div><div class="k">已回款</div><div class="v">${money(G.dist)}</div></div>
+      <div><div class="k">TVPI</div><div class="v ${s.tvpi>=1?'up':'down'}">${s.tvpi.toFixed(2)}×</div></div>
     </div>
-    <div class="sheet-f"><span class="info">按期末估值清算，Carry 为超额收益的 20%</span><button class="btn primary" id="again">再募一只基金</button></div>`, true);
-  o.querySelector('#again').onclick = () => { closeModal(); ui.fund = G.fund.replace(/(\s?[一二三四五六七八九]期)?$/, '') ; G = null; save(); render(); window.scrollTo(0,0); };
+    <div class="two">
+      <div class="panel"><h3>TVPI 走势</h3>${chart(G.hist)}
+        <h3 style="margin-top:16px">资金去向</h3>
+        <div class="alloc">${['normal','ai','abstract'].map(k => by[k] ? `<i style="width:${by[k]/tot*100}%;background:var(--k-${k})"></i>` : '').join('')}</div>
+        <div class="legend"><span style="--c:var(--k-normal)">常规 ${money(by.normal)}</span><span style="--c:var(--k-ai)">AI ${money(by.ai)}</span><span style="--c:var(--k-abstract)">抽象 ${money(by.abstract)}</span></div>
+      </div>
+      <div class="panel"><h3>基金日志</h3><ul class="log">${G.log.map(l => `<li><span class="y">${l.y}</span><span>${esc(l.t)}</span></li>`).join('')}</ul></div>
+    </div>
+  </section>`;
 }
+const MEDAL = ['角','十','抽','智','雷','反','坟','鸡','红'];
+function viewTrophy(){
+  const ach = achievements(G);
+  const missed = G.passed.map(c => ({...c, v: c.status==='alive' ? c.val : (c.exitVal||0)})).sort((a,b) => b.v/b.entry - a.v/a.entry);
+  return `<section class="view wrap">
+    <div class="vhead">${backBtn()}<h2>荣誉室</h2><p class="tip">成就随时解锁。右边是你 Pass 掉的项目后来怎么样了，也叫“反向组合”。</p></div>
+    <div class="two">
+      <div class="panel"><h3>成就 ${ach.filter(a=>a.ok).length}/${ach.length}</h3><div class="ach">${ach.map((a,i) => `<div class="medal ${a.ok?'':'off'}"><div class="m">${MEDAL[i]}</div><div><b>${a.n}</b><small>${a.d}</small></div></div>`).join('')}</div></div>
+      <div class="panel"><h3>反向组合</h3><div class="list">${missed.slice(0,12).map(c => `<div class="lrow">${logo(c)}<div style="min-width:0"><b>${esc(c.name)}</b><small>${yl(c.passYear)} 年 Pass · 当时 ${money(c.entry)} · ${{alive:'仍在经营',ipo:'已上市',acq:'已被收购',dead:'已倒闭',fraud:'已暴雷'}[c.status]}</small></div><div class="r ${c.v>=c.entry?'up':'down'}">${c.v?money(c.v):'归零'}<br><small>${c.v?(c.v/c.entry).toFixed(1)+'×':''}</small></div></div>`).join('') || '<p style="color:var(--muted)">还没有 Pass 过项目。</p>'}</div></div>
+    </div>
+  </section>`;
+}
+
+/* ---------- year-end cinematic ---------- */
+const TAG = {up:['融资','good'], flat:['平稳','meh'], down:['降价','bad'], dead:['倒闭','bad'], fraud:['暴雷','bad'], ipo:['上市','good'], acq:['收购','good'], moon:['爆火','wow']};
+let cineTimers = [];
+function playCine(){
+  const C = G.cine; if (!C) return;
+  cineTimers.forEach(clearTimeout); cineTimers = [];
+  const cards = C.evs.map((e,i) => {
+    const stakeB = e.ownBefore*e.before, stakeA = e.status==='alive' ? e.ownAfter*e.after : 0;
+    const val = e.pay ? e.pay : stakeA, up = (e.pay || stakeA) >= stakeB;
+    const t = TAG[e.type];
+    return `<div class="rcard" data-i="${i}" style="animation-delay:${i*90}ms"><div class="backside">${esc([...G.fund][0]||'鲸')}</div>
+      <div class="face"><div class="top">${logo(e)}<div><b>${esc(e.name)}</b><small>${STAGES[e.stageBefore]}${e.stage!==e.stageBefore&&e.status==='alive'?' → '+STAGES[e.stage]:''}</small></div></div>
+      <p>${esc(e.text)}</p>
+      <div class="delta ${up?'up':'down'}">${e.pay ? `回款 ${money(e.pay)}` : `${money(stakeB)} → ${money(stakeA)}`}</div>
+      <span class="rstamp ${t[1]}">${t[0]}</span></div></div>`;
+  }).join('');
+  const miss = C.missed.map((x,i) => `<div class="rcard miss" data-m="${i}"><div class="backside">?</div><div class="face"><div class="top">${logo(x)}<div><b>${esc(x.name)}</b><small>${yl(x.passYear)} 年被你 Pass</small></div></div><p>当时投后只有 ${money(x.entry)}，现在已经是 ${money(x.v)}。</p><div class="delta up">${(x.v/x.entry).toFixed(0)} 倍</div><span class="rstamp bad">心痛</span></div></div>`).join('');
+  const el = document.createElement('div'); el.className = 'cine'; el.id = 'cine';
+  el.innerHTML = `<div class="cine-in">
+    <div class="cine-top"><span class="fx" style="font-size:20px;color:var(--muted)">${esc(G.fund)} · 年终结算</span><button class="b3 sm dark" id="cine-skip">全部翻开</button></div>
+    <div class="yearflip"><div class="lbl">年度报告</div><div class="yr">${C.year}</div></div>
+    <div class="headlines">${C.news.map((n,i) => `<div style="animation-delay:${.5+i*.35}s"><b>头条</b>${esc(n)}</div>`).join('')}</div>
+    ${cards ? `<div class="sec-t">组合开牌</div><div class="deal-row">${cards}</div>` : `<div class="empty"><b>没有在营的被投公司</b>今年没什么可揭晓的。</div>`}
+    ${miss ? `<div class="sec-t" style="color:var(--coral)">与此同时，你错过的……</div><div class="deal-row">${miss}</div>` : ''}
+    <div class="cine-sum" id="cine-sum" hidden>
+      <div><div class="lbl">年初 TVPI</div><div class="big">${C.before.toFixed(2)}×</div></div>
+      <div class="big" style="color:var(--muted)">→</div>
+      <div><div class="lbl">年末 TVPI</div><div class="big ${C.after>=C.before?'up':'down'}" id="cine-after">${C.before.toFixed(2)}×</div></div>
+      <button class="b3 lg" id="cine-go">${C.last ? '查看基金清算 ▶' : `进入 ${C.year+1} 年 ▶`}</button>
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+  document.body.style.overflow = 'hidden';
+  const flip = (card, e) => {
+    if (card.classList.contains('flip')) return;
+    card.classList.add('flip'); sfx('flip');
+    if (!e) return;
+    setTimeout(() => {
+      if (e.type==='ipo' || e.type==='moon'){ sfx('win'); const r = card.getBoundingClientRect(); confetti(90, (r.left+r.width/2)/innerWidth, (r.top+40)/innerHeight); }
+      else if (e.type==='acq' || e.type==='up') sfx('coin');
+      else if (e.type==='dead' || e.type==='fraud'){ sfx('stamp'); shake(el.querySelector('.cine-in')); }
+    }, 380);
+  };
+  const all = [...el.querySelectorAll('.rcard')];
+  const showSum = () => {
+    const s = el.querySelector('#cine-sum'); if (!s.hidden) return; s.hidden = false;
+    const a = el.querySelector('#cine-after'); const t0 = performance.now();
+    const step = t => { const k = Math.min(1,(t-t0)/900); a.textContent = (C.before + (C.after-C.before)*(1-Math.pow(1-k,3))).toFixed(2)+'×'; if (k<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+    if (C.after > C.before*1.15) setTimeout(() => confetti(160), 500);
+    s.scrollIntoView({behavior: reduced()?'auto':'smooth', block:'center'});
+  };
+  const base = 1200 + C.news.length*350;
+  all.forEach((card,i) => {
+    const e = card.dataset.i != null ? C.evs[+card.dataset.i] : null;
+    cineTimers.push(setTimeout(() => { flip(card,e); if (i>2) card.scrollIntoView({behavior:'smooth', block:'nearest'}); }, base + i*650));
+    card.onclick = () => flip(card,e);
+  });
+  cineTimers.push(setTimeout(showSum, base + all.length*650 + 500));
+  el.querySelector('#cine-skip').onclick = () => { cineTimers.forEach(clearTimeout); all.forEach(c => c.classList.add('flip')); sfx('flip'); showSum(); };
+  el.querySelector('#cine-go').onclick = () => {
+    cineTimers.forEach(clearTimeout); sfx('click');
+    el.remove(); document.body.style.overflow = '';
+    G.cine = null; ui.view = 'hub'; ui.deal = 0; ui.say = null; save(); render(); scrollTo(0,0);
+    if (!G.over){ const p = pendingCount(G); toast(`${yl(G.year)} 年开始${p ? ` · 收件箱有 ${p} 件事等你处理` : ''}`, 'gold'); }
+  };
+}
+
+/* ---------- final ---------- */
+function viewFinal(){
+  const s = stats(G), [rank, line] = rankFor(s.tvpi);
+  const irr = s.tvpi > 0 ? Math.pow(s.tvpi, 1/4.5) - 1 : -1;
+  const carry = Math.max(0, s.total - G.fundSize)*.2;
+  const ranked = G.port.slice().sort((a,b) => (valOf(b)-b.cost) - (valOf(a)-a.cost));
+  const best = ranked.slice(0,3), worst = ranked.slice(-3).reverse().filter(c => !best.includes(c) && valOf(c) < c.cost);
+  const ach = achievements(G);
+  const row = c => { const v = valOf(c)-c.cost; return `<div class="lrow">${logo(c)}<div style="min-width:0"><b>${esc(c.name)}</b><small>${KIND[c.k].label} · 成本 ${money(c.cost)} · ${(valOf(c)/c.cost).toFixed(1)}×</small></div><div class="r ${v>=0?'up':'down'}">${v>=0?'+':'−'}${money(Math.abs(v))}</div></div>`; };
+  return `<section class="view wrap final">
+    <div class="final-hero">
+      <div class="fx" style="color:var(--muted);font-size:20px">${esc(G.fund)} · ${G.startYear}–${G.startYear+G.maxYear-1} · 基金清算</div>
+      <div class="big ${s.tvpi>=1?'up':'down'}">${s.tvpi.toFixed(2)}×</div>
+      <div class="rank">${rank}</div><p>${line}</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px"><button class="b3 lg" data-act="again">再募一只基金 ▶</button></div>
+    </div>
+    <div class="fstats">
+      <div><div class="k">累计回款</div><div class="v">${money(G.dist)}</div></div>
+      <div><div class="k">未退出估值</div><div class="v">${money(s.nav)}</div></div>
+      <div><div class="k">未投出现金</div><div class="v">${money(G.cash)}</div></div>
+      <div><div class="k">DPI</div><div class="v">${s.dpi.toFixed(2)}×</div></div>
+      <div><div class="k">约合 IRR</div><div class="v ${irr>=0?'up':'down'}">${(irr*100).toFixed(1)}%</div></div>
+      <div><div class="k">你的 Carry</div><div class="v" style="color:var(--gold)">${money(carry)}</div></div>
+    </div>
+    <div class="two">
+      <div class="panel"><h3>TVPI 走势</h3>${chart(G.hist)}</div>
+      <div class="panel"><h3>成就 ${ach.filter(a=>a.ok).length}/${ach.length}</h3><div class="ach">${ach.map((a,i) => `<div class="medal ${a.ok?'':'off'}"><div class="m">${MEDAL[i]}</div><div><b>${a.n}</b><small>${a.d}</small></div></div>`).join('')}</div></div>
+      <div class="panel"><h3>最赚钱的项目</h3><div class="list">${best.map(row).join('') || '<p style="color:var(--muted)">没有投资</p>'}</div></div>
+      <div class="panel"><h3>亏得最多的</h3><div class="list">${worst.map(row).join('') || '<p style="color:var(--muted)">没有亏损项目，了不起。</p>'}</div></div>
+    </div>
+  </section>`;
+}
+
+/* ---------- overlay helpers ---------- */
+function overlay(html){
+  closeOverlay();
+  const o = document.createElement('div'); o.className = 'overlay'; o.id = 'overlay'; o.innerHTML = html;
+  document.body.appendChild(o); document.body.style.overflow = 'hidden';
+  return o;
+}
+function closeOverlay(){ const o = $('#overlay'); if (o) o.remove(); if (!$('#cine')) document.body.style.overflow = ''; }
+function confirmRestart(){
+  const o = overlay(`<div class="ts-doc"><div class="eyebrow">MENU</div><h3>放弃 ${esc(G.fund)}？</h3><p>这一局的进度会被清空，回到标题画面重新募资。</p>
+    <div class="ts-act"><button class="b3 dark" data-act="x">继续这局</button><button class="b3 coral" data-act="y">重新开始</button></div></div>`);
+  o.onclick = e => { const a = e.target.closest('[data-act]'); if (!a) return; closeOverlay(); if (a.dataset.act==='y'){ G = null; save(); render(); scrollTo(0,0); } };
+}
+
+/* ---------- render & actions ---------- */
+function render(){
+  if (!G){ renderStart(); return; }
+  if (G.over && !G.cine){ $('#app').innerHTML = hud() + viewFinal(); return; }
+  const v = {hub:viewHub, pitch:viewPitch, port:viewPort, market:viewMarket, inbox:viewInbox, fund:viewFund, trophy:viewTrophy}[ui.view] || viewHub;
+  $('#app').innerHTML = hud() + v();
+  const s = stats(G);
+  tween('h-cash', G.cash, money); tween('h-nav', s.nav, money); tween('h-tvpi', s.tvpi, x => x.toFixed(2)+'×');
+  if (ui.view==='pitch') typeSay();
+  if (G.cine && !$('#cine')) playCine();
+}
+function go(view){ ui.view = view; if (view==='pitch'){ const i = G.deals.findIndex(d => d.state==='open'); if (i>=0 && (G.deals[ui.deal]||{}).state!=='open') ui.deal = i; ui.typing = true; } render(); scrollTo(0,0); }
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); if (!a || a.disabled || a.closest('#overlay')) return;
+  const act = a.dataset.act, id = a.dataset.id;
+  if (act !== 'sound') sfx('click');
+  const d = G && G.deals[ui.deal];
+  switch (act){
+    case 'persona': ui.persona = id; ui.fund = $('#fund').value; renderStart(); break;
+    case 'start': G = newGame(ui.persona, ($('#fund').value || '鲸落资本').trim()); ui.view = 'hub'; save(); render(); scrollTo(0,0); sfx('coin'); confetti(100, .5, .2); toast(`${G.fund} 募资完成：$${G.fundSize}M 到账`, 'gold'); break;
+    case 'resume': G = loadSave(); ui.view = 'hub'; render(); break;
+    case 'sound': ui.sound = !ui.sound; render(); break;
+    case 'menu': confirmRestart(); break;
+    case 'go': go(id); break;
+    case 'deal': ui.deal = +id; ui.say = null; ui.typing = true; render(); break;
+    case 'ask': {
+      const k = id, txt = askQuestion(G,d,k);
+      if (txt){ ui.say = {id:d.id, who:d.founder, text:txt}; ui.typing = true; save(); render(); }
+      break; }
+    case 'dd': {
+      const r = doDD(G,d);
+      if (r.sniped){ sfx('bad'); ui.say = {id:d.id, who:d.founder, text:`不好意思，${d.lead} 昨晚已经签了。下次早点来。`}; ui.typing = true; toast(`尽调还没做完，${d.name} 被 ${d.lead} 抢走了`, 'bad'); }
+      else if (r.ok){ const red = d.flags.filter(f => f.c!=='g').length, x = d.flags.some(f => f.c==='x');
+        if (x){ sfx('bad'); toast('尽调发现了红旗！', 'bad'); d.mood = 'sweat'; } else { sfx('coin'); toast(red ? `尽调完成：发现 ${red} 个风险点` : '尽调完成：底子很干净', red ? '' : 'good'); }
+        ui.say = {id:d.id, who:d.founder, text: x ? '这个……财务那边可能有点误会，我回去核实一下。' : '材料都给你们了，有问题随时问。'}; ui.typing = true; }
+      save(); render(); break; }
+    case 'offer': openTS(); break;
+    case 'pass':
+      if (d.state==='open'){ d.state = 'passed'; sfx('stamp'); const n = G.deals.findIndex(x => x.state==='open'); if (n>=0) setTimeout(() => { ui.deal = n; ui.say = null; ui.typing = true; render(); }, 700); }
+      else if (d.state==='passed') d.state = 'open';
+      save(); render(); break;
+    case 'roadshow':
+      if (G.energy >= 2 && !G.roadshow){ G.energy -= 2; G.roadshow = true; G.deals.push(genDeal(G)); ui.deal = G.deals.length-1; ui.say = null; ui.typing = true; sfx('coin'); toast('路演日认识了一位新创始人'); save(); render(); }
+      break;
+    case 'comp': ui.comp = +id; render(); break;
+    case 'boost': {
+      const c = G.port.find(x => x.id===ui.comp);
+      if (boost(G,c,id)){ sfx('coin'); toast({clients:`给 ${c.name} 介绍了三个大客户`, hire:`帮 ${c.name} 挖来一位大厂高管`, pr:`${c.name} 上了财经头条`}[id], 'good'); save(); render(); }
+      break; }
+    case 'msg': ui.msg = +id; render(); break;
+    case 'reply': {
+      const m = G.inbox.find(x => x.id===ui.msg);
+      const r = resolveMsg(G,m,+id);
+      if (r){ sfx('stamp'); toast(r, 'gold'); save(); render(); }
+      break; }
+    case 'endyear':
+      if (pendingCount(G)) { toast('先处理收件箱里的事', 'bad'); break; }
+      endYear(G); save(); render(); break;
+    case 'again': { const name = G.fund; G = null; save(); ui.fund = name; render(); scrollTo(0,0); break; }
+  }
+});
 
 function start(data){
   if (data && data.G) G = data.G;
+  if (data && data.ui) Object.assign(ui, data.ui);
   render();
 }
-window.claude?.hot?.snapshot?.(() => ({G}));
+window.claude?.hot?.snapshot?.(() => ({G, ui:{view:ui.view, deal:ui.deal, comp:ui.comp, msg:ui.msg}}));
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 </script>
 </body>
