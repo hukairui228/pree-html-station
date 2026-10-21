@@ -151,7 +151,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .qtab .st{font-size:11px;color:var(--muted);font-weight:500}
 .qtab.gone{opacity:.55}
 .stage{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
-.spot{position:relative;border-radius:26px;padding:22px;background:radial-gradient(ellipse 60% 55% at 50% 30%, rgba(255,194,61,.22), transparent 70%),var(--panel);border:2px solid var(--line);overflow:hidden;min-height:470px;display:flex;flex-direction:column}
+.spot{position:relative;border-radius:26px;padding:22px;background:radial-gradient(ellipse 60% 55% at 50% 30%, rgba(255,194,61,.22), transparent 70%),var(--panel);border:2px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
 .spot .who-top{display:flex;align-items:center;gap:12px}
 .spot .who-top .logo{width:52px;height:52px;font-size:26px}
 .spot .who-top h3{font-family:var(--f-fx);font-size:30px;font-weight:400;line-height:1.05}
@@ -307,6 +307,48 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .log li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;font-size:13px}
 .log .y{font-family:var(--f-num);color:var(--muted);font-weight:700}
 
+
+/* pitch conversation */
+.slides{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.slide{position:relative;background:var(--panel-2);border:2px solid var(--line);border-radius:14px;padding:10px 10px 12px;min-width:0}
+.slide .sn{position:absolute;top:8px;right:10px;font-family:var(--f-num);font-size:11px;font-weight:800;color:var(--muted)}
+.slide b{display:block;font-family:var(--f-fx);font-weight:400;font-size:18px;color:var(--gold)}
+.slide p{font-size:12.5px;line-height:1.5;margin-top:2px}
+.talkhead{display:flex;align-items:center;gap:12px;margin-top:16px}
+.talkhead .av{width:60px;height:60px;border-radius:50%;overflow:hidden;border:4px solid var(--ink);background:var(--cream);flex:none;animation:bob 3.2s ease-in-out infinite}
+.talkhead b{display:block;font-size:16px}
+.talkhead span{display:block;font-size:12px;color:var(--muted)}
+.aichip{margin-left:auto;flex:none;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--panel-2);border:2px solid var(--line);color:var(--muted)}
+.aichip.deepseek,.aichip.claude{border-color:var(--sky);color:var(--sky)}
+.aichip:hover{border-color:var(--gold);color:var(--gold)}
+.aibtn{font-family:var(--f-arcade);font-size:13px}
+.chat{display:flex;flex-direction:column;gap:10px;margin-top:12px;max-height:360px;min-height:120px;overflow-y:auto;padding:4px 2px 8px;overscroll-behavior:contain}
+.msg{max-width:90%;padding:10px 14px;border-radius:18px;font-size:14.5px;line-height:1.65;animation:viewIn .3s both;word-break:break-word}
+.msg.f{align-self:flex-start;background:var(--cream);color:var(--ink);border-bottom-left-radius:5px;box-shadow:0 4px 0 var(--cream-d)}
+.msg.me{align-self:flex-end;background:var(--violet);color:var(--ink);border-bottom-right-radius:5px;font-weight:500;box-shadow:0 4px 0 var(--violet-d)}
+.msg.sys{align-self:center;background:none;color:var(--muted);font-size:12px;padding:2px}
+.msg .hint{display:block;margin-top:6px;font-style:normal;font-size:11px;font-weight:900;color:var(--violet-d)}
+.dots{display:inline-flex;gap:4px;align-items:center;height:1em}
+.dots i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35;animation:dot 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s} .dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{40%{opacity:1;transform:translateY(-3px)}}
+.askform{display:flex;gap:8px;margin-top:12px}
+.qbox{flex:1;min-width:0;font:inherit;font-size:15px;padding:11px 14px;border-radius:14px;border:2px solid var(--line);background:var(--panel-2);color:var(--text)}
+.qbox:focus{outline:none;border-color:var(--gold)}
+.qbox:disabled{opacity:.55}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.qchip{font-size:12.5px;padding:6px 11px;border-radius:999px;background:var(--panel-2);border:2px solid var(--line);color:var(--muted)}
+.qchip:hover:not(:disabled){border-color:var(--gold);color:var(--text)}
+.qchip:disabled{opacity:.4}
+.radios{display:grid;gap:8px}
+.radio{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;border-radius:12px;background:#fff;border:2px solid var(--paper-line);cursor:pointer}
+.radio:has(input:checked){border-color:var(--violet-d)}
+.radio input{margin-top:3px;accent-color:var(--violet-d)}
+.radio b{display:block;font-size:14px}
+.radio small{font-size:12px;color:#6E6284}
+.ts-doc .field{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:2px solid var(--paper-line);background:#fff;color:var(--ink)}
+.ts-doc .lab{font-weight:700}
+
 /* ---------- overlays ---------- */
 .overlay{position:fixed;inset:0;z-index:60;background:rgba(10,7,24,.78);backdrop-filter:blur(6px);display:grid;place-items:center;overflow:auto;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .2s both}
@@ -437,6 +479,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .founder{grid-template-columns:100px minmax(0,1fr)}
   .founder .av{width:100px;height:100px}
   .asks,.two{grid-template-columns:minmax(0,1fr)}
+  .slides{grid-template-columns:repeat(2,minmax(0,1fr))}
   .personas,.howto{grid-template-columns:minmax(0,1fr)}
   .fstats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .vhead h2{font-size:28px}
@@ -708,16 +751,6 @@ const QUESTIONS = {
   product:'能现场演示一下产品吗？',
   traction:'现在收入和增长怎么样？'
 };
-const ANSWERS = {
-  team:[['目前就我和我表弟，他负责……其他所有事。','核心成员上个月走了两个，正在招。'],['团队十来个人，大部分是我以前的同事。','CTO 是我大学室友，技术很扎实。'],['核心团队一起做成过一家上市公司。','三位合伙人都在这个行业干了十年以上。']],
-  market:['说实话，全国潜在客户也就几千家。','这个市场……需要我们自己去教育。'],
-  product:['Demo 今天服务器出了点问题，下次给你看。','（打开 PPT）产品目前主要在这一页上。'],
-  traction:['我们在专注打磨产品，还没开始收费。','上个月有几个朋友帮忙下了单。']
-};
-ANSWERS.market = [ANSWERS.market, ['细分市场大概百亿规模，够我们做到上市。','竞争不算激烈，我们排第三。'], ['万亿级市场，每年增长 30%，我们是唯一能做的。','三个国家的客户都在主动找我们。']];
-ANSWERS.product = [ANSWERS.product, ['核心功能已经上线，体验还在打磨。','老客户说比竞品好用一点。'], ['（掏出手机）你看，三秒出结果，客户当场就下单了。','这是第三版产品，NPS 72。']];
-ANSWERS.traction = [ANSWERS.traction, ['有一些付费客户，每月增长 8% 左右。','收入不多，但现金流是正的。'], ['月收入连续 12 个月环比增长 20%。','上个月刚刚盈亏平衡，订单排到了下季度。']];
-
 function genDeal(g){
   const p = PERSONAS[g.persona];
   const pool = TPL.filter(t => !g.used.includes(t.n));
@@ -743,7 +776,7 @@ function genDeal(g){
   return {id:g.nid++, k:t.k, name:t.n, tag:t.t, founder:t.f, bio:t.b, quote:t.q, sector:t.s,
     stage, pre:r2(pre), ask:r2(ask), q, sigma:KIND[t.k].sigma, fraud, heat, tru, est, known:{},
     dd:false, flags:[], state:'open', lead:pick(LEADS), shape:Math.floor(R()*4), seed:Math.floor(R()*1e6),
-    res, patience:3, qLeft:2, mood:'neutral', floor:null};
+    res, patience:3, qLeft:3, mood:'neutral', floor:null, claim:est.traction, chat:[], pitch:null};
 }
 function genDeals(g,n){ const a=[]; for(let i=0;i<n;i++) a.push(genDeal(g)); return a; }
 
@@ -763,16 +796,6 @@ function newGame(pid, fund){
 function maxCheck(g,d){ return d.heat===3 && g.rep<60 ? r2(d.ask*.3) : d.ask; }
 function minCheck(g,d){ return Math.min(maxCheck(g,d), Math.max(.1, r2(d.ask*.12))); }
 
-function askQuestion(g,d,k){
-  if (d.qLeft < 1 || d.known[k] || d.dd || d.state!=='open') return null;
-  d.qLeft--; d.known[k] = true;
-  // a founder who cooks the books answers the growth question with the fake number
-  const v = d.fraud && k==='traction' ? d.est[k] : d.tru[k];
-  if (d.fraud && k==='traction') d.est[k] = v; else d.est[k] = d.tru[k];
-  const lvl = v < 2.4 ? 0 : v < 3.6 ? 1 : 2;
-  d.mood = lvl===2 ? 'smile' : lvl===0 ? 'sweat' : 'neutral';
-  return pick(ANSWERS[k][lvl]);
-}
 function doDD(g,d){
   if (g.energy < 1 || d.dd || d.state!=='open') return {err:'精力不足'};
   g.energy--;
@@ -943,7 +966,7 @@ function resolveMsg(g,m,i){
 /* ================= UI ================= */
 const KEY = 'vc-life-save-v2';
 let G = null;
-const ui = {view:'hub', deal:0, comp:null, msg:null, persona:'veteran', fund:'鲸落资本', say:null, typing:false, sound:true};
+const ui = {view:'hub', deal:0, comp:null, msg:null, persona:'veteran', fund:'鲸落资本', sound:true};
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function save(){ try{ if (G) localStorage.setItem(KEY, JSON.stringify(G)); else localStorage.removeItem(KEY); }catch(e){} }
@@ -1121,6 +1144,7 @@ function hud(){
       <div class="g tvpi">${ICON.chart}<div><div class="k">TVPI</div><div class="v ${s.tvpi>=1?'up':'down'}" id="h-tvpi">${s.tvpi.toFixed(2)}×</div></div></div>
       <div class="g hide-s"><div><div class="k">声誉 ${Math.round(G.rep)}</div><div class="repbar"><i style="width:${G.rep}%"></i></div></div></div>
       <div class="g"><div><div class="k">精力 ${G.energy}/${G.maxEnergy}</div><div class="bats">${Array.from({length:G.maxEnergy},(_,i)=>`<i class="${i<G.energy?'on':''}"></i>`).join('')}</div></div></div>
+      <button class="iconbtn aibtn" data-act="aiset" aria-label="AI 路演引擎设置">AI</button>
       <button class="iconbtn" data-act="sound" aria-label="${ui.sound?'关闭音效':'打开音效'}">${ui.sound?ICON.sound:ICON.mute}</button>
       <button class="iconbtn" data-act="menu" aria-label="重新开始">${ICON.flag}</button>
     </div>
@@ -1192,16 +1216,223 @@ function fogBand(d,k){
   const lo = clamp(v-spread,0,5), hi = clamp(v+spread,0,5);
   return `<div class="track"><span class="fog ${d.dd?'sure':known?'known':''}" style="left:${lo/5*100}%;width:${(hi-lo)/5*100}%"></span>${known?`<span class="tick" style="left:${v/5*100}%"></span>`:''}</div>`;
 }
+/* ---------- founder brain: facts, offline script, AI providers ---------- */
+const lvl = v => v < 2.4 ? 0 : v < 3.6 ? 1 : 2;
+// the numbers a founder quotes; claimed=true gives the inflated story a fraud founder tells
+function facts(d, claimed){
+  const tr = claimed && d.fraud ? Math.max(d.tru.traction, d.claim ?? d.est.traction) : d.tru.traction;
+  const S = [1,4,15][d.stage], j = (hashN(d.seed) % 17) / 100;
+  return {
+    team: Math.round([5,14,38][d.stage] * (.6 + d.tru.team/5)),
+    mrr: Math.max(.5, Math.round(S*9*Math.pow(tr/3, 2.2)*(1+j)*10)/10),
+    growth: Math.round(1 + tr*3.2 + j*10),
+    customers: Math.max(1, Math.round(S*18*tr*(1+j))),
+    tam: Math.round(Math.pow(10, .6 + d.tru.market*.75)),
+    nps: Math.round(5 + d.tru.product*14),
+    runway: Math.round(5 + tr*2.5)
+  };
+}
+const TOPIC_RX = [
+  ['money', /估值|融资|用途|条款|多少钱|融多少|花在|这轮|股权|稀释|退出/],
+  ['traction', /收入|营收|增长|增速|用户|客户|数据|mrr|arr|留存|复购|付费|盈利|利润|现金|烧钱|流水|订单|gmv|转化/i],
+  ['team', /团队|创始人|背景|经验|合伙|cto|ceo|招人|员工|履历|之前做|以前做|股东|你是谁|为什么是你/i],
+  ['market', /市场|规模|竞品|竞争|对手|天花板|tam|空间|行业|赛道|巨头|大厂|政策|监管|需求/i],
+  ['product', /产品|演示|demo|技术|壁垒|专利|功能|体验|模型|算法|护城河|怎么做|原理|差异|优势/i]
+];
+function topicOf(q){ for (const [k, rx] of TOPIC_RX) if (rx.test(q)) return k; return 'other'; }
+function offlineAnswer(d, q){
+  const t = topicOf(q), f = facts(d, true);
+  const lv = t in METRICS ? lvl(t==='traction' && d.fraud ? (d.claim ?? d.est.traction) : d.tru[t]) : 1;
+  const A = {
+    team:[`团队现在 ${f.team} 个人。坦白说，核心岗位还缺一个懂技术的合伙人，这块目前我自己顶着。`,
+          `我们 ${f.team} 个人，核心几位是我以前的老同事，一起配合了五六年。我自己是${d.bio}。`,
+          `${f.team} 人的团队，三个合伙人在这个行业加起来干了三十多年，之前一起做成过一家公司。我是${d.bio}。`],
+    market:[`目标客户目前比较窄，保守算国内也就 ${f.tam} 亿的盘子。我们得先把这一小块吃透，再考虑扩品类。`,
+            `我们测算可服务的市场大约 ${f.tam} 亿，头部玩家还没跑出来，我们现在在前三。`,
+            `可触达的市场在 ${f.tam} 亿以上，每年还在以 30% 左右的速度长，而且海外需求比国内还大。`],
+    product:[`产品还在早期，现在是第一个能用的版本。客户反馈最多的是稳定性，这个季度我们集中修这个。`,
+             `核心功能都已经上线了，NPS 大概 ${f.nps}。和竞品比，我们主要赢在上手快、价格低。`,
+             `产品已经迭代到第三版，NPS ${f.nps}。很多新客户是老客户主动转介绍来的，这是最好的证明。`],
+    traction:[`我们还没怎么开始收费，月收入 ${f.mrr} 万左右，现在主要精力在打磨产品。`,
+              `月收入 ${f.mrr} 万，过去半年月均增长 ${f.growth}%，付费客户 ${f.customers} 家。`,
+              `月收入 ${f.mrr} 万，连续 12 个月环比增长 ${f.growth}%，付费客户 ${f.customers} 家，账上的钱还能撑 ${f.runway} 个月。`]
+  };
+  let reply, mood = 'neutral';
+  if (t==='money') reply = `这轮我们融 ${money(d.ask)}，投前估值 ${money(d.pre)}。钱主要分三块：六成投产品和研发，三成拿去拓客户，剩下留作运营储备，能支撑大约 18 个月。`;
+  else if (t==='other') reply = `这个问题挺好。不过说到底，我们最在意的还是“${d.tag}”这件事本身。${d.quote}`;
+  else { reply = A[t][lv]; mood = lv===2 ? 'smile' : lv===0 ? 'sweat' : 'neutral'; }
+  if (t==='traction' && d.fraud && R() < .6){ reply += ' 具体的银行流水……财务那边还在整理，晚点发您。'; mood = 'sweat'; }
+  return {reply, topic:t, mood};
+}
+function offlinePitch(d){
+  const f = facts(d, true);
+  return {
+    opening:`各位好，我是${d.founder}，${d.bio}。${d.quote}所以我们做了${d.name}：${d.tag}。现在团队 ${f.team} 人，月收入 ${f.mrr} 万，月增长 ${f.growth}%。这一轮我们融 ${money(d.ask)}，投前估值 ${money(d.pre)}。`,
+    slides:[{t:'痛点', b:d.quote}, {t:'方案', b:d.tag}, {t:'数据', b:`月收入 ${f.mrr} 万 · 月增 ${f.growth}% · ${f.customers} 家付费客户`}, {t:'融资', b:`融 ${money(d.ask)} · 投前 ${money(d.pre)} · 18 个月跑道`}]
+  };
+}
+function personaPrompt(d){
+  const f = facts(d, true), real = facts(d, false), L = k => ['弱','中等','强'][lvl(d.tru[k])];
+  return `你在一个风险投资模拟游戏里扮演初创公司的创始人，正在会议室里向一位 VC 投资人路演。全程用简体中文、第一人称、口语化，像真人当面聊天。
+公司：${d.name}（${d.sector}，${STAGES[d.stage]}）
+一句话介绍：${d.tag}
+创始人：${d.founder}，${d.bio}
+你的核心观点：${d.quote}
+项目类型：${KIND[d.k].label}${d.k==='abstract' ? '。这个项目听起来很荒诞，但你对它无比认真、深信不疑，会一本正经地论证它的商业逻辑' : d.k==='ai' ? '。你说话时习惯带 AI 圈的术语' : ''}
+本轮融资：融 ${money(d.ask)}，投前估值 ${money(d.pre)}
+你对外宣称的数据（提到时必须用这些数字，前后一致）：团队 ${f.team} 人，月收入约 ${f.mrr} 万元，月增长 ${f.growth}%，付费客户 ${f.customers} 家，可服务市场约 ${f.tam} 亿元，产品 NPS ${f.nps}，现金能撑 ${f.runway} 个月。
+公司真实水平（投资人看不到，绝不能直接说出这些评级，但回答的内容和底气必须与之相符）：团队${L('team')}，市场${L('market')}，产品${L('product')}，增长${L('traction')}。被问到弱项时，你会含糊、回避或暴露短板；被问到强项时，你会给出具体细节和例子。
+${d.fraud ? `秘密：你的收入和增长数据注了水，真实月收入只有约 ${real.mrr} 万。被问到收入、增长、客户时，坚持对外宣称的数字；被追问流水、合同、客户名字等细节时，你会躲闪、转移话题或说“财务在整理”，偶尔露出小破绽。` : '你说的数据都是真实的，被追问细节也答得上来。'}
+规则：每次回答 2 到 4 句，紧扣投资人刚问的问题，不要答非所问，要有具体数字、客户或例子，和之前说过的话保持一致。不要用 markdown，不要加引号或旁白。`;
+}
+const ANSWER_FMT = `只输出一个 JSON 对象，不要任何其他文字：{"reply":"你作为创始人说的话","topic":"team|market|product|traction|money|other 中的一个，表示投资人这个问题主要在问哪方面","mood":"smile|neutral|sweat|angry 中的一个，表示你回答时的表情"}`;
+const PITCH_FMT = `现在请你做开场路演。只输出一个 JSON 对象，不要任何其他文字：{"opening":"120 到 200 字的开场白：自我介绍、用户痛点、你们的方案、两三个关键数据、这轮融资","slides":[{"t":"痛点","b":"不超过 30 字"},{"t":"方案","b":"不超过 30 字"},{"t":"数据","b":"不超过 30 字"},{"t":"融资","b":"不超过 30 字"}]}`;
+
+const AI = {cfg:{mode:'auto', key:'', model:'deepseek-chat'}, sample:null, warned:false, busy:new Set()};
+try { Object.assign(AI.cfg, JSON.parse(localStorage.getItem('vc-life-ai') || '{}')); } catch(e){}
+function saveAI(){ try { localStorage.setItem('vc-life-ai', JSON.stringify(AI.cfg)); } catch(e){} }
+function provider(){
+  const m = AI.cfg.mode;
+  if (m==='offline') return 'offline';
+  if (m==='deepseek') return AI.cfg.key ? 'deepseek' : 'offline';
+  if (m==='claude') return AI.sample ? 'claude' : 'offline';
+  return AI.cfg.key ? 'deepseek' : AI.sample ? 'claude' : 'offline';
+}
+const PROV_LABEL = {deepseek:'DeepSeek', claude:'Claude', offline:'离线剧本'};
+function parseJSON(s){
+  if (s && typeof s === 'object') return s;
+  s = String(s || '').replace(/^```(?:json)?\s*|\s*```$/g, '');
+  const a = s.indexOf('{'), b = s.lastIndexOf('}');
+  return JSON.parse(a >= 0 ? s.slice(a, b+1) : s);
+}
+async function callDeepSeek(system, turns){
+  const r = await fetch('https://api.deepseek.com/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + AI.cfg.key},
+    body: JSON.stringify({model: AI.cfg.model || 'deepseek-chat', messages:[{role:'system', content:system}, ...turns],
+      response_format:{type:'json_object'}, temperature:1.1, max_tokens:900})
+  });
+  if (!r.ok){ let m = ''; try { m = (await r.json()).error?.message || ''; } catch(e){} throw new Error(r.status===401 ? 'API Key 无效' : r.status===402 ? '账户余额不足' : `HTTP ${r.status} ${m}`); }
+  const j = await r.json();
+  return parseJSON(j.choices?.[0]?.message?.content);
+}
+async function callClaude(system, turns){
+  const transcript = turns.map(t => (t.role==='user' ? '投资人：' : '你：') + t.content).join('\n');
+  const { text } = await AI.sample(`${system}\n\n${transcript}`, {modelTier:'quick', cache:false});
+  return parseJSON(text);
+}
+async function runAI(system, turns){
+  const p = provider();
+  if (p==='offline') return null;
+  try { return {res: await (p==='deepseek' ? callDeepSeek : callClaude)(system, turns), p}; }
+  catch(e){
+    const msg = e && (e.message || e.code) || '未知错误';
+    if (p==='deepseek' && AI.sample){
+      if (!AI.warned){ toast(`DeepSeek 连不上（${msg}），改用 Claude`, 'bad'); AI.warned = true; }
+      try { return {res: await callClaude(system, turns), p:'claude'}; } catch(e2){}
+    }
+    if (!AI.warned){ toast(`AI 暂时不可用（${msg}），先用离线剧本`, 'bad'); AI.warned = true; }
+    return null;
+  }
+}
+function chatTurns(d, extra){
+  const turns = d.chat.filter(m => m.r!=='sys' && !m.pending && m.t).map(m => ({role: m.r==='me' ? 'user' : 'assistant', content: m.t}));
+  if (turns.length && turns[0].role==='assistant') turns.unshift({role:'user', content:'请开始你的路演。'});
+  if (extra) turns.push({role:'user', content:extra});
+  return turns;
+}
+function say(d, text, mood){ if (!d.chat) d.chat = []; d.chat.push({r:'f', t:text}); if (mood) d.mood = mood; }
+function revealTopic(d, k){
+  if (!(k in METRICS) || d.known[k]) return;
+  d.known[k] = true;
+  if (!(d.fraud && k==='traction')) d.est[k] = d.tru[k];
+  else d.est[k] = d.claim ?? d.est[k];
+}
+async function ensurePitch(d){
+  if (!d.chat) d.chat = [];
+  if (d.pitch || AI.busy.has('p'+d.id)) return;
+  const p = provider();
+  if (p==='offline'){ d.pitch = offlinePitch(d); d.pitchSrc = 'offline'; d.chat.unshift({r:'f', t:d.pitch.opening, open:true}); if (ui.view==='pitch') render(); return; }
+  AI.busy.add('p'+d.id);
+  d.chat.unshift({r:'f', t:'', pending:true, open:true});
+  if (ui.view==='pitch') render();
+  const out = await runAI(personaPrompt(d) + '\n\n' + PITCH_FMT, [{role:'user', content:'请开始你的路演。'}]);
+  AI.busy.delete('p'+d.id);
+  let pitch = offlinePitch(d), src = 'offline';
+  if (out && out.res && out.res.opening){ pitch = {opening:String(out.res.opening), slides: Array.isArray(out.res.slides) && out.res.slides.length ? out.res.slides.slice(0,4).map(s => ({t:String(s.t||''), b:String(s.b||'')})) : pitch.slides}; src = out.p; }
+  d.pitch = pitch; d.pitchSrc = src;
+  const i = d.chat.findIndex(m => m.open); if (i >= 0) d.chat[i] = {r:'f', t:pitch.opening, open:true};
+  save(); if (ui.view==='pitch') render();
+}
+async function askFounder(d, text){
+  text = String(text || '').trim().slice(0, 200);
+  if (!text || d.qLeft < 1 || d.state!=='open' || AI.busy.has('q'+d.id)) return;
+  d.qLeft--;
+  const prior = chatTurns(d);
+  d.chat.push({r:'me', t:text}, {r:'f', t:'', pending:true});
+  AI.busy.add('q'+d.id); render(); scrollChat();
+  const out = await runAI(personaPrompt(d) + '\n\n' + ANSWER_FMT, [...prior, {role:'user', content:text}]);
+  let res = out && out.res && out.res.reply ? out.res : offlineAnswer(d, text);
+  const topic = ['team','market','product','traction'].includes(res.topic) ? res.topic : topicOf(text);
+  revealTopic(d, topic);
+  d.mood = ['smile','neutral','sweat','angry'].includes(res.mood) ? res.mood : 'neutral';
+  const i = d.chat.findIndex(m => m.pending && !m.open);
+  if (i >= 0) d.chat[i] = {r:'f', t:String(res.reply), topic};
+  AI.busy.delete('q'+d.id);
+  sfx('talk'); save(); render(); scrollChat();
+}
+function scrollChat(){ const c = $('#chat'); if (c) c.scrollTop = c.scrollHeight; }
+
+function openAISettings(){
+  const c = AI.cfg, here = provider();
+  const o = overlay(`<div class="ts-doc">
+    <div class="eyebrow">AI 路演引擎 · 当前：${PROV_LABEL[here]}</div>
+    <h3>让创始人真的会说话</h3>
+    <p style="font-size:13.5px;line-height:1.7">接上大模型后，每位创始人会根据公司的真实底细即兴路演、回答你的任何问题；造假的公司会在数据上嘴硬、被追问细节时露馅。</p>
+    <div class="radios" role="radiogroup" aria-label="选择引擎">
+      ${[['auto','自动','有 DeepSeek Key 就用 DeepSeek，否则用 Claude，都没有就用离线剧本'],['deepseek','DeepSeek','用你自己的 API Key，按量计费'],['claude','Claude','在 claude.ai 里打开时可用，用你自己的 Claude 额度'],['offline','离线剧本','不联网，回答来自预设台词']].map(([k,l,h]) =>
+        `<label class="radio"><input type="radio" name="aimode" value="${k}" ${c.mode===k?'checked':''}><span><b>${l}</b><small>${h}</small></span></label>`).join('')}
+    </div>
+    <div class="ts-row"><label for="ds-key" class="lab">DeepSeek API Key</label>
+      <input id="ds-key" class="field" type="password" autocomplete="off" placeholder="sk-..." value="${esc(c.key)}">
+      <small>Key 只保存在你这台设备的浏览器里，只发给 api.deepseek.com。在 claude.ai 的页面里，网页安全策略会拦截对 DeepSeek 的请求；想用 DeepSeek，请下载独立 HTML 版在本地打开。</small></div>
+    <div class="ts-row"><label for="ds-model" class="lab">DeepSeek 模型</label>
+      <select id="ds-model" class="field"><option value="deepseek-chat" ${c.model!=='deepseek-reasoner'?'selected':''}>deepseek-chat（快，推荐）</option><option value="deepseek-reasoner" ${c.model==='deepseek-reasoner'?'selected':''}>deepseek-reasoner（慢，更会演）</option></select></div>
+    <p id="ai-test-out" style="font-size:13px;font-weight:700;min-height:1.4em"></p>
+    <div class="ts-act"><button class="b3 dark" data-act="ai-test">测试连接</button><button class="b3 dark" data-act="ai-close">取消</button><button class="b3" data-act="ai-save">保存</button></div>
+  </div>`);
+  const read = () => ({mode: o.querySelector('input[name=aimode]:checked').value, key: o.querySelector('#ds-key').value.trim(), model: o.querySelector('#ds-model').value});
+  o.onclick = async e => {
+    const a = e.target.closest('[data-act]'); if (!a) return;
+    if (a.dataset.act==='ai-close'){ closeOverlay(); return; }
+    if (a.dataset.act==='ai-save'){ Object.assign(AI.cfg, read()); AI.warned = false; saveAI(); closeOverlay(); toast(`AI 路演引擎：${PROV_LABEL[provider()]}`, 'gold'); render(); return; }
+    if (a.dataset.act==='ai-test'){
+      const out = o.querySelector('#ai-test-out'), saved = {...AI.cfg};
+      Object.assign(AI.cfg, read()); const p = provider();
+      out.style.color = 'var(--ink)'; out.textContent = p==='offline' ? '当前设置下会使用离线剧本。' : `正在连接 ${PROV_LABEL[p]}……`;
+      if (p !== 'offline'){
+        try {
+          const r = await (p==='deepseek' ? callDeepSeek : callClaude)('你是连通性测试。' + ANSWER_FMT, [{role:'user', content:'用一句话打个招呼。'}]);
+          out.style.color = 'var(--mint-d)'; out.textContent = `连接成功：${r.reply || '收到回复'}`;
+        } catch(err){ out.style.color = 'var(--coral-d)'; out.textContent = `连接失败：${err.message || err.code || err}`; }
+      }
+      Object.assign(AI.cfg, saved);
+    }
+  };
+}
+
 function viewPitch(){
   const investing = G.year <= G.investYears;
   if (!investing || !G.deals.length) return `<section class="view wrap"><div class="vhead">${backBtn()}<h2>路演厅</h2></div>
     <div class="empty"><b>${investing?'会议室空了':'投资期已结束'}</b>${investing?'今年的项目都看完了，回总部结束这一年吧。':'不再接触新项目。把精力花在投资组合上。'}</div></section>`;
   ui.deal = clamp(ui.deal, 0, G.deals.length-1);
   const d = G.deals[ui.deal];
+  if (!d.chat) d.chat = [];
+  if (!d.pitch) setTimeout(() => ensurePitch(d), 0);
   const gone = d.state !== 'open';
   const sticker = {invested:['已投资','inv'], passed:['PASS','pass'], sniped:['被抢走','bad'], walked:['谈崩了','bad']}[d.state];
-  const say = ui.say && ui.say.id===d.id ? ui.say : {who:d.founder, text:d.quote};
-  const mc = maxCheck(G,d);
+  const mc = maxCheck(G,d), busy = AI.busy.has('q'+d.id) || AI.busy.has('p'+d.id);
+  const p = provider(), slides = d.pitch ? d.pitch.slides : null;
+  const canAsk = !gone && d.qLeft > 0 && !busy;
   return `<section class="view wrap">
     <div class="vhead">${backBtn()}<h2>路演厅</h2>
       <div class="queue">${G.deals.map((x,i) => `<button class="qtab ${x.state!=='open'?'gone':''}" data-act="deal" data-id="${i}" aria-current="${i===ui.deal}"><span class="av">${avatar(x.seed,x.k,x.mood)}</span><span>${esc(x.name)}<br><span class="st">${{open:KIND[x.k].label+' · '+STAGES[x.stage],invested:'已投资',passed:'Pass',sniped:'被抢走',walked:'谈崩了'}[x.state]}</span></span></button>`).join('')}
@@ -1212,17 +1443,24 @@ function viewPitch(){
       <div class="spot">
         <div class="who-top">${logo(d)}<div style="min-width:0"><h3>${esc(d.name)}</h3><div class="meta">${esc(d.sector)} · ${STAGES[d.stage]} · BP-${String(d.id).padStart(4,'0')}</div></div><span class="k-tag k-${d.k}">${KIND[d.k].label}</span></div>
         <p class="tagline">${esc(d.tag)}</p>
-        <div class="bubble" id="bubble"><span class="who">${esc(say.who)}</span><span id="say" data-text="${esc(say.text)}">${ui.typing ? '' : esc(say.text)}</span>${ui.typing?'<span class="caret"></span>':''}</div>
-        <div class="founder"><div class="av">${avatar(d.seed,d.k,d.mood)}</div><div class="card"><b>${esc(d.founder)}</b><span>${esc(d.bio)}</span><span>本次会议还能问 <b class="n" style="color:var(--gold)">${d.dd?0:d.qLeft}</b> 个问题</span></div></div>
+        <div class="slides">${(slides || [{t:'痛点'},{t:'方案'},{t:'数据'},{t:'融资'}]).map((s,i) => `<div class="slide"><span class="sn">${String(i+1).padStart(2,'0')}</span><b>${esc(s.t)}</b><p>${s.b ? esc(s.b) : '<span class="dots"><i></i><i></i><i></i></span>'}</p></div>`).join('')}</div>
+        <div class="talkhead"><div class="av">${avatar(d.seed,d.k,d.mood)}</div><div style="min-width:0"><b>${esc(d.founder)}</b><span>${esc(d.bio)}</span></div>
+          <button class="aichip ${p}" data-act="aiset" title="设置 AI 路演引擎">${p==='offline'?'离线剧本':'AI · '+PROV_LABEL[p]} ⚙</button></div>
+        <div class="chat" id="chat" aria-live="polite">${d.chat.map(m => m.r==='sys' ? `<div class="msg sys">${esc(m.t)}</div>` :
+          `<div class="msg ${m.r}">${m.pending ? '<span class="dots"><i></i><i></i><i></i></span>' : esc(m.t)}${m.topic && m.topic in METRICS ? `<em class="hint">已了解：${METRICS[m.topic]}</em>` : ''}</div>`).join('')}</div>
+        <form class="askform" id="askform">
+          <input id="qbox" class="qbox" maxlength="200" autocomplete="off" placeholder="${gone ? '会议已经结束' : d.qLeft>0 ? `问点什么……还能问 ${d.qLeft} 个问题` : '提问次数用完了，可以深度尽调或直接出价'}" ${canAsk?'':'disabled'}>
+          <button class="b3 sm" type="submit" ${canAsk?'':'disabled'}>提问</button>
+        </form>
+        <div class="qchips">${Object.keys(QUESTIONS).map(k => `<button class="qchip" data-act="ask" data-id="${k}" ${canAsk?'':'disabled'}>${QUESTIONS[k]}</button>`).join('')}</div>
         ${sticker ? `<div class="sticker ${sticker[1]}">${sticker[0]}</div>` : ''}
       </div>
       <div class="xray">
         <div class="panel"><h3>BP 透视</h3>
           <div class="mets">${Object.keys(METRICS).map(k => `<div class="met"><span class="lab">${METRICS[k]}</span>${fogBand(d,k)}<span class="val">${d.known[k] ? (d.dd?d.tru[k]:d.est[k]).toFixed(1) : '?'}</span></div>`).join('')}</div>
-          <p class="warn" style="margin-top:10px;color:var(--muted)">条纹区是你的猜测范围。提问能缩小一项，深度尽调能看清全部，还能挖出隐藏的红旗。</p>
+          <p class="warn" style="margin-top:10px;color:var(--muted)">条纹区是你的猜测范围。问到某方面，那一项会缩小；深度尽调能看清全部，还能挖出隐藏的红旗。小心：创始人说的不一定是真话。</p>
         </div>
-        ${d.dd ? `<div class="panel"><h3>尽调报告</h3><ul class="flags">${d.flags.map(f => `<li class="${f.c}"><b>${f.c==='g'?'亮点':f.c==='x'?'红旗':'风险'}</b>${esc(f.t)}</li>`).join('')}</ul></div>`
-        : `<div class="panel"><h3>当面提问</h3><div class="asks">${Object.keys(QUESTIONS).map(k => `<button class="ask" data-act="ask" data-id="${k}" ${gone||d.qLeft<1||d.known[k]?'disabled':''}>${QUESTIONS[k]}<small>了解${METRICS[k]}${d.known[k]?' · 已问':''}</small></button>`).join('')}</div></div>`}
+        ${d.dd ? `<div class="panel"><h3>尽调报告</h3><ul class="flags">${d.flags.map(f => `<li class="${f.c}"><b>${f.c==='g'?'亮点':f.c==='x'?'红旗':'风险'}</b>${esc(f.t)}</li>`).join('')}</ul></div>` : ''}
         <div class="terms">
           <div><div class="k">投前估值</div><div class="v">${money(d.pre)}</div></div>
           <div><div class="k">本轮融资</div><div class="v">${money(d.ask)}</div></div>
@@ -1237,18 +1475,6 @@ function viewPitch(){
       </div>
     </div>
   </section>`;
-}
-
-function typeSay(){
-  const el = $('#say'); if (!el || !ui.typing) return;
-  const text = el.dataset.text; let i = 0;
-  ui.typing = false;
-  if (reduced()){ el.textContent = text; $('#bubble .caret')?.remove(); return; }
-  const t = setInterval(() => {
-    if (!document.body.contains(el)){ clearInterval(t); return; }
-    i++; el.textContent = text.slice(0,i); if (i%3===0) sfx('talk');
-    if (i >= text.length){ clearInterval(t); $('#bubble .caret')?.remove(); }
-  }, 28);
 }
 
 /* ---------- term sheet ---------- */
@@ -1294,18 +1520,18 @@ function openTS(){
         const c = invest(G,d,amt,r.pre);
         doc.insertAdjacentHTML('beforeend','<div class="ts-stamp ok">成交!</div>');
         sfx('stamp'); setTimeout(() => { sfx('coin'); confetti(140); }, 160);
-        ui.say = {id:d.id, who:d.founder, text:pick(['合作愉快！我们一起干票大的。','太好了！今晚请全公司喝奶茶。','你不会后悔的，三年后见分晓。'])}; ui.typing = true;
+        say(d, pick(['合作愉快！我们一起干票大的。','太好了！今晚请全公司喝奶茶。','你不会后悔的，三年后见分晓。']));
         save();
         setTimeout(() => { closeOverlay(); render(); if (c) toast(`签约 ${d.name}：持股 ${pct(c.own)}`, 'good'); }, 1100);
       } else if (r.walked){
         doc.insertAdjacentHTML('beforeend','<div class="ts-stamp">谈崩!</div>');
         sfx('bad'); shake(doc);
-        ui.say = {id:d.id, who:d.founder, text:pick(['你们根本不懂我们的价值。告辞。','这个价格是在侮辱我的团队。','我去找别家了，不送。'])}; ui.typing = true;
+        say(d, pick(['你们根本不懂我们的价值。告辞。','这个价格是在侮辱我的团队。','我去找别家了，不送。']));
         save(); setTimeout(() => { closeOverlay(); render(); }, 1100);
       } else {
         sfx('bad'); shake(doc);
         toast(`${d.founder}：“最低 ${money(r.floor)}，不能再少了。”`);
-        ui.say = {id:d.id, who:d.founder, text:`最低 ${money(r.floor)}，不能再少了。你再考虑一下。`};
+        say(d, `最低 ${money(r.floor)}，不能再少了。你再考虑一下。`);
         save(); closeOverlay(); render(); openTS();
       }
     }
@@ -1535,7 +1761,7 @@ function playCine(){
   el.querySelector('#cine-go').onclick = () => {
     cineTimers.forEach(clearTimeout); sfx('click');
     el.remove(); document.body.style.overflow = '';
-    G.cine = null; ui.view = 'hub'; ui.deal = 0; ui.say = null; save(); render(); scrollTo(0,0);
+    G.cine = null; ui.view = 'hub'; ui.deal = 0; save(); render(); scrollTo(0,0);
     if (!G.over){ const p = pendingCount(G); toast(`${yl(G.year)} 年开始${p ? ` · 收件箱有 ${p} 件事等你处理` : ''}`, 'gold'); }
   };
 }
@@ -1595,10 +1821,10 @@ function render(){
   $('#app').innerHTML = hud() + v();
   const s = stats(G);
   tween('h-cash', G.cash, money); tween('h-nav', s.nav, money); tween('h-tvpi', s.tvpi, x => x.toFixed(2)+'×');
-  if (ui.view==='pitch') typeSay();
+  if (ui.view==='pitch') scrollChat();
   if (G.cine && !$('#cine')) playCine();
 }
-function go(view){ ui.view = view; if (view==='pitch'){ const i = G.deals.findIndex(d => d.state==='open'); if (i>=0 && (G.deals[ui.deal]||{}).state!=='open') ui.deal = i; ui.typing = true; } render(); scrollTo(0,0); }
+function go(view){ ui.view = view; if (view==='pitch'){ const i = G.deals.findIndex(d => d.state==='open'); if (i>=0 && (G.deals[ui.deal]||{}).state!=='open') ui.deal = i; } render(); scrollTo(0,0); }
 
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-act]'); if (!a || a.disabled || a.closest('#overlay')) return;
@@ -1612,25 +1838,23 @@ document.addEventListener('click', e => {
     case 'sound': ui.sound = !ui.sound; render(); break;
     case 'menu': confirmRestart(); break;
     case 'go': go(id); break;
-    case 'deal': ui.deal = +id; ui.say = null; ui.typing = true; render(); break;
-    case 'ask': {
-      const k = id, txt = askQuestion(G,d,k);
-      if (txt){ ui.say = {id:d.id, who:d.founder, text:txt}; ui.typing = true; save(); render(); }
-      break; }
+    case 'deal': ui.deal = +id; render(); break;
+    case 'ask': askFounder(d, QUESTIONS[id]); break;
+    case 'aiset': openAISettings(); break;
     case 'dd': {
       const r = doDD(G,d);
-      if (r.sniped){ sfx('bad'); ui.say = {id:d.id, who:d.founder, text:`不好意思，${d.lead} 昨晚已经签了。下次早点来。`}; ui.typing = true; toast(`尽调还没做完，${d.name} 被 ${d.lead} 抢走了`, 'bad'); }
+      if (r.sniped){ sfx('bad'); say(d, `不好意思，${d.lead} 昨晚已经签了。下次早点来。`); toast(`尽调还没做完，${d.name} 被 ${d.lead} 抢走了`, 'bad'); }
       else if (r.ok){ const red = d.flags.filter(f => f.c!=='g').length, x = d.flags.some(f => f.c==='x');
         if (x){ sfx('bad'); toast('尽调发现了红旗！', 'bad'); d.mood = 'sweat'; } else { sfx('coin'); toast(red ? `尽调完成：发现 ${red} 个风险点` : '尽调完成：底子很干净', red ? '' : 'good'); }
-        ui.say = {id:d.id, who:d.founder, text: x ? '这个……财务那边可能有点误会，我回去核实一下。' : '材料都给你们了，有问题随时问。'}; ui.typing = true; }
+        say(d,  x ? '这个……财务那边可能有点误会，我回去核实一下。' : '材料都给你们了，有问题随时问。'); }
       save(); render(); break; }
     case 'offer': openTS(); break;
     case 'pass':
-      if (d.state==='open'){ d.state = 'passed'; sfx('stamp'); const n = G.deals.findIndex(x => x.state==='open'); if (n>=0) setTimeout(() => { ui.deal = n; ui.say = null; ui.typing = true; render(); }, 700); }
+      if (d.state==='open'){ d.state = 'passed'; sfx('stamp'); const n = G.deals.findIndex(x => x.state==='open'); if (n>=0) setTimeout(() => { ui.deal = n; render(); }, 700); }
       else if (d.state==='passed') d.state = 'open';
       save(); render(); break;
     case 'roadshow':
-      if (G.energy >= 2 && !G.roadshow){ G.energy -= 2; G.roadshow = true; G.deals.push(genDeal(G)); ui.deal = G.deals.length-1; ui.say = null; ui.typing = true; sfx('coin'); toast('路演日认识了一位新创始人'); save(); render(); }
+      if (G.energy >= 2 && !G.roadshow){ G.energy -= 2; G.roadshow = true; G.deals.push(genDeal(G)); ui.deal = G.deals.length-1; sfx('coin'); toast('路演日认识了一位新创始人'); save(); render(); }
       break;
     case 'comp': ui.comp = +id; render(); break;
     case 'boost': {
@@ -1649,6 +1873,14 @@ document.addEventListener('click', e => {
     case 'again': { const name = G.fund; G = null; save(); ui.fund = name; render(); scrollTo(0,0); break; }
   }
 });
+
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'askform') return;
+  e.preventDefault();
+  const box = $('#qbox'), d = G && G.deals[ui.deal];
+  if (d && box.value.trim()){ sfx('click'); askFounder(d, box.value); }
+});
+window.claude?.use?.('sample')?.then(s => { AI.sample = s || null; if (G && (ui.view==='pitch')) render(); }, () => {});
 
 function start(data){
   if (data && data.G) G = data.G;
