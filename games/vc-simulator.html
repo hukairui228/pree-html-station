@@ -1169,15 +1169,17 @@ ${d.offers.length ? `你手上已经有 ${d.offers.length} 家机构递了 TS，
 const ANSWER_FMT = `只输出一个 JSON 对象，不要任何其他文字：{"reply":"你作为创始人说的话","topic":"team|market|product|traction|money|other 中的一个，表示投资人这个问题主要在问哪方面","mood":"smile|neutral|sweat|angry 中的一个"}`;
 const PITCH_FMT = `现在请你做开场陈述。只输出一个 JSON 对象，不要任何其他文字：{"opening":"120 到 200 字的开场白：自我介绍、用户痛点、你们的方案、两三个关键数据、这轮融资","slides":[{"t":"痛点","b":"不超过 30 字"},{"t":"方案","b":"不超过 30 字"},{"t":"数据","b":"不超过 30 字"},{"t":"融资","b":"不超过 30 字"}]}`;
 
+// inside the claude.ai viewer, pages may not call outside hosts, so DeepSeek only works in the downloaded file
+const IN_CLAUDE = !!window.claude;
 const AI = {cfg:{mode:'auto', key:'', model:'deepseek-chat'}, sample:null, warned:false, busy:new Set()};
 try { Object.assign(AI.cfg, JSON.parse(localStorage.getItem('vc-life-ai') || '{}')); } catch(e){}
 function saveAI(){ try { localStorage.setItem('vc-life-ai', JSON.stringify(AI.cfg)); } catch(e){} }
 function provider(){
   const m = AI.cfg.mode;
   if (m==='offline') return 'offline';
-  if (m==='deepseek') return AI.cfg.key ? 'deepseek' : 'offline';
+  if (m==='deepseek') return AI.cfg.key && !IN_CLAUDE ? 'deepseek' : 'offline';
   if (m==='claude') return AI.sample ? 'claude' : 'offline';
-  return AI.cfg.key ? 'deepseek' : AI.sample ? 'claude' : 'offline';
+  return AI.cfg.key && !IN_CLAUDE ? 'deepseek' : AI.sample ? 'claude' : 'offline';
 }
 const PROV_LABEL = {deepseek:'DeepSeek', claude:'Claude', offline:'离线剧本'};
 function parseJSON(s){
@@ -1187,10 +1189,14 @@ function parseJSON(s){
   return JSON.parse(a >= 0 ? s.slice(a, b+1) : s);
 }
 async function callDeepSeek(system, turns){
-  const r = await fetch('https://api.deepseek.com/chat/completions', {
-    method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + AI.cfg.key},
-    body: JSON.stringify({model: AI.cfg.model || 'deepseek-chat', messages:[{role:'system', content:system}, ...turns], response_format:{type:'json_object'}, temperature:1.1, max_tokens:900})
-  });
+  if (IN_CLAUDE) throw new Error('claude.ai 页面不允许连接外部网站，请在本地打开独立 HTML 版');
+  let r;
+  try {
+    r = await fetch('https://api.deepseek.com/chat/completions', {
+      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + AI.cfg.key},
+      body: JSON.stringify({model: AI.cfg.model || 'deepseek-chat', messages:[{role:'system', content:system}, ...turns], response_format:{type:'json_object'}, temperature:1.1, max_tokens:900})
+    });
+  } catch(e){ throw new Error('连不上 api.deepseek.com，请检查网络或代理'); }
   if (!r.ok){ let m = ''; try { m = (await r.json()).error?.message || ''; } catch(e){} throw new Error(r.status===401 ? 'API Key 无效' : r.status===402 ? '账户余额不足' : `HTTP ${r.status} ${m}`); }
   const j = await r.json();
   return parseJSON(j.choices?.[0]?.message?.content);
@@ -1784,8 +1790,9 @@ function openAISettings(){
   const c = AI.cfg;
   const o = dialog(`<div class="dlg-h"><small>AI 路演引擎 · 当前 ${PROV_LABEL[provider()]}</small><h2>让创始人真的会说话</h2></div>
     <div class="dlg-b"><p style="font-size:13px">接上大模型后，每位创始人会根据公司的真实底细即兴介绍、回答你的任何问题；造假的公司会在数据上嘴硬，被追问细节时露馅。</p>
-      ${[['auto','自动','有 DeepSeek Key 就用 DeepSeek，否则用 Claude，都没有就用离线剧本'],['deepseek','DeepSeek','用你自己的 API Key，按量计费'],['claude','Claude','在 claude.ai 里打开时可用，用你自己的 Claude 额度'],['offline','离线剧本','不联网，按问题类型回答预设台词']].map(([k,l,h]) => `<label class="radio"><input type="radio" name="aimode" value="${k}" ${c.mode===k?'checked':''}><span><b>${l}</b><small>${h}</small></span></label>`).join('')}
-      <div class="field"><label for="ds-key">DeepSeek API Key</label><input type="password" id="ds-key" autocomplete="off" placeholder="sk-..." value="${esc(c.key)}"><small>只保存在这台设备的浏览器里，只发给 api.deepseek.com。claude.ai 页面会拦截对 DeepSeek 的请求，想用 DeepSeek 请在本地打开独立 HTML 版。</small></div>
+      ${IN_CLAUDE ? `<div class="callout warn">你现在是在 claude.ai 里打开的。这里的页面不允许连接外部网站，所以 DeepSeek 用不了，可以选 Claude。想用 DeepSeek，请下载独立 HTML 文件，在电脑上用浏览器直接打开。</div>` : ''}
+      ${[['auto','自动','有 DeepSeek Key 就用 DeepSeek，否则用 Claude，都没有就用离线剧本'],['deepseek','DeepSeek', IN_CLAUDE ? '在 claude.ai 里不可用，请在本地打开独立 HTML 版' : '用你自己的 API Key，按量计费'],['claude','Claude','在 claude.ai 里打开时可用，用你自己的 Claude 额度'],['offline','离线剧本','不联网，按问题类型回答预设台词']].map(([k,l,h]) => `<label class="radio" style="${IN_CLAUDE && k==='deepseek' ? 'opacity:.5' : ''}"><input type="radio" name="aimode" value="${k}" ${c.mode===k?'checked':''} ${IN_CLAUDE && k==='deepseek' ? 'disabled' : ''}><span><b>${l}</b><small>${h}</small></span></label>`).join('')}
+      <div class="field"><label for="ds-key">DeepSeek API Key</label><input type="password" id="ds-key" autocomplete="off" placeholder="sk-..." value="${esc(c.key)}"><small>只保存在这台设备的浏览器里，只发给 api.deepseek.com。</small></div>
       <div class="field"><label for="ds-model">DeepSeek 模型</label><select id="ds-model"><option value="deepseek-chat" ${c.model!=='deepseek-reasoner'?'selected':''}>deepseek-chat（快，推荐）</option><option value="deepseek-reasoner" ${c.model==='deepseek-reasoner'?'selected':''}>deepseek-reasoner（慢）</option></select></div>
       <p id="ai-out" style="font-size:12.5px;min-height:1.4em"></p></div>
     <div class="dlg-f"><button class="btn" data-act="test">测试连接</button><button class="btn" data-act="x">取消</button><button class="btn primary" data-act="ok">保存</button></div>`);
