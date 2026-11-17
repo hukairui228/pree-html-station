@@ -1,0 +1,9 @@
+numpy>=1.26
+pillow>=10.3
+opencv-python-headless>=4.9
+texture2ddecoder>=1.0.5
+torch>=2.3
+torchvision>=0.18
+spandrel>=0.4
+# optional: Unity 3.x/4.x games (Texture2D extraction)
+UnityPy>=1.20

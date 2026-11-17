@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Wrapper: runs the toolkit with the skill's own venv if present, else python3.
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+py="${IOSREMASTER_PYTHON:-}"
+if [ -z "$py" ]; then
+  if [ -x "$here/../.venv/bin/python" ]; then py="$here/../.venv/bin/python"; else py="python3"; fi
+fi
+PYTHONPATH="$here${PYTHONPATH:+:$PYTHONPATH}" exec "$py" -m iosremaster "$@"
